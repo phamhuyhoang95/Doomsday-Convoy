@@ -19,7 +19,8 @@ export function assertGameState(state: GameState, definition: WorldDefinition): 
   ensure(state.rng.seed === state.initialSeed, 'RNG seed differs from initial seed');
   ensure(state.player.id === definition.start.playerId && state.player.convoyId === definition.start.convoyId, 'unknown player');
   ensure(sameIds(Object.keys(state.convoys), [definition.start.convoyId]), 'unexpected convoy set for Phase 1');
-  ensure(sameIds(Object.keys(state.actors), definition.start.characterIds), 'unexpected actor set');
+  if (!definition.campaign) ensure(sameIds(Object.keys(state.actors), definition.start.characterIds), 'unexpected actor set');
+  else ensure(Object.keys(state.actors).every((id) => definition.characters.some((entry) => entry.id === id)), 'unknown actor');
   ensure(sameIds(Object.keys(state.world.locations), definition.locations.map((entry) => entry.id)), 'location registry mismatch');
   ensure(sameIds(Object.keys(state.world.routes), definition.routes.map((entry) => entry.id)), 'route registry mismatch');
   for (const [id, location] of Object.entries(state.world.locations)) ensure(id === location.id, 'location key mismatch');
@@ -28,7 +29,8 @@ export function assertGameState(state: GameState, definition: WorldDefinition): 
     ensure(convoy.id === id, 'convoy key mismatch');
     ensure(convoy.controllerId === state.player.id, 'unknown controller');
     ensure(Object.hasOwn(state.world.locations, convoy.locationId), 'unknown convoy location');
-    ensure(sameIds(convoy.actorIds, definition.start.characterIds), 'crew membership mismatch');
+    if (!definition.campaign) ensure(sameIds(convoy.actorIds, definition.start.characterIds), 'crew membership mismatch');
+    ensure(new Set(convoy.actorIds).size === convoy.actorIds.length, 'duplicate crew membership');
     ensure(convoy.vehicle.id === definition.start.vehicle.id, 'unknown vehicle');
     ensure(convoy.vehicle.maxCondition === definition.start.vehicle.maxCondition, 'vehicle maximum mismatch');
     ensure(convoy.vehicle.condition <= convoy.vehicle.maxCondition, 'vehicle exceeds maximum condition');
@@ -47,6 +49,22 @@ export function assertGameState(state: GameState, definition: WorldDefinition): 
   state.knowledge.locationIds.forEach((id) => ensure(Object.hasOwn(state.world.locations, id), 'knowledge references unknown location'));
   state.knowledge.factIds.forEach((id) => ensure(Object.hasOwn(state.world.facts, id), 'knowledge references missing fact'));
   Object.values(state.world.facts).forEach((fact) => ensure(fact.establishedAt <= state.world.tick, 'fact comes from the future'));
+  ensure(Boolean(state.campaign) === Boolean(definition.campaign), 'campaign mode mismatch');
+  if (definition.campaign) {
+    ensure(state.campaign?.id === definition.campaign.id, 'campaign ID mismatch');
+    const definitions = definition.campaign;
+    ensure(Object.values(state.inventory.artifactInstances).length === definitions.artifacts.length, 'artifact instance count mismatch');
+    const ownedIds = new Set<string>();
+    for (const [id, instance] of Object.entries(state.inventory.artifactInstances)) {
+      ensure(id === instance.id && !ownedIds.has(instance.artifactId), 'duplicate artifact instance');
+      ownedIds.add(instance.artifactId);
+      ensure(definitions.artifacts.some((entry) => entry.id === instance.artifactId), 'unknown artifact');
+      ensure(Object.hasOwn(state.convoys, instance.ownerId) || Object.hasOwn(state.world.locations, instance.ownerId), 'unknown artifact owner');
+    }
+    for (const event of state.activeEvents) ensure(definitions.events.some((entry) => entry.id === event.eventId && entry.version === event.version), 'unknown event');
+    ensure(new Set(state.activeQuests.map((quest) => quest.id)).size === state.activeQuests.length, 'duplicate quest');
+    for (const quest of state.activeQuests) ensure(definitions.quests.some((entry) => entry.id === quest.templateId), 'unknown quest');
+  }
 
   let tick = 0;
   let eventCount = 0;

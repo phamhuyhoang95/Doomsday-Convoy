@@ -7,11 +7,13 @@ const travelSchema = z.object({
 const waitSchema = z.object({
   type: z.literal('wait'), convoyId: idSchema, ticks: z.number().int().min(1).max(12),
 }).strict();
+const chooseSchema = z.object({ type: z.literal('choose'), convoyId: idSchema, instanceId: idSchema, choiceId: idSchema }).strict();
+const investigateSchema = z.object({ type: z.literal('investigate'), convoyId: idSchema }).strict();
 
 export const commandSchema = z.object({
   id: idSchema,
   issuerId: idSchema,
-  payload: z.discriminatedUnion('type', [travelSchema, waitSchema]),
+  payload: z.discriminatedUnion('type', [travelSchema, waitSchema, chooseSchema, investigateSchema]),
 }).strict();
 
 export type GameCommand = z.infer<typeof commandSchema>;
@@ -21,7 +23,7 @@ export interface CommandAuthority { readonly principalId: string }
 export type CommandErrorCode =
   | 'INVALID_COMMAND' | 'INVALID_STATE' | 'UNAUTHORIZED' | 'DUPLICATE_COMMAND'
   | 'GAME_ENDED' | 'UNKNOWN_CONVOY' | 'UNKNOWN_ROUTE' | 'ROUTE_NOT_CONNECTED'
-  | 'ROUTE_BLOCKED' | 'LOCATION_BLOCKED' | 'INSUFFICIENT_RESOURCES';
+  | 'ROUTE_BLOCKED' | 'LOCATION_BLOCKED' | 'INSUFFICIENT_RESOURCES' | 'REQUIREMENTS_NOT_MET' | 'NO_ACTIVE_EVENT';
 
 export class CommandError extends Error {
   constructor(readonly code: CommandErrorCode, message: string) {

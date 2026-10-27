@@ -6,7 +6,7 @@ import { gameStateSchema } from '../core/state-schema';
 import type { GameState } from '../core/state-schema';
 import type { WorldDefinition } from '../world/schema';
 
-export const SAVE_SCHEMA_VERSION = 1;
+export const SAVE_SCHEMA_VERSION = 2;
 export const SAVE_FORMAT = 'last-convoy-save';
 const MAX_SAVE_CHARACTERS = 10_000_000;
 const saveSchema = z.object({
@@ -14,7 +14,7 @@ const saveSchema = z.object({
   engineVersion: z.string(), contentVersion: z.string(), state: gameStateSchema,
 }).strict();
 // The initial development format stored only a version and a complete state.
-const legacySaveSchema = z.object({ schemaVersion: z.literal(0), state: gameStateSchema }).strict();
+const legacySaveSchema = z.object({ schemaVersion: z.literal(0), state: z.unknown() }).strict();
 
 export type SaveErrorCode = 'INVALID_SAVE' | 'UNSUPPORTED_VERSION' | 'CONTENT_MISMATCH' | 'REPLAY_MISMATCH' | 'STORAGE_ERROR' | 'NOT_FOUND';
 export class SaveError extends Error {
@@ -26,11 +26,19 @@ export function migrateSave(input: unknown): unknown {
     throw new SaveError('INVALID_SAVE', 'Save envelope requires schemaVersion.');
   }
   if (input.schemaVersion === SAVE_SCHEMA_VERSION) return input;
+  if (input.schemaVersion === 1 && 'state' in input) {
+    const previous = input as Record<string, unknown>;
+    const state = previous.state as Record<string, unknown>;
+    if (!state || typeof state !== 'object') throw new SaveError('INVALID_SAVE', 'Invalid legacy state');
+    return { ...previous, schemaVersion: SAVE_SCHEMA_VERSION, state: state.schemaVersion === 1 ? { ...state, schemaVersion: 2, campaign: null } : state };
+  }
   if (input.schemaVersion !== 0) throw new SaveError('UNSUPPORTED_VERSION', `Unsupported save schema: ${String(input.schemaVersion)}`);
   const legacy = legacySaveSchema.safeParse(input);
   if (!legacy.success) throw new SaveError('INVALID_SAVE', legacy.error.message);
-  return { format: SAVE_FORMAT, schemaVersion: SAVE_SCHEMA_VERSION,
-    engineVersion: legacy.data.state.engineVersion, contentVersion: legacy.data.state.contentVersion, state: legacy.data.state };
+  const state = legacy.data.state as Record<string, unknown> | null;
+  if (!state || typeof state !== 'object') throw new SaveError('INVALID_SAVE', 'Legacy save requires a state');
+  return migrateSave({ format: SAVE_FORMAT, schemaVersion: 1,
+    engineVersion: state.engineVersion, contentVersion: state.contentVersion, state });
 }
 
 export function serializeGame(state: GameState, definition: WorldDefinition): string {

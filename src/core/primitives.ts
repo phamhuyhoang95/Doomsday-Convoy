@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const ENGINE_VERSION = '0.1.0';
-export const STATE_SCHEMA_VERSION = 1;
+export const STATE_SCHEMA_VERSION = 2;
 export const RESOURCE_IDS = ['food', 'water', 'fuel', 'medicine', 'scrap'] as const;
 export const idSchema = z.string().min(1).max(100).regex(/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/);
 export const uint32Schema = z.number().int().min(0).max(0xffff_ffff);

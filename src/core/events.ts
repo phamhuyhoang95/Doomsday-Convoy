@@ -4,7 +4,7 @@ import { idSchema, resourcesSchema } from './primitives';
 export const failureReasonSchema = z.enum(['vehicle-destroyed', 'supplies-exhausted', 'no-active-crew']);
 export type FailureReason = z.infer<typeof failureReasonSchema>;
 const payloadSchema = z.discriminatedUnion('type', [
-  z.object({ type: z.literal('resources.consumed'), convoyId: idSchema, costs: resourcesSchema, reason: z.enum(['travel', 'wait']) }).strict(),
+  z.object({ type: z.literal('resources.consumed'), convoyId: idSchema, costs: resourcesSchema, reason: z.enum(['travel', 'wait', 'event', 'skill', 'combat']) }).strict(),
   z.object({ type: z.literal('time.advanced'), from: z.number().int().nonnegative(), to: z.number().int().positive() }).strict(),
   z.object({ type: z.literal('convoy.moved'), convoyId: idSchema, routeId: idSchema, from: idSchema, to: idSchema }).strict(),
   z.object({ type: z.literal('convoy.waited'), convoyId: idSchema, ticks: z.number().int().positive() }).strict(),
@@ -12,6 +12,9 @@ const payloadSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('travel.hazard'), routeId: idSchema, vehicleId: idSchema, damage: z.number().int().positive(), conditionAfter: z.number().int().nonnegative() }).strict(),
   z.object({ type: z.literal('journey.completed'), endingId: idSchema, locationId: idSchema }).strict(),
   z.object({ type: z.literal('journey.failed'), reason: failureReasonSchema }).strict(),
+  z.object({ type: z.literal('artifact.transferred'), artifactId: idSchema, fromOwnerId: idSchema, toOwnerId: idSchema }).strict(),
+  z.object({ type: z.literal('event.resolved'), eventId: idSchema, choiceId: idSchema, outcomeKey: idSchema }).strict(),
+  z.object({ type: z.literal('quest.updated'), questId: idSchema, status: z.enum(['active', 'succeeded', 'failed', 'alternative']) }).strict(),
 ]);
 export type DomainEventPayload = z.infer<typeof payloadSchema>;
 export const domainEventSchema = z.object({

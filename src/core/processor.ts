@@ -7,6 +7,7 @@ import { nextInt } from './rng';
 import type { GameState } from './state-schema';
 import { planTravel } from '../world/travel';
 import type { WorldDefinition } from '../world/schema';
+import { refreshNarrative, resolveChoice } from '../narrative/director';
 
 export type CommandResult =
   | { ok: true; state: GameState; events: DomainEvent[] }
@@ -34,7 +35,8 @@ export function processCommand(state: GameState, input: unknown, authority: Comm
 
   try {
     const plan = command.payload.type === 'travel' ? planTravel(state, convoy.id, command.payload.routeId, definition) : null;
-    const ticks = plan ? plan.route.travelTicks : command.payload.type === 'wait' ? command.payload.ticks : 0;
+    if (!plan && command.payload.type !== 'wait' && !state.campaign) return reject('INVALID_COMMAND', 'Campaign command requires campaign mode.');
+    const ticks = plan ? plan.route.travelTicks : command.payload.type === 'wait' ? command.payload.ticks : 1;
     const costs = plan ? plan.costs : supplyCosts(state, convoy, ticks, definition);
     if (!canAfford(convoy.resources, costs)) return reject('INSUFFICIENT_RESOURCES', 'Convoy cannot afford the complete action.');
 
@@ -47,7 +49,7 @@ export function processCommand(state: GameState, input: unknown, authority: Comm
       events.push({ id: `event.${next.eventSequence}`, tick: next.world.tick, payload });
     };
     updatedConvoy.resources = subtractResources(updatedConvoy.resources, costs);
-    emit({ type: 'resources.consumed', convoyId: convoy.id, costs, reason: plan ? 'travel' : 'wait' });
+    emit({ type: 'resources.consumed', convoyId: convoy.id, costs, reason: plan ? 'travel' : command.payload.type === 'wait' ? 'wait' : 'event' });
     next.world.tick += ticks;
     emit({ type: 'time.advanced', from: state.world.tick, to: next.world.tick });
     if (plan) {
@@ -73,9 +75,15 @@ export function processCommand(state: GameState, input: unknown, authority: Comm
         next.knowledge.locationIds.push(plan.to);
         emit({ type: 'location.discovered', locationId: plan.to });
       }
-    } else {
+    } else if (command.payload.type === 'wait') {
       emit({ type: 'convoy.waited', convoyId: convoy.id, ticks });
+    } else if (command.payload.type === 'choose') {
+      resolveChoice(next, command.payload.instanceId, command.payload.choiceId, definition, emit);
+    } else if (command.payload.type === 'investigate') {
+      refreshNarrative(next, definition, emit);
     }
+
+    refreshNarrative(next, definition, emit);
 
     let failure: FailureReason | null = null;
     if (updatedConvoy.vehicle.condition === 0) failure = 'vehicle-destroyed';

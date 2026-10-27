@@ -15,7 +15,8 @@
     "demo": "tsx scripts/headless.ts",
     "simulate": "tsx scripts/simulate.ts",
     "validate:world": "tsx scripts/validate-world.ts",
-    "check": "npm run validate:world && npm run test && npm run build"
+    "validate:content": "tsx scripts/validate-content.ts",
+    "check": "npm run validate:world && npm run validate:content && npm run test && npm run build"
   },
   "dependencies": {
     "react": "19.3.1",

@@ -3,12 +3,13 @@ import { createRng } from './rng';
 import type { GameState } from './state-schema';
 import { validateWorldDefinition } from '../world/registry';
 import type { WorldDefinition } from '../world/schema';
+import { refreshNarrative } from '../narrative/director';
 
 export function createGame(seed: number, input: WorldDefinition): GameState {
   const definition = validateWorldDefinition(input);
   const { start } = definition;
   const rng = createRng(seed);
-  return {
+  const state: GameState = {
     schemaVersion: STATE_SCHEMA_VERSION,
     engineVersion: ENGINE_VERSION,
     contentVersion: definition.contentVersion,
@@ -36,15 +37,22 @@ export function createGame(seed: number, input: WorldDefinition): GameState {
         id: location.id, accessible: true, visits: location.id === start.locationId ? 1 : 0,
       }])),
       routes: Object.fromEntries(definition.routes.map((route) => [route.id, { id: route.id, accessible: true, traversals: 0 }])),
-      facts: {},
+      facts: Object.fromEntries((definition.campaign?.facts ?? []).filter((fact) => fact.initialValue !== undefined)
+        .map((fact) => [fact.id, { value: fact.initialValue as boolean | number | string, establishedAt: 0 }])),
       npcs: {},
     },
-    inventory: { artifactInstances: {} },
+    inventory: { artifactInstances: Object.fromEntries((definition.campaign?.artifacts ?? []).map((artifact) => {
+      const id = `instance.${artifact.id}`;
+      return [id, { id, artifactId: artifact.id, ownerId: artifact.initialOwnerId }];
+    })) },
     knowledge: { locationIds: [start.locationId], factIds: [] },
     activeEvents: [],
     activeQuests: [],
+    campaign: definition.campaign ? { id: definition.campaign.id, eventCounts: {}, pendingHooks: [], lastOutcomeKey: null } : null,
     combat: null,
     eventSequence: 0,
     commandLog: [],
   };
+  refreshNarrative(state, definition, () => {});
+  return state;
 }

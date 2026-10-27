@@ -3,6 +3,7 @@ import { canAfford, supplyCosts } from '../core/resources';
 import type { Resources } from '../core/primitives';
 import type { GameState } from '../core/state-schema';
 import type { RouteDefinition, WorldDefinition } from './schema';
+import { evaluateCondition } from '../narrative/conditions';
 
 export interface TravelPlan { route: RouteDefinition; from: string; to: string; costs: Resources }
 
@@ -16,6 +17,8 @@ export function planTravel(state: GameState, convoyId: string, routeId: string, 
   if (to === null) throw new CommandError('ROUTE_NOT_CONNECTED', 'Route does not leave the current location.');
   if (!state.world.routes[routeId]?.accessible) throw new CommandError('ROUTE_BLOCKED', 'Route is blocked.');
   if (!state.world.locations[to]?.accessible) throw new CommandError('LOCATION_BLOCKED', 'Destination is inaccessible.');
+  const requirements = definition.campaign?.travelRequirements[to];
+  if (requirements && !evaluateCondition(state, requirements)) throw new CommandError('REQUIREMENTS_NOT_MET', 'Destination story requirements are not met.');
   const costs = supplyCosts(state, convoy, route.travelTicks, definition);
   costs.fuel += route.fuelCost;
   return { route, from: convoy.locationId, to, costs };

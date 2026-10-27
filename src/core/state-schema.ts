@@ -3,6 +3,7 @@ import { commandSchema } from './commands';
 import { domainEventSchema, failureReasonSchema } from './events';
 import { ENGINE_VERSION, STATE_SCHEMA_VERSION, idSchema, resourcesSchema, uint32Schema } from './primitives';
 import { rngSchema } from './rng';
+import { activeEventSchema, artifactInstanceSchema, campaignStateSchema, questStateSchema } from '../narrative/state';
 
 const counterSchema = z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER);
 const actorSchema = z.object({
@@ -52,10 +53,11 @@ export const gameStateSchema = z.object({
     // Reserved, explicitly empty until the NPC/ownership systems exist.
     npcs: z.record(idSchema, z.never()),
   }).strict(),
-  inventory: z.object({ artifactInstances: z.record(idSchema, z.never()) }).strict(),
+  inventory: z.object({ artifactInstances: z.record(idSchema, artifactInstanceSchema) }).strict(),
   knowledge: z.object({ locationIds: z.array(idSchema), factIds: z.array(idSchema) }).strict(),
-  activeEvents: z.array(z.never()),
-  activeQuests: z.array(z.never()),
+  activeEvents: z.array(activeEventSchema),
+  activeQuests: z.array(questStateSchema),
+  campaign: campaignStateSchema.nullable(),
   combat: z.null(),
   eventSequence: counterSchema,
   commandLog: z.array(commandRecordSchema),

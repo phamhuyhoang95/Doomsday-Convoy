@@ -10,7 +10,7 @@
 |---|---|---|
 | 0 Foundation | Hoàn tất, đã kiểm tra | Không còn gate mở |
 | 1 Headless | Hoàn tất, đã kiểm tra | Không còn gate mở |
-| 2 Event/Quest | Đã có plan, chưa code | Schema/operator/director/contracts/validation/tests |
+| 2 Event/Quest | Hoàn tất, đã kiểm tra | 53 tests + content validator + build pass |
 | 3 Combat/Skill/Artifact | Đã có plan, chưa code | Combat/NPC/ownership/anomaly/tests |
 | 4 Playable UI | Đã có plan, chưa code gameplay | Menu/map/event/combat/journal/storage/QA |
 | 5 Content/QA | Đã có plan, chưa triển khai | 12 events/assets/campaign simulation/full QA |
@@ -66,9 +66,20 @@
 
 ## NEXT — tiếp tục tại đây
 
-1. Xác nhận npm ci session 55272, commit/push Phase 0–1 và kế hoạch/tiến trình.
-2. Triển khai Phase 2 theo plan và quyết định ngay trên: schemas/content registry → evaluator/effects/director/contracts → commands → save migration → tests/content guide/validator.
-3. Sau gate Phase 2, ghi kết quả ở đây rồi đọc plan Phase 3 trước khi code combat/NPC.
+1. Triển khai Phase 3 theo plan: combat state/commands → 4 skills → rival goal AI → loot/ownership/downed/capture → anomaly and fallback tests.
+2. Sau gate Phase 3, ghi kết quả và đọc plan Phase 4 trước khi thay UI foundation bằng gameplay.
+
+## Báo cáo Phase 2 và quyết định trước Phase 3
+
+- Phase 0–1 commit `0380438` đã push. Clean install `npm ci` qua Node 24 pass, audit 0 vulnerabilities.
+- Phase 2: `src/narrative/` có schema allowlist, evaluator, transactional effects, event director/weighted outcomes/hooks, quest generator/contracts và reference/fallback/cycle validator.
+- `src/content/campaign.ts` có 4 event chứng minh, 3 contracts và 2 artifact definitions/instances. Đây chưa phải bộ 12 event hoàn chỉnh.
+- Command choose/investigate, generic travel requirements, objective facts tách knowledge, ownership single instance. Save/state lên v2; migration logistics v1 và development v0 được giữ.
+- `npm run check` qua Node 24: **53 tests pass**, world/campaign validator pass, build pass. `CONTENT_GUIDE.md` hướng dẫn content và giới hạn validator tĩnh.
+- Phase 3 quyết định: combat theo turn order, một player action rồi enemy AI tới lượt player kế; aftermath cho capture/finish. Commands đều qua transaction, mỗi action tiến 1 tick.
+- Rival có convoy/actors/resources/location/goal riêng, hành động theo world tick, có thể lấy mirror sau deadline. Negotiation/retreat/surrender là resolution thật; loot/ownership cập nhật nguyên tử.
+- Bốn skill là data operators damage/heal/guard/reveal; cooldown/energy/costs trên actor. Không switch theo ID kỹ năng.
+- Tăng state/save version cho combat; các content campaign cũ báo mismatch nếu rules đổi, giữ migration cho logistics Phase 1.
 
 ## Lỗi/giới hạn cần theo dõi
 

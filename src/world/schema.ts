@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { amountSchema, idSchema, resourcesSchema } from '../core/primitives';
+import { campaignContentSchema } from '../narrative/schema';
 
 const regionSchema = z.object({ id: idSchema, name: z.string().min(1) }).strict();
 const locationSchema = z.object({
@@ -25,6 +26,7 @@ const characterSchema = z.object({
 
 export const worldDefinitionSchema = z.object({
   contentVersion: z.string().min(1),
+  campaign: campaignContentSchema.optional(),
   regions: z.array(regionSchema).min(1),
   locations: z.array(locationSchema).min(2),
   routes: z.array(routeSchema).min(1),

@@ -1,5 +1,6 @@
 import { worldDefinitionSchema } from './schema';
 import type { WorldDefinition } from './schema';
+import { inspectCampaignContent } from '../narrative/validation';
 
 export interface ContentIssue { path: string; message: string }
 
@@ -62,7 +63,7 @@ export function inspectWorldDefinition(input: unknown): ContentIssue[] {
   for (const id of locations) {
     if (!reachable.has(id)) issues.push({ path: `locations.${id}`, message: 'Unreachable from starting location' });
   }
-  return issues;
+  return [...issues, ...inspectCampaignContent(definition)];
 }
 
 export function validateWorldDefinition(input: unknown): WorldDefinition {
