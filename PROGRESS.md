@@ -12,7 +12,7 @@
 | 1 Headless | Hoàn tất, đã kiểm tra | Không còn gate mở |
 | 2 Event/Quest | Hoàn tất, đã kiểm tra | 53 tests + content validator + build pass |
 | 3 Combat/Skill/Artifact | Hoàn tất, đã kiểm tra | Combat/NPC/skills/artifacts/anomaly + 67 tests/build pass |
-| 4 Playable UI | Đã có plan, chưa code gameplay | Menu/map/event/combat/journal/storage/QA |
+| 4 Playable UI | Hoàn tất vòng chơi browser | Full route/combat/capture/save-load đã kiểm tra; mobile/endings QA tiếp Phase 5 |
 | 5 Content/QA | Đã có plan, chưa triển khai | 12 events/assets/campaign simulation/full QA |
 
 ## Những gì thực sự đã có
@@ -66,8 +66,18 @@
 
 ## NEXT — tiếp tục tại đây
 
-1. Triển khai Phase 4 theo plan: React controller → dashboard/map/event → combat/crew/inventory/journal → save/load/menu/ending → browser QA.
-2. Sau gate Phase 4, đọc plan Phase 5, mở rộng đủ 12 events/asset fallback/endings/campaign simulation và full QA.
+1. Triển khai Phase 5 theo plan: đủ 12 events → ending contracts → asset registry/fallback → campaign multi-seed simulation → bổ sung tests fallback/death/ownership → full gate/browser QA.
+2. Hoàn thiện README/architecture/content guide/QA report, commit/push và báo cáo thực tế (không xác nhận thời lượng 30–60 phút nếu chưa human playtest).
+
+## Báo cáo Phase 4 và quyết định trước Phase 5
+
+- Phase 3 gate cuối: **67 tests pass**, validators/build pass; commit `52b3d6a` đã push.
+- UI React có main menu/seed/continue, 5-resource HUD, vehicle/crew, graph map route cost/risk, event requirements/costs, combat target/skill/defend/negotiate/surrender/retreat/capture, convoy/inventory/quest/knowledge/debug tabs, autosave/manual save/load, terminal summary.
+- `npm run build` qua Node 24 pass, bundle ~408 KB trước gzip. Zod có comment annotation warnings vô hại từ dependency (không lỗi build).
+- Browser localhost đã chơi thực: prepare → market → hospital listen → ward bind mirror → checkpoint fight → strike/attack, enemy attack giảm Lan 8 HP và xe 2 condition → capture Quạ/Tàn → finish → refuge. **Won tick 22**, 3 người sống, 1 kỳ vật, xe 83. Save ở hospital, wait rồi load đã khôi phục vật tư đúng, tiếp tục hành trình bình thường.
+- Browser dev logs: không có error/warn ở lần kiểm tra đầu. UI đang chạy qua dev server exec session `11170`, localhost:5173; CUA tab `gameTab` ở browser iab.
+- Phase 5 sẽ mở rộng 4→12 events, thêm Ha là survivor tùy chọn (vẫn 3 ban đầu), endings theo ownership/rescue/mercy, asset registry fallback đủ 9 kinds. Không thêm ảnh/âm thanh từ ngoài.
+- Bot policies peaceful/combat/trade/surrender/fallback phải chạy bộ content cuối; thêm actual NPC death/mirror ownership/location closure tests, mid-combat saves và report multi-seed.
 
 ## Báo cáo Phase 3 và quyết định trước Phase 4
 
