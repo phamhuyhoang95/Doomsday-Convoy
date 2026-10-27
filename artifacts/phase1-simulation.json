@@ -1,0 +1,59 @@
+{
+  "engineVersion": "0.1.0",
+  "contentVersion": "0.1.0-foundation.1",
+  "seeds": {
+    "from": 0,
+    "to": 999,
+    "count": 1000
+  },
+  "totals": {
+    "runs": 5000,
+    "wins": 3071,
+    "losses": 1929,
+    "softlocks": 0,
+    "rejectedCommands": 0
+  },
+  "byStrategy": {
+    "direct": {
+      "runs": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "detour": {
+      "runs": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "bypass": {
+      "runs": 1000,
+      "wins": 1000,
+      "losses": 0,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "wander": {
+      "runs": 1000,
+      "wins": 71,
+      "losses": 929,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "exhaustion": {
+      "runs": 1000,
+      "wins": 0,
+      "losses": 1000,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    }
+  },
+  "failureReasons": {
+    "supplies-exhausted": 1929
+  },
+  "maxSteps": 11,
+  "problemSamples": [],
+  "replayVerifiedRuns": 5000
+}

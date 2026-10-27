@@ -36,6 +36,11 @@ export function inspectWorldDefinition(input: unknown): ContentIssue[] {
   if (new Set(definition.start.characterIds).size !== definition.start.characterIds.length) {
     issues.push({ path: 'start.characterIds', message: 'Duplicate starting crew member' });
   }
+  const crewSize = definition.start.characterIds.length;
+  if (definition.start.resources.food < crewSize * definition.rules.foodPerCrewPerTick
+    || definition.start.resources.water < crewSize * definition.rules.waterPerCrewPerTick) {
+    issues.push({ path: 'start.resources', message: 'Starting supplies must support at least one tick' });
+  }
   definition.goal.locationIds.forEach((id) => requireId(locations, id, 'goal.locationIds'));
   if (definition.goal.locationIds.includes(definition.start.locationId)) {
     issues.push({ path: 'goal.locationIds', message: 'Start cannot already be a goal' });
