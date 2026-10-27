@@ -1,5 +1,7 @@
 # LAST CONVOY — quy ước cho coding agent
 
+MVP Phase 0–5 đã hoàn tất; đọc trạng thái mới nhất trong `PROGRESS.md` trước khi làm việc. Không triển khai lại hoặc tự mở rộng scope khi người dùng chưa yêu cầu.
+
 ## Phạm vi và kiến trúc
 
 - Đọc README.md, ARCHITECTURE.md và MVP_SCOPE.md trước khi mở rộng tính năng.

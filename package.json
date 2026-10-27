@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "preview": "vite preview --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -15,6 +16,7 @@
     "demo": "tsx scripts/headless.ts",
     "demo:campaign": "tsx scripts/campaign.ts",
     "simulate": "tsx scripts/simulate.ts",
+    "simulate:campaign": "tsx scripts/simulate-campaign.ts",
     "validate:world": "tsx scripts/validate-world.ts",
     "validate:content": "tsx scripts/validate-content.ts",
     "check": "npm run validate:world && npm run validate:content && npm run test && npm run build"

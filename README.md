@@ -1,35 +1,61 @@
-# LAST CONVOY
+# LAST CONVOY — MVP v0.1
 
-Game chiến thuật đoàn xe sinh tồn, phát triển bằng TypeScript.
+Game chiến thuật đoàn xe sinh tồn với core TypeScript headless và client React/Vite. Đã triển khai Phase 0–5: một chiến dịch ba màn có di chuyển, event, điều tra, kỹ năng, kỳ vật, NPC đối thủ, chiến đấu theo lượt, bắt giữ, nhiều kết cục và save/load.
 
-## Tiến trình
+## Chơi trên trình duyệt
 
-Phase 0–1 đã có lõi headless, command processor, graph map, seeded RNG, save/load, replay và automated tests. Các phase tiếp theo đang được triển khai theo [PHASE_PLANS.md](PHASE_PLANS.md); xem [PROGRESS.md](PROGRESS.md) để biết kết quả kiểm tra và điểm tiếp tục. Chưa coi đây là MVP ba màn hoàn chỉnh.
-
-Hiện có 8 địa điểm, 11 tuyến và 3 nhân vật. Hành trình direct/detour/bypass tiêu tài nguyên và thời gian thật; rủi ro làm hư xe; hành trình thắng hoặc thua hợp lệ. React/Vite hiện chỉ có trang nền tảng, gameplay UI đến ở Phase 4.
-
-Engine độc lập React. Mọi thay đổi qua `processCommand`; command bị từ chối không làm đổi state/RNG/log. Save chứa snapshot và command log; load xác minh lại bằng replay.
-
-## Cài dependency
-
-Khuyến nghị Node.js 24 (`.nvmrc`); cũng hỗ trợ Node 22.12+. Node 23 không được Vitest 4 hỗ trợ.
+Dùng Node.js 24 (xem `.nvmrc`), hoặc Node 22.12+.
 
 ```sh
 npm ci
-npm run check
-npm run demo -- --seed 42 --path direct --save artifacts/demo.save.json
-npm run demo -- --seed 42 --path detour
-npm run simulate -- --seeds 1000 --output artifacts/phase1-simulation.json
 npm run dev
 ```
 
-## Cấu trúc hiện tại
+Mở http://127.0.0.1:5173, chọn seed rồi bắt đầu. Trên máy đang dùng Node 23, có thể chạy runtime tạm thời mà không thay Node toàn hệ thống:
 
-- `src/core/`: kiểu dữ liệu, khởi tạo game, RNG, command và resource helpers.
-- `src/world/`: schema, kiểm tra tham chiếu và tính tuyến di chuyển.
-- `src/content/`: dữ liệu bản đồ và các tuyến mô phỏng dự kiến.
-- `src/persistence/`: save version/migration và localStorage adapter.
-- `src/simulation/`, `scripts/`: scenario, bot và CLI.
-- `tests/`: kiểm thử hành vi engine.
+```sh
+npm exec --yes --package=node@24 -- npm run dev
+```
 
-`npm run dev` mở trang nền tảng ở http://127.0.0.1:5173. `demo` xác minh save/load giữa hành trình, full replay và file round trip; `simulate` xuất thắng/thua/softlock và exit khác 0 nếu có softlock hoặc command bot bị từ chối. Các save cá nhân và node_modules được Git bỏ qua.
+Chọn event ở cột tình huống, chọn tuyến trong bản đồ, xem kỹ chi phí gồm khẩu phần. Tab Đoàn xe có health/energy/kỹ năng; Kho đồ cho biết kỳ vật hiện thuộc đoàn. Nhiệm vụ & manh mối chỉ hiển thị thông tin đã khám phá. Trong combat, chọn mục tiêu rồi attack/defend/skill, hoặc đàm phán/rút lui/đầu hàng. Đối thủ downed có thể bị bắt; người downed bị bỏ lại khi kết thúc trận sẽ chết.
+
+Autosave ghi sau mỗi command hợp lệ. Lưu game/Tải game dùng slot thủ công riêng trong localStorage của browser/origin này. Đổi trình duyệt hoặc port sẽ không chia sẻ save. Save campaign có version nội dung khác sẽ báo không tương thích; save logistics Phase 1 có migration.
+
+## Kiểm tra và chạy headless
+
+```sh
+npm run check
+npm run demo -- --seed 42 --path direct --save artifacts/demo.save.json
+npm run demo:campaign -- --seed 42 --policy peaceful
+npm run demo:campaign -- --seed 42 --policy combat
+npm run simulate -- --seeds 1000 --output artifacts/phase1-simulation.json
+npm run simulate:campaign -- --seeds 300 --output artifacts/phase5-simulation.json
+npm run build
+npm run preview
+```
+
+`check` chạy world/content validators, Vitest, TypeScript strict và production build. Policies campaign: peaceful/combat/trade/surrender/fallback/ruthless. Batch thêm starvation và guaranteed lethal hazard để kiểm thử thất bại hợp lệ. CLI trả exit khác 0 nếu có softlock/rejected command. Simulation lớn có thể mất vài phút vì xác minh replay/save của từng lượt.
+
+`preview` phục vụ build production tại http://127.0.0.1:4173. Save ở port 5173 và 4173 tách biệt theo origin của trình duyệt.
+
+## Nội dung và kiến trúc
+
+- 8 địa điểm, 11 tuyến, 12 event, 4 Story Contract, 6 kết cục đến nơi trú cùng các trạng thái thất bại.
+- 3 nhân vật ban đầu; có thể cứu Hà lên xe. 1 đoàn đối thủ có mục tiêu riêng và có thể lấy gương trước bạn.
+- 4 skill data driven, 2 artifact instances có owner duy nhất, 1 anomaly có quy tắc, 5 tài nguyên.
+- `src/core/`: state/commands/RNG/invariants/events/replay, độc lập React/storage/network.
+- `src/world/`, `src/narrative/`, `src/combat/`: bản đồ/NPC, conditions/effects/director/contracts, combat/skills/loot.
+- `src/content/`, `src/assets/`: content registry bằng Zod, asset IDs và fallbacks.
+- `src/client/`: render state, read models và dispatch commands; không tự resolve kết quả gameplay.
+- `src/persistence/`, `src/simulation/`, `scripts/`, `tests/`: save migration, bots, CLI và verification.
+
+Không cần hình hoặc âm thanh để chạy engine. Client dùng CSS/SVG/typographic placeholders và xử lý asset thiếu/lỗi. Chưa có audio asset nên không phát âm thanh. Debug tab hiện trong dev; production có thể bật bằng `?debug=1`. Dev mobile harness: http://127.0.0.1:5173/qa/mobile.html.
+
+## Tài liệu và bằng chứng
+
+- [PROGRESS.md](PROGRESS.md): tiến trình chung, checkpoints, kết quả thực và điểm tiếp tục khi hết context.
+- [PHASE_PLANS.md](PHASE_PLANS.md): plan chi tiết trước từng phase.
+- [QA_REPORT.md](QA_REPORT.md): 14 nhóm test, simulation, browser QA và giới hạn.
+- [ARCHITECTURE.md](ARCHITECTURE.md), [CONTENT_GUIDE.md](CONTENT_GUIDE.md), [GAME_BIBLE.md](GAME_BIBLE.md), [MVP_SCOPE.md](MVP_SCOPE.md).
+
+MVP không có online multiplayer, persistent server, marketplace hoặc AI runtime. Mục tiêu chiến dịch 30–60 phút cần human playtest và cân bằng thêm; chưa xác nhận thời lượng này bằng bot. Các báo cáo seed chứng minh những tuyến đã kiểm thử, không bảo đảm mọi chuỗi hành động có thể hoàn thành.

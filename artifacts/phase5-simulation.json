@@ -1,0 +1,83 @@
+{
+  "contentVersion": "0.1.0-campaign.4",
+  "seedRange": [
+    0,
+    299
+  ],
+  "totals": {
+    "runs": 2400,
+    "wins": 1800,
+    "losses": 600,
+    "softlocks": 0,
+    "rejectedCommands": 0
+  },
+  "byPolicy": {
+    "peaceful": {
+      "runs": 300,
+      "wins": 300,
+      "losses": 0,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "combat": {
+      "runs": 300,
+      "wins": 300,
+      "losses": 0,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "trade": {
+      "runs": 300,
+      "wins": 300,
+      "losses": 0,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "surrender": {
+      "runs": 300,
+      "wins": 300,
+      "losses": 0,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "fallback": {
+      "runs": 300,
+      "wins": 300,
+      "losses": 0,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "ruthless": {
+      "runs": 300,
+      "wins": 300,
+      "losses": 0,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "starvation": {
+      "runs": 300,
+      "wins": 0,
+      "losses": 300,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    },
+    "hazard": {
+      "runs": 300,
+      "wins": 0,
+      "losses": 300,
+      "softlocks": 0,
+      "rejectedCommands": 0
+    }
+  },
+  "endings": {
+    "ending.shared-dawn": 600,
+    "ending.borrowed-dawn": 300,
+    "ending.empty-handed": 600,
+    "ending.blood-road": 300,
+    "ending.convoy-lost": 600
+  },
+  "maxCommands": 22,
+  "saveLoadChecks": 2400,
+  "replayVerifiedRuns": 2400,
+  "issues": []
+}

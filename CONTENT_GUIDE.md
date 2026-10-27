@@ -28,4 +28,12 @@ Thêm region và các location tham chiếu region đó; thêm routes với from
 
 ## Asset
 
-Registry gồm ID/kind/label, optional URI và fallbackId. Asset chỉ phục vụ client; engine chạy hoàn toàn khi URI vắng mặt. Hệ thống fallback UI được hoàn thiện trong Phase 5.
+Registry gồm ID/kind/label, optional URI và fallbackId. `src/content/assets.ts` tạo các ID ổn định dạng `asset.<content-id>`, đủ 9 kinds; `src/assets/registry.ts` resolve fallback và phòng cycle. Asset chỉ phục vụ client; engine chạy hoàn toàn khi URI vắng mặt. `AssetArt` xử lý cả URI thiếu và image load error. Thêm URI vào definition để dùng hình riêng; không gắn path vào gameplay. Không phát sound khi chưa có sound asset.
+
+## Kết cục và thoại phản ứng
+
+`src/content/endings.ts` là danh sách ending contracts theo thứ tự ưu tiên: condition, titleKey và textKey. Phải có fallback `always` cuối. Engine chọn từ facts/ownership khi đến goal; UI đọc đúng text của ending đã lưu. Event có `variants` (condition/textKey) để thay thoại theo người được cứu, kỳ vật đổi chủ hoặc NPC chết. Việc thay text không tự thay world facts.
+
+## Kiểm tra trước khi commit
+
+Chạy `npm run check` và các campaign policies liên quan. Khi đổi chi phí/requirements/ownership/fallback, chạy thêm `npm run simulate:campaign -- --seeds 300 --output artifacts/phase5-simulation.json`. Không chỉnh command log hay snapshot trực tiếp để làm test pass. Thêm vùng mới vẫn chỉ cần region/location/routes và content references; renderer map có thể bổ sung tọa độ trình bày, engine không đổi.

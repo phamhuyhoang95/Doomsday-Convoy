@@ -84,3 +84,7 @@ Cập nhật: 2026-10-27, Asia/Ho_Chi_Minh. Phạm vi được người dùng m�
 - Sau mỗi phần lớn: cập nhật PROGRESS với file/function đã có, lệnh và exit code thực, vấn đề còn mở, bước tiếp theo.
 - Sau mỗi phase: báo người dùng ngắn gọn và ghi báo cáo chi tiết vào file; tiếp tục phase kế theo ủy quyền mới đến hết Phase 5.
 - Khi hết context: đọc `AGENTS.md`, `PHASE_PLANS.md`, `PROGRESS.md`, `git status`, rồi tiếp tục từ mục NEXT. Không khởi tạo lại hay xóa công việc.
+
+## Kết quả thực hiện
+
+2026-10-28: Phase 0–5 đã được triển khai theo plan và kiểm tra. Đối chiếu `PROGRESS.md` và `QA_REPORT.md` cho gate từng phase, lệnh và bằng chứng thực tế. Không bắt đầu thêm phase ngoài phạm vi nếu chưa có yêu cầu mới. Human playtest mục tiêu thời lượng/độ khó là việc tiếp theo được đề xuất, chưa được xác nhận bằng bot.

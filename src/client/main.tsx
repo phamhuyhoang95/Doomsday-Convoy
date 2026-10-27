@@ -1,7 +1,7 @@
-import { createRoot } from 'react-dom/client';
-import './style.css';
-import App from './App';
+import { createRoot } from "react-dom/client";
+import "./style.css";
+import App from "./App";
 
-const root = document.getElementById('root');
-if (!root) throw new Error('Missing root element');
+const root = document.getElementById("root");
+if (!root) throw new Error("Missing root element");
 createRoot(root).render(<App />);

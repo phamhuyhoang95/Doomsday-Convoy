@@ -1,10 +1,10 @@
-import { ENGINE_VERSION, STATE_SCHEMA_VERSION } from './primitives';
-import { createRng } from './rng';
-import type { GameState } from './state-schema';
-import { validateWorldDefinition } from '../world/registry';
-import type { WorldDefinition } from '../world/schema';
-import { refreshNarrative } from '../narrative/director';
-import { createActor } from './actors';
+import { ENGINE_VERSION, STATE_SCHEMA_VERSION } from "./primitives";
+import { createRng } from "./rng";
+import type { GameState } from "./state-schema";
+import { validateWorldDefinition } from "../world/registry";
+import type { WorldDefinition } from "../world/schema";
+import { refreshNarrative } from "../narrative/director";
+import { createActor } from "./actors";
 
 export function createGame(seed: number, input: WorldDefinition): GameState {
   const definition = validateWorldDefinition(input);
@@ -16,17 +16,26 @@ export function createGame(seed: number, input: WorldDefinition): GameState {
     contentVersion: definition.contentVersion,
     initialSeed: seed,
     rng,
-    status: 'active',
+    status: "active",
     ending: null,
     player: { id: start.playerId, convoyId: start.convoyId },
-    actors: Object.fromEntries(start.characterIds.map((id) => {
-      const character = definition.characters.find((entry) => entry.id === id);
-      if (!character) throw new Error(`Missing starting character: ${id}`);
-      return [id, createActor(character, start.convoyId, Boolean(definition.campaign))];
-    })),
+    actors: Object.fromEntries(
+      start.characterIds.map((id) => {
+        const character = definition.characters.find(
+          (entry) => entry.id === id,
+        );
+        if (!character) throw new Error(`Missing starting character: ${id}`);
+        return [
+          id,
+          createActor(character, start.convoyId, Boolean(definition.campaign)),
+        ];
+      }),
+    ),
     convoys: {
       [start.convoyId]: {
-        id: start.convoyId, controllerId: start.playerId, locationId: start.locationId,
+        id: start.convoyId,
+        controllerId: start.playerId,
+        locationId: start.locationId,
         actorIds: [...start.characterIds],
         resources: { ...start.resources },
         vehicle: { ...start.vehicle, condition: start.vehicle.maxCondition },
@@ -34,33 +43,80 @@ export function createGame(seed: number, input: WorldDefinition): GameState {
     },
     world: {
       tick: 0,
-      locations: Object.fromEntries(definition.locations.map((location) => [location.id, {
-        id: location.id, accessible: true, visits: location.id === start.locationId ? 1 : 0,
-      }])),
-      routes: Object.fromEntries(definition.routes.map((route) => [route.id, { id: route.id, accessible: true, traversals: 0 }])),
-      facts: Object.fromEntries((definition.campaign?.facts ?? []).filter((fact) => fact.initialValue !== undefined)
-        .map((fact) => [fact.id, { value: fact.initialValue as boolean | number | string, establishedAt: 0 }])),
+      locations: Object.fromEntries(
+        definition.locations.map((location) => [
+          location.id,
+          {
+            id: location.id,
+            accessible: true,
+            visits: location.id === start.locationId ? 1 : 0,
+          },
+        ]),
+      ),
+      routes: Object.fromEntries(
+        definition.routes.map((route) => [
+          route.id,
+          { id: route.id, accessible: true, traversals: 0 },
+        ]),
+      ),
+      facts: Object.fromEntries(
+        (definition.campaign?.facts ?? [])
+          .filter((fact) => fact.initialValue !== undefined)
+          .map((fact) => [
+            fact.id,
+            {
+              value: fact.initialValue as boolean | number | string,
+              establishedAt: 0,
+            },
+          ]),
+      ),
       npcs: {},
     },
-    inventory: { artifactInstances: Object.fromEntries((definition.campaign?.artifacts ?? []).map((artifact) => {
-      const id = `instance.${artifact.id}`;
-      return [id, { id, artifactId: artifact.id, ownerId: artifact.initialOwnerId }];
-    })) },
+    inventory: {
+      artifactInstances: Object.fromEntries(
+        (definition.campaign?.artifacts ?? []).map((artifact) => {
+          const id = `instance.${artifact.id}`;
+          return [
+            id,
+            { id, artifactId: artifact.id, ownerId: artifact.initialOwnerId },
+          ];
+        }),
+      ),
+    },
     knowledge: { locationIds: [start.locationId], factIds: [] },
     activeEvents: [],
     activeQuests: [],
-    campaign: definition.campaign ? { id: definition.campaign.id, eventCounts: {}, pendingHooks: [], lastOutcomeKey: null } : null,
+    campaign: definition.campaign
+      ? {
+          id: definition.campaign.id,
+          eventCounts: {},
+          pendingHooks: [],
+          lastOutcomeKey: null,
+        }
+      : null,
     combat: null,
     eventSequence: 0,
     commandLog: [],
   };
   const rival = definition.campaign?.rival;
   if (rival) {
-    state.convoys[rival.id] = { id: rival.id, controllerId: 'npc.tro-tan', locationId: rival.startingLocationId,
-      actorIds: [...rival.characterIds], resources: { ...rival.resources }, vehicle: { ...rival.vehicle, condition: rival.vehicle.maxCondition } };
-    state.world.npcs[rival.id] = { id: rival.id, goalArtifactId: rival.goalArtifactId, intent: 'guard', nextActionTick: 4 };
+    state.convoys[rival.id] = {
+      id: rival.id,
+      controllerId: "npc.tro-tan",
+      locationId: rival.startingLocationId,
+      actorIds: [...rival.characterIds],
+      resources: { ...rival.resources },
+      vehicle: { ...rival.vehicle, condition: rival.vehicle.maxCondition },
+    };
+    state.world.npcs[rival.id] = {
+      id: rival.id,
+      goalArtifactId: rival.goalArtifactId,
+      intent: "guard",
+      nextActionTick: 4,
+    };
     rival.characterIds.forEach((id) => {
-      const character = definition.characters.find((entry) => entry.id === id); if (!character) throw new Error('Missing rival character');
+      const character = definition.characters.find((entry) => entry.id === id);
+      if (!character) throw new Error("Missing rival character");
       state.actors[id] = createActor(character, rival.id, true);
     });
   }

@@ -23,3 +23,7 @@ Online multiplayer, persistent server, marketplace, AI runtime, procedural campa
 Phase 0: cài/build/test runner hoạt động. Phase 1: hành trình headless với RNG, travel/domain events, save/load/replay và tests. Phase 2: data events/contracts cập nhật facts/quests. Phase 3: combat/ownership/NPC/anomaly có hậu quả. Phase 4: browser chơi hết ba màn. Phase 5: full content/QA, thắng hoặc thua hợp lệ, replay được, không softlock trong tập tuyến/seed đã kiểm thử.
 
 Thời lượng 30–60 phút là mục tiêu thiết kế; chỉ xác nhận sau human playtest. Không suy ra thời lượng từ số turn hay tốc độ bot.
+
+## Trạng thái giao hàng 2026-10-28
+
+Phase 0–5 đã triển khai và qua các gate tự động/browser được ghi trong QA_REPORT và PROGRESS. Bản này có đủ nội dung giới hạn trên, 6 kết cục đến nơi trú và các thất bại hợp lệ. Những giới hạn về thời lượng, cân bằng, placeholder assets, audio và online services được công khai trong QA_REPORT.

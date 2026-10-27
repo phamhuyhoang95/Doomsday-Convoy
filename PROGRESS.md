@@ -1,8 +1,10 @@
 # LAST CONVOY — tiến trình chung và điểm tiếp tục
 
-**Cập nhật:** 2026-10-27, Asia/Ho_Chi_Minh.
+**Cập nhật:** 2026-10-28, Asia/Ho_Chi_Minh.
 **Ủy quyền hiện tại:** người dùng yêu cầu triển khai đến hết Phase 5; lập plan chi tiết trước mỗi phase và giữ file tiến trình chung để tiếp tục khi hết token/context. Cho phép đồng bộ code lên repository đã chỉ định.
 **Kế hoạch:** [PHASE_PLANS.md](PHASE_PLANS.md). **Repository:** https://github.com/phamhuyhoang95/Doomsday-Convoy, branch `main`, SSH origin.
+
+**HIỆN TẠI: PHASE 0–5 ĐÃ HOÀN TẤT.** Gate cuối **86 tests / 4 files pass**, validators/typecheck/production build pass, clean install pass, audit 0 vulnerabilities. Campaign `.4` có **2.400 runs / 1.800 wins / 600 valid losses / 0 softlocks / 0 rejected commands**, mọi save/load+replay khớp. Đã chơi production tới 2 kết cục khác nhau và giữ bản preview tại **http://127.0.0.1:4173**. Chi tiết: [QA_REPORT.md](QA_REPORT.md). Đang chốt commit/push cuối; sau đó không còn bước triển khai Phase 0–5 mở.
 
 ## Trạng thái phase
 
@@ -13,9 +15,9 @@
 | 2 Event/Quest | Hoàn tất, đã kiểm tra | 53 tests + content validator + build pass |
 | 3 Combat/Skill/Artifact | Hoàn tất, đã kiểm tra | Combat/NPC/skills/artifacts/anomaly + 67 tests/build pass |
 | 4 Playable UI | Hoàn tất vòng chơi browser | Full route/combat/capture/save-load đã kiểm tra; mobile/endings QA tiếp Phase 5 |
-| 5 Content/QA | Đã có plan, chưa triển khai | 12 events/assets/campaign simulation/full QA |
+| 5 Content/QA | Hoàn tất | 86 tests/build/clean install + 2.400 campaign runs + production/mobile QA pass |
 
-## Những gì thực sự đã có
+## Những gì đã có ở checkpoint Phase 1 (lịch sử)
 
 - Checkpoint GitHub `d0936411c75b79c471fd050780fdc07993229576` đã push và đối chiếu remote; các thay đổi sau đó hiện chưa commit.
 - npm project với TS strict, Zod, React/Vite, Vitest. Đã nâng Vitest 3.2.7 → 4.1.12; npm audit lúc cài sau nâng báo **0 vulnerabilities**.
@@ -66,8 +68,9 @@
 
 ## NEXT — tiếp tục tại đây
 
-1. Triển khai Phase 5 theo plan: đủ 12 events → ending contracts → asset registry/fallback → campaign multi-seed simulation → bổ sung tests fallback/death/ownership → full gate/browser QA.
-2. Hoàn thiện README/architecture/content guide/QA report, commit/push và báo cáo thực tế (không xác nhận thời lượng 30–60 phút nếu chưa human playtest).
+1. Phase 0–5 đã xong. Xác minh checkpoint Git cuối nếu cần bằng `git status` và `git log -1`; không triển khai lại hoặc tự mở Phase 6.
+2. Chờ review/yêu cầu tiếp theo. Hạng mục đề xuất: human playtest để đo 30–60 phút và tune difficulty; thay placeholder bằng asset riêng nếu người dùng muốn.
+3. Để chạy lại: Node 24, `npm ci`, `npm run check`, `npm run dev` hoặc `npm run build && npm run preview`. Xem README cho fallback Node 24 tạm nếu Node hệ thống là 23.
 
 ## Báo cáo Phase 4 và quyết định trước Phase 5
 
@@ -108,3 +111,33 @@
 - Node hệ thống 23 không nằm trong engines của Vitest 4; cần xử lý cho các lần verification tiếp theo.
 - Chưa có gameplay event/quest/combat/skill/artifact/NPC trong runtime. Không đánh đồng mô phỏng di chuyển với chiến dịch 3 màn hoàn chỉnh.
 - Thời lượng mục tiêu 30–60 phút cần human playtest, không thể xác nhận chỉ từ bot.
+
+## Tiến trình Phase 5 đang làm
+
+- Đã tách content thành events/texts/facts/quests/endings/assets/skills/rival và bundle campaign `.3`. Có **12 events**, **4 contracts**, **6 ending contracts**, 3 initial crew + Hà cứu tùy chọn, 4 skills/2 artifacts/1 rule anomaly/1 rival.
+- Thêm nhánh niêm phong bệnh viện + Đèn không tắt, mirror đổi chủ trước khi player tới, rescue ảnh hưởng thoại/parley và ending, prisoner aftercare/mercy, weighted cache trap.
+- State/save vẫn v3 (thay đổi content/rules được version bằng campaign `.3`); save/logistics cũ tiếp tục migration. Các save campaign `.2` báo content mismatch có chủ ý.
+- Asset registry đủ 9 kinds, tất cả dùng URI-free fallbacks. Client xử lý missing/broken URI, không có audio asset nên không phát âm thanh.
+- 67 tests cũ đã pass với bộ 12 events sau khi cập nhật test flow cho các event mới. Build phát hiện `exactOptionalPropertyTypes` ở AssetArt ID; đã sửa kiểu, gate đang chạy lại (session 33787).
+- Đã thêm campaign batch runner với 7 policies (5 tuyến thắng + starvation + guaranteed lethal hazard), kiểm tra save/load + replay từng run; chưa chạy báo cáo lớn.
+- NEXT: tests actual NPC death/stolen mirror/location fallback/endings/content extension/assets → batch 300 seeds → browser final peaceful/combat/mobile/save-load → docs/report/check/commit/push.
+
+### QA phát hiện và sửa thêm
+
+- Gate bộ content `.3`: 82 tests/build pass. Batch 300 seeds × 8 policies = 2.400 runs, 1.800 wins / 600 valid losses / 0 softlocks / 0 rejected, save/load+replay toàn bộ pass.
+- Browser bộ 12 events: peaceful kết cục shared-dawn (4 người, giữ mirror) và trade borrowed-dawn (4 người, mất mirror), cùng seed 42, tick 20. Save/wait/load giữa hospital khôi phục resources đúng; console không error. Mobile iframe 390px đã load manual save và hiển thị HUD/map/routes tốt.
+- Rà soát nhánh thủ công phát hiện: bỏ qua event departure rồi niêm phong hospital có thể giữ dependency departure chưa giải. Đã sửa contract departure alternate theo việc thực sự rời garage, không cần event ID; thêm regression scenario đi vòng đầy đủ.
+- Đã thêm cleanup fail các quest đang active khi run thua, không thực thi gameplay effects sau terminal defeat. Thêm regression save/replay khi starvation.
+- Campaign content tăng `.4` để không âm thầm thay rules của save `.3`. Cần chạy lại gate và report simulation cuối cho version `.4`.
+
+## Báo cáo hoàn tất Phase 5
+
+- Đã chạy lại gate cho content `.4`: world/campaign validators pass; **86 tests pass**; TypeScript strict + production build pass. Hai test cuối xác nhận endings keepers/last-light, nên cả 6 ending contracts đều có tuyến kiểm tra.
+- Clean install trong `/tmp/last-convoy-clean.4tdbE7`: `npm ci` pass, **0 vulnerabilities**, full check/build pass; không tác động node_modules hoặc server ở workspace.
+- Report cuối `artifacts/phase5-simulation.json` đúng content `.4`: 300 seeds × 8 policies = **2.400 runs**, **1.800 wins / 600 valid losses / 0 softlocks / 0 rejected**; **2.400 save/load checks + 2.400 verified replays**, issue list rỗng.
+- Production preview port 4173: chơi bộ 12 events seed 42 tới **shared-dawn** (cứu Hà + giữ mirror) và **borrowed-dawn** (giao mirror), đều 4 người và tick 20. Manual save/wait/load pass; console error list rỗng.
+- Đã quan sát mobile viewport 390 × 844 bằng iframe harness: menu, HUD, map/route controls và tải manual save. Không thấy tràn ngang ở các view này; không coi là test mọi thiết bị.
+- Ảnh QA nằm trong `artifacts/`: phase4-ending, phase5-peaceful-ending, phase5-trade-ending, phase5-production-ending, phase5-production-trade, phase5-mobile, phase5-gameplay.
+- README, GAME_BIBLE, ARCHITECTURE, MVP_SCOPE, CONTENT_GUIDE, QA_REPORT, PHASE_PLANS và file này đã cập nhật. Source format thống nhất bằng Prettier 3.6.2, không thêm project dependency.
+- Giới hạn còn lại: thời lượng 30–60 phút/độ khó chưa human playtest; placeholders chưa là art hoàn chỉnh; không có audio asset; save localStorage cùng-origin, toàn log; không multiplayer/server/AI runtime. Không phát hiện lỗi nghiêm trọng trong các kiểm tra đã hoàn tất.
+- Checkpoints trước: `d093641` initial backup → `0380438` Phase 0–1 → `19df90a` Phase 2 → `52b3d6a` Phase 3 → `e7d34b6` Phase 4; Phase 5 đang được commit/push khi hoàn tất báo cáo này.
