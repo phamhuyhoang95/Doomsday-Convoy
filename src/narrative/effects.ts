@@ -3,6 +3,9 @@ import type { DomainEventPayload } from '../core/events';
 import type { GameState } from '../core/state-schema';
 import type { WorldDefinition } from '../world/schema';
 import type { Effect } from './schema';
+import { createActor } from '../core/actors';
+import { startCombat } from '../combat/engine';
+import { establishFact } from '../core/facts';
 
 export type Emit = (payload: DomainEventPayload) => void;
 /** Called only on the command transaction's cloned state, never directly from content/UI. */
@@ -33,7 +36,7 @@ export function applyEffects(state: GameState, effects: readonly Effect[], defin
         if (state.actors[effect.actorId]) throw new CommandError('REQUIREMENTS_NOT_MET', 'Survivor has already joined');
         const character = definition.characters.find((entry) => entry.id === effect.actorId);
         if (!character) throw new Error('Unknown rescue character');
-        state.actors[effect.actorId] = { ...character, convoyId: convoy.id, health: character.maxHealth, status: 'active' };
+        state.actors[effect.actorId] = createActor(character, convoy.id, true);
         convoy.actorIds.push(effect.actorId); break;
       }
       case 'damage':
@@ -44,6 +47,14 @@ export function applyEffects(state: GameState, effects: readonly Effect[], defin
         });
         break;
       case 'repair': convoy.vehicle.condition = Math.min(convoy.vehicle.maxCondition, convoy.vehicle.condition + effect.amount); break;
+      case 'combat': startCombat(state, effect.enemyConvoyId, effect.ambush, emit); break;
+      case 'anomaly': {
+        const anomaly = definition.campaign?.anomalies.find((entry) => entry.id === effect.anomalyId);
+        if (!anomaly) throw new Error('Unknown anomaly');
+        establishFact(state, anomaly.ruleFactId, true);
+        if (!effect.obey) applyEffects(state, anomaly.violationEffects, definition, emit);
+        break;
+      }
       case 'location': {
         const location = state.world.locations[effect.locationId];
         if (!location) throw new Error('Unknown effect location');

@@ -13,7 +13,7 @@ export function inspectCampaignContent(definition: WorldDefinition): ContentIssu
   const quests = new Set(content.quests.map((entry) => entry.id));
   const events = new Set(content.events.map((entry) => entry.id));
   const assets = new Set(content.assets.map((entry) => entry.id));
-  const owners = new Set([...locations, definition.start.convoyId, 'convoy.rival']);
+  const owners = new Set([...locations, definition.start.convoyId, ...(content.rival ? [content.rival.id] : [])]);
   const seen = new Set([...definition.regions, ...definition.locations, ...definition.routes, ...definition.characters].map((entry) => entry.id));
   for (const entry of [...content.facts, ...content.artifacts, ...content.skills, ...content.quests, ...content.events, ...content.assets, ...content.anomalies]) {
     if (seen.has(entry.id)) issues.push({ path: entry.id, message: 'Duplicate content ID' });
@@ -39,6 +39,8 @@ export function inspectCampaignContent(definition: WorldDefinition): ContentIssu
       case 'artifact': ref(artifacts, item.artifactId, 'effect'); ref(owners, item.fromOwnerId, 'effect'); ref(owners, item.toOwnerId, 'effect'); break;
       case 'rescue': case 'actor': ref(actors, item.actorId, 'effect'); break;
       case 'location': ref(locations, item.locationId, 'effect'); break;
+      case 'combat': if (item.enemyConvoyId !== content.rival?.id) issues.push({ path: 'combat', message: 'Unknown combat opponent' }); break;
+      case 'anomaly': if (!content.anomalies.some((entry) => entry.id === item.anomalyId)) issues.push({ path: 'anomaly', message: 'Unknown anomaly' }); break;
       case 'resource': case 'damage': case 'repair': break;
     }
   };
@@ -69,8 +71,20 @@ export function inspectCampaignContent(definition: WorldDefinition): ContentIssu
     visit(quest.id);
   }
   content.artifacts.forEach((entry) => { ref(owners, entry.initialOwnerId, entry.id); if (entry.assetId) ref(assets, entry.assetId, entry.id); });
-  content.skills.forEach((entry) => { if (entry.factId) ref(facts, entry.factId, entry.id); if (entry.assetId) ref(assets, entry.assetId, entry.id); });
-  content.anomalies.forEach((entry) => { ref(facts, entry.ruleFactId, entry.id); entry.violationEffects.forEach(effect); });
+  content.skills.forEach((entry) => { if (entry.factId) ref(facts, entry.factId, entry.id); if (entry.assetId) ref(assets, entry.assetId, entry.id); condition(entry.requirements); });
+  content.anomalies.forEach((entry) => {
+    ref(facts, entry.ruleFactId, entry.id); entry.violationEffects.forEach(effect);
+    if (entry.violationEffects.some((item) => item.op === 'anomaly')) issues.push({ path: entry.id, message: 'Nested anomaly effects are not allowed' });
+  });
   content.assets.forEach((entry) => { if (entry.fallbackId) ref(assets, entry.fallbackId, entry.id); });
+  const skills = new Set(content.skills.map((entry) => entry.id));
+  definition.characters.forEach((entry) => entry.skillIds?.forEach((id) => ref(skills, id, entry.id)));
+  if (content.rival) {
+    content.rival.characterIds.forEach((id) => ref(actors, id, 'rival.characterIds'));
+    ref(locations, content.rival.startingLocationId, 'rival'); ref(locations, content.rival.interceptLocationId, 'rival');
+    ref(artifacts, content.rival.goalArtifactId, 'rival'); condition(content.rival.negotiationCondition);
+    if (new Set(content.rival.characterIds).size !== content.rival.characterIds.length
+      || content.rival.characterIds.some((id) => definition.start.characterIds.includes(id))) issues.push({ path: 'rival', message: 'Duplicate or shared crew membership' });
+  }
   return issues;
 }

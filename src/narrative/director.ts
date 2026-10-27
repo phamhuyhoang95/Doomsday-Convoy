@@ -21,10 +21,11 @@ export function eventEligibility(state: GameState, definition: WorldDefinition) 
 export function refreshNarrative(state: GameState, definition: WorldDefinition, emit: Emit): void {
   if (!state.campaign || !definition.campaign) return;
   updateQuests(state, definition, emit);
+  if (state.combat) { state.activeEvents = []; return; }
   const candidate = eventEligibility(state, definition).filter((entry) => entry.locationMatches && entry.triggerMatches && entry.occurrencesRemain)
     .sort((a, b) => {
       const score = (id: string, priority: number) => priority + (state.campaign?.pendingHooks.includes(id) ? 10000 : 0);
-      return score(b.event.id, b.event.spawn.priority) - score(a.event.id, a.event.spawn.priority) || a.event.id.localeCompare(b.event.id, 'en');
+      return score(b.event.id, b.event.spawn.priority) - score(a.event.id, a.event.spawn.priority) || (a.event.id < b.event.id ? -1 : 1);
     })[0]?.event;
   const locationId = state.convoys[state.player.convoyId]?.locationId;
   state.activeEvents = candidate && locationId ? [{ instanceId: `${candidate.id}.${(state.campaign.eventCounts[candidate.id] ?? 0) + 1}`,

@@ -4,12 +4,16 @@ import { domainEventSchema, failureReasonSchema } from './events';
 import { ENGINE_VERSION, STATE_SCHEMA_VERSION, idSchema, resourcesSchema, uint32Schema } from './primitives';
 import { rngSchema } from './rng';
 import { activeEventSchema, artifactInstanceSchema, campaignStateSchema, questStateSchema } from '../narrative/state';
+import { combatStateSchema, npcStateSchema } from '../combat/state';
 
 const counterSchema = z.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER);
 const actorSchema = z.object({
   id: idSchema, name: z.string().min(1), role: z.string().min(1), convoyId: idSchema,
   health: z.number().int().nonnegative(), maxHealth: z.number().int().positive(),
   status: z.enum(['active', 'downed', 'dead', 'captured']),
+  attributes: z.object({ attack: z.number().int().positive(), defense: z.number().int().nonnegative(), maxEnergy: z.number().int().positive() }).strict().optional(),
+  energy: z.number().int().nonnegative().optional(), skillIds: z.array(idSchema).optional(),
+  cooldowns: z.record(idSchema, z.number().int().nonnegative()).optional(),
 }).strict();
 const convoySchema = z.object({
   id: idSchema, controllerId: idSchema, locationId: idSchema, actorIds: z.array(idSchema).min(1),
@@ -51,14 +55,14 @@ export const gameStateSchema = z.object({
     routes: z.record(idSchema, z.object({ id: idSchema, accessible: z.boolean(), traversals: counterSchema }).strict()),
     facts: z.record(idSchema, z.object({ value: z.union([z.boolean(), z.string(), z.number().finite()]), establishedAt: counterSchema }).strict()),
     // Reserved, explicitly empty until the NPC/ownership systems exist.
-    npcs: z.record(idSchema, z.never()),
+    npcs: z.record(idSchema, npcStateSchema),
   }).strict(),
   inventory: z.object({ artifactInstances: z.record(idSchema, artifactInstanceSchema) }).strict(),
   knowledge: z.object({ locationIds: z.array(idSchema), factIds: z.array(idSchema) }).strict(),
   activeEvents: z.array(activeEventSchema),
   activeQuests: z.array(questStateSchema),
   campaign: campaignStateSchema.nullable(),
-  combat: z.null(),
+  combat: combatStateSchema.nullable(),
   eventSequence: counterSchema,
   commandLog: z.array(commandRecordSchema),
 }).strict();

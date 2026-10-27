@@ -18,7 +18,7 @@ export function assertGameState(state: GameState, definition: WorldDefinition): 
   ensure(state.contentVersion === definition.contentVersion, 'content version mismatch');
   ensure(state.rng.seed === state.initialSeed, 'RNG seed differs from initial seed');
   ensure(state.player.id === definition.start.playerId && state.player.convoyId === definition.start.convoyId, 'unknown player');
-  ensure(sameIds(Object.keys(state.convoys), [definition.start.convoyId]), 'unexpected convoy set for Phase 1');
+  ensure(sameIds(Object.keys(state.convoys), [definition.start.convoyId, ...(definition.campaign?.rival ? [definition.campaign.rival.id] : [])]), 'unexpected convoy set');
   if (!definition.campaign) ensure(sameIds(Object.keys(state.actors), definition.start.characterIds), 'unexpected actor set');
   else ensure(Object.keys(state.actors).every((id) => definition.characters.some((entry) => entry.id === id)), 'unknown actor');
   ensure(sameIds(Object.keys(state.world.locations), definition.locations.map((entry) => entry.id)), 'location registry mismatch');
@@ -27,12 +27,13 @@ export function assertGameState(state: GameState, definition: WorldDefinition): 
   for (const [id, route] of Object.entries(state.world.routes)) ensure(id === route.id, 'route key mismatch');
   for (const [id, convoy] of Object.entries(state.convoys)) {
     ensure(convoy.id === id, 'convoy key mismatch');
-    ensure(convoy.controllerId === state.player.id, 'unknown controller');
+    ensure(convoy.controllerId === (convoy.id === state.player.convoyId ? state.player.id : 'npc.tro-tan'), 'unknown controller');
     ensure(Object.hasOwn(state.world.locations, convoy.locationId), 'unknown convoy location');
     if (!definition.campaign) ensure(sameIds(convoy.actorIds, definition.start.characterIds), 'crew membership mismatch');
     ensure(new Set(convoy.actorIds).size === convoy.actorIds.length, 'duplicate crew membership');
-    ensure(convoy.vehicle.id === definition.start.vehicle.id, 'unknown vehicle');
-    ensure(convoy.vehicle.maxCondition === definition.start.vehicle.maxCondition, 'vehicle maximum mismatch');
+    const vehicleDefinition = convoy.id === state.player.convoyId ? definition.start.vehicle : definition.campaign?.rival?.vehicle;
+    ensure(convoy.vehicle.id === vehicleDefinition?.id, 'unknown vehicle');
+    ensure(convoy.vehicle.maxCondition === vehicleDefinition.maxCondition, 'vehicle maximum mismatch');
     ensure(convoy.vehicle.condition <= convoy.vehicle.maxCondition, 'vehicle exceeds maximum condition');
     for (const actorId of convoy.actorIds) {
       const actor = state.actors[actorId];
@@ -42,6 +43,8 @@ export function assertGameState(state: GameState, definition: WorldDefinition): 
       ensure(actor.maxHealth === character.maxHealth && actor.health <= actor.maxHealth, 'invalid actor health');
       ensure(actor.status !== 'active' || actor.health > 0, 'active actor has no health');
       ensure(actor.status !== 'dead' || actor.health === 0, 'dead actor has health');
+      if (actor.attributes) ensure(actor.energy !== undefined && actor.energy <= actor.attributes.maxEnergy, 'invalid actor energy');
+      actor.skillIds?.forEach((skillId) => ensure(definition.campaign?.skills.some((skill) => skill.id === skillId), 'unknown actor skill'));
     }
   }
   ensure(new Set(state.knowledge.locationIds).size === state.knowledge.locationIds.length, 'duplicate discovered location');
@@ -64,6 +67,12 @@ export function assertGameState(state: GameState, definition: WorldDefinition): 
     for (const event of state.activeEvents) ensure(definitions.events.some((entry) => entry.id === event.eventId && entry.version === event.version), 'unknown event');
     ensure(new Set(state.activeQuests.map((quest) => quest.id)).size === state.activeQuests.length, 'duplicate quest');
     for (const quest of state.activeQuests) ensure(definitions.quests.some((entry) => entry.id === quest.templateId), 'unknown quest');
+    ensure(sameIds(Object.keys(state.world.npcs), definitions.rival ? [definitions.rival.id] : []), 'NPC registry mismatch');
+    if (state.combat) {
+      ensure(Object.hasOwn(state.convoys, state.combat.enemyConvoyId) && state.combat.enemyConvoyId !== state.player.convoyId, 'unknown combat opponent');
+      ensure(state.combat.turnIndex < state.combat.turnOrder.length && new Set(state.combat.turnOrder).size === state.combat.turnOrder.length, 'invalid turn order');
+      state.combat.turnOrder.forEach((id) => ensure(Object.hasOwn(state.actors, id), 'unknown combat actor'));
+    }
   }
 
   let tick = 0;

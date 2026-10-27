@@ -11,7 +11,7 @@
 | 0 Foundation | Hoàn tất, đã kiểm tra | Không còn gate mở |
 | 1 Headless | Hoàn tất, đã kiểm tra | Không còn gate mở |
 | 2 Event/Quest | Hoàn tất, đã kiểm tra | 53 tests + content validator + build pass |
-| 3 Combat/Skill/Artifact | Đã có plan, chưa code | Combat/NPC/ownership/anomaly/tests |
+| 3 Combat/Skill/Artifact | Hoàn tất, đã kiểm tra | Combat/NPC/skills/artifacts/anomaly + 67 tests/build pass |
 | 4 Playable UI | Đã có plan, chưa code gameplay | Menu/map/event/combat/journal/storage/QA |
 | 5 Content/QA | Đã có plan, chưa triển khai | 12 events/assets/campaign simulation/full QA |
 
@@ -66,8 +66,19 @@
 
 ## NEXT — tiếp tục tại đây
 
-1. Triển khai Phase 3 theo plan: combat state/commands → 4 skills → rival goal AI → loot/ownership/downed/capture → anomaly and fallback tests.
-2. Sau gate Phase 3, ghi kết quả và đọc plan Phase 4 trước khi thay UI foundation bằng gameplay.
+1. Triển khai Phase 4 theo plan: React controller → dashboard/map/event → combat/crew/inventory/journal → save/load/menu/ending → browser QA.
+2. Sau gate Phase 4, đọc plan Phase 5, mở rộng đủ 12 events/asset fallback/endings/campaign simulation và full QA.
+
+## Báo cáo Phase 3 và quyết định trước Phase 4
+
+- Combat deterministic có turn order, attack/defend/skill/retreat/negotiate/surrender, enemy AI, downed/capture/aftermath/finish. Loot thay tài nguyên và owner kỳ vật thật; enemy attack làm hỏng xe.
+- Actor energy/cooldown/health, 4 skill data operators. Anomaly interaction obey/violate gọi effect list được validate.
+- Rival có convoy/2 actors/resources/vehicle/location, goal AI theo tick, có thể cướp physical mirror sau deadline rồi quay lại chặn đoàn. Death fact cập nhật từ actor states.
+- State/save v3, migrate logistics v1/v2; campaign content `.2` (khác rules/content `.1`).
+- `npm run check` qua Node 24 trước hai test cuối: **65 tests pass**, validators/build pass. Đã thêm mid-combat save/replay và retreat test; đọc kết quả session 25102 để xác nhận tổng 67.
+- `npm run demo:campaign -- --seed 42 --policy combat`: **won**, tick 22, 16 commands, 3 contracts succeeded, mirror thuộc player, replay/save verified.
+- UI sẽ dispatch Command API và đọc read models; không đặt kết quả event/combat trong React. Menu/seed/autosave/manual save, responsive map + side event panel, tabs crew/inventory/journal/debug, combat target/action screen và ending.
+- Browser QA qua localhost sau production/typecheck gate; cuối Phase 5 xác minh cả peaceful và combat route, save/load và màn hình hẹp.
 
 ## Báo cáo Phase 2 và quyết định trước Phase 3
 

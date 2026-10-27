@@ -8,6 +8,9 @@ import type { GameState } from './state-schema';
 import { planTravel } from '../world/travel';
 import type { WorldDefinition } from '../world/schema';
 import { refreshNarrative, resolveChoice } from '../narrative/director';
+import { resolveCombatCommand } from '../combat/engine';
+import { useSkill } from '../combat/skills';
+import { updateRival } from '../world/npc';
 
 export type CommandResult =
   | { ok: true; state: GameState; events: DomainEvent[] }
@@ -29,6 +32,7 @@ export function processCommand(state: GameState, input: unknown, authority: Comm
   }
   if (state.commandLog.some((record) => record.command.id === command.id)) return reject('DUPLICATE_COMMAND', 'Command ID has already been accepted.');
   if (state.status !== 'active') return reject('GAME_ENDED', 'Journey has already ended.');
+  if (state.combat && command.payload.type !== 'combat' && command.payload.type !== 'use-skill') return reject('COMBAT_ACTIVE', 'Resolve combat before other actions.');
   const convoy = Object.hasOwn(state.convoys, command.payload.convoyId) ? state.convoys[command.payload.convoyId] : undefined;
   if (!convoy) return reject('UNKNOWN_CONVOY', 'Convoy does not exist.');
   if (convoy.controllerId !== authority.principalId) return reject('UNAUTHORIZED', 'Principal does not control this convoy.');
@@ -81,8 +85,14 @@ export function processCommand(state: GameState, input: unknown, authority: Comm
       resolveChoice(next, command.payload.instanceId, command.payload.choiceId, definition, emit);
     } else if (command.payload.type === 'investigate') {
       refreshNarrative(next, definition, emit);
+    } else if (command.payload.type === 'combat') {
+      resolveCombatCommand(next, command.payload, definition, emit);
+    } else if (command.payload.type === 'use-skill') {
+      if (next.combat) resolveCombatCommand(next, command.payload, definition, emit);
+      else useSkill(next, command.payload.actorId, command.payload.skillId, command.payload.targetId, definition, emit);
     }
 
+    updateRival(next, definition, emit);
     refreshNarrative(next, definition, emit);
 
     let failure: FailureReason | null = null;

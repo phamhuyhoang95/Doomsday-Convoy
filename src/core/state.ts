@@ -4,6 +4,7 @@ import type { GameState } from './state-schema';
 import { validateWorldDefinition } from '../world/registry';
 import type { WorldDefinition } from '../world/schema';
 import { refreshNarrative } from '../narrative/director';
+import { createActor } from './actors';
 
 export function createGame(seed: number, input: WorldDefinition): GameState {
   const definition = validateWorldDefinition(input);
@@ -21,7 +22,7 @@ export function createGame(seed: number, input: WorldDefinition): GameState {
     actors: Object.fromEntries(start.characterIds.map((id) => {
       const character = definition.characters.find((entry) => entry.id === id);
       if (!character) throw new Error(`Missing starting character: ${id}`);
-      return [id, { ...character, convoyId: start.convoyId, health: character.maxHealth, status: 'active' as const }];
+      return [id, createActor(character, start.convoyId, Boolean(definition.campaign))];
     })),
     convoys: {
       [start.convoyId]: {
@@ -53,6 +54,16 @@ export function createGame(seed: number, input: WorldDefinition): GameState {
     eventSequence: 0,
     commandLog: [],
   };
+  const rival = definition.campaign?.rival;
+  if (rival) {
+    state.convoys[rival.id] = { id: rival.id, controllerId: 'npc.tro-tan', locationId: rival.startingLocationId,
+      actorIds: [...rival.characterIds], resources: { ...rival.resources }, vehicle: { ...rival.vehicle, condition: rival.vehicle.maxCondition } };
+    state.world.npcs[rival.id] = { id: rival.id, goalArtifactId: rival.goalArtifactId, intent: 'guard', nextActionTick: 4 };
+    rival.characterIds.forEach((id) => {
+      const character = definition.characters.find((entry) => entry.id === id); if (!character) throw new Error('Missing rival character');
+      state.actors[id] = createActor(character, rival.id, true);
+    });
+  }
   refreshNarrative(state, definition, () => {});
   return state;
 }

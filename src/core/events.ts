@@ -15,6 +15,11 @@ const payloadSchema = z.discriminatedUnion('type', [
   z.object({ type: z.literal('artifact.transferred'), artifactId: idSchema, fromOwnerId: idSchema, toOwnerId: idSchema }).strict(),
   z.object({ type: z.literal('event.resolved'), eventId: idSchema, choiceId: idSchema, outcomeKey: idSchema }).strict(),
   z.object({ type: z.literal('quest.updated'), questId: idSchema, status: z.enum(['active', 'succeeded', 'failed', 'alternative']) }).strict(),
+  z.object({ type: z.literal('combat.started'), combatId: idSchema, enemyConvoyId: idSchema }).strict(),
+  z.object({ type: z.literal('combat.action'), actorId: idSchema, action: z.string(), targetId: idSchema.optional(), amount: z.number().int().nonnegative() }).strict(),
+  z.object({ type: z.literal('combat.ended'), result: z.enum(['victory', 'defeat', 'retreat', 'negotiated', 'surrendered']) }).strict(),
+  z.object({ type: z.literal('skill.used'), actorId: idSchema, skillId: idSchema }).strict(),
+  z.object({ type: z.literal('npc.acted'), convoyId: idSchema, intent: z.string(), locationId: idSchema }).strict(),
 ]);
 export type DomainEventPayload = z.infer<typeof payloadSchema>;
 export const domainEventSchema = z.object({

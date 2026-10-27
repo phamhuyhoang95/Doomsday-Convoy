@@ -13,6 +13,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "demo": "tsx scripts/headless.ts",
+    "demo:campaign": "tsx scripts/campaign.ts",
     "simulate": "tsx scripts/simulate.ts",
     "validate:world": "tsx scripts/validate-world.ts",
     "validate:content": "tsx scripts/validate-content.ts",

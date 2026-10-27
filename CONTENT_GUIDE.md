@@ -16,7 +16,7 @@ Thêm template có preconditions, dependencies, objectives/when, success/failure
 
 ## Skill
 
-Schema đã định nghĩa ID/name/description, target, effect operator (damage/heal/guard/reveal), power, energy/resource cost, cooldown, optional factId/assetId. Runtime sử dụng skill được triển khai ở Phase 3. Skill thông thường chỉ chọn operator có sẵn, không thêm switch theo skill ID.
+Thêm definition vào `src/content/skills.ts`: ID/name/description, target, effect operator (damage/heal/guard/reveal), power, energy/resource cost, cooldown, requirements, optional factId/assetId. Gán ID vào `character.skillIds`. Runtime hiện hỗ trợ đầy đủ bốn operator; skill thông thường chỉ chọn operator có sẵn, không thêm switch theo skill ID. Guard bảo vệ đến lượt kế, heal có thể hồi người downed, reveal cung cấp knowledge có kiểm tra vị trí.
 
 ## Artifact
 

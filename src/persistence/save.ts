@@ -6,7 +6,7 @@ import { gameStateSchema } from '../core/state-schema';
 import type { GameState } from '../core/state-schema';
 import type { WorldDefinition } from '../world/schema';
 
-export const SAVE_SCHEMA_VERSION = 2;
+export const SAVE_SCHEMA_VERSION = 3;
 export const SAVE_FORMAT = 'last-convoy-save';
 const MAX_SAVE_CHARACTERS = 10_000_000;
 const saveSchema = z.object({
@@ -26,11 +26,11 @@ export function migrateSave(input: unknown): unknown {
     throw new SaveError('INVALID_SAVE', 'Save envelope requires schemaVersion.');
   }
   if (input.schemaVersion === SAVE_SCHEMA_VERSION) return input;
-  if (input.schemaVersion === 1 && 'state' in input) {
+  if ((input.schemaVersion === 1 || input.schemaVersion === 2) && 'state' in input) {
     const previous = input as Record<string, unknown>;
     const state = previous.state as Record<string, unknown>;
     if (!state || typeof state !== 'object') throw new SaveError('INVALID_SAVE', 'Invalid legacy state');
-    return { ...previous, schemaVersion: SAVE_SCHEMA_VERSION, state: state.schemaVersion === 1 ? { ...state, schemaVersion: 2, campaign: null } : state };
+    return { ...previous, schemaVersion: SAVE_SCHEMA_VERSION, state: { ...state, schemaVersion: 3, campaign: state.campaign ?? null } };
   }
   if (input.schemaVersion !== 0) throw new SaveError('UNSUPPORTED_VERSION', `Unsupported save schema: ${String(input.schemaVersion)}`);
   const legacy = legacySaveSchema.safeParse(input);

@@ -38,6 +38,8 @@ export const effectSchema = z.discriminatedUnion('op', [
   z.object({ op: z.literal('rescue'), actorId: idSchema }).strict(),
   z.object({ op: z.literal('damage'), target: z.enum(['vehicle', 'crew']), amount: amountSchema }).strict(),
   z.object({ op: z.literal('repair'), amount: amountSchema }).strict(),
+  z.object({ op: z.literal('anomaly'), anomalyId: idSchema, obey: z.boolean() }).strict(),
+  z.object({ op: z.literal('combat'), enemyConvoyId: idSchema, ambush: z.boolean() }).strict(),
   z.object({ op: z.literal('location'), locationId: idSchema, accessible: z.boolean() }).strict(),
   z.object({ op: z.literal('actor'), actorId: idSchema, status: z.enum(['active', 'downed', 'dead', 'captured']) }).strict(),
 ]);
@@ -72,6 +74,7 @@ export const skillDefinitionSchema = z.object({
   target: z.enum(['enemy', 'ally', 'self', 'exploration']), effect: z.enum(['damage', 'heal', 'guard', 'reveal']),
   power: amountSchema, energyCost: amountSchema, costs: resourcesSchema,
   cooldownTicks: z.number().int().min(0).max(20), factId: idSchema.optional(), assetId: idSchema.optional(),
+  requirements: conditionSchema.default({ op: 'always' }),
 }).strict();
 export const assetDefinitionSchema = z.object({
   id: idSchema, kind: z.enum(['location', 'event', 'portrait', 'skill', 'artifact', 'vehicle', 'anomaly', 'sound', 'fx']),
@@ -84,6 +87,12 @@ export const campaignContentSchema = z.object({
   events: z.array(eventDefinitionSchema), quests: z.array(questDefinitionSchema),
   artifacts: z.array(artifactDefinitionSchema), skills: z.array(skillDefinitionSchema), assets: z.array(assetDefinitionSchema),
   anomalies: z.array(z.object({ id: idSchema, name: z.string(), ruleFactId: idSchema, violationEffects: z.array(effectSchema) }).strict()),
+  rival: z.object({
+    id: idSchema, name: z.string(), characterIds: z.array(idSchema).min(1), startingLocationId: idSchema,
+    interceptLocationId: idSchema, goalArtifactId: idSchema, acquireAfterTick: z.number().int().positive(),
+    resources: resourcesSchema, negotiationCondition: conditionSchema,
+    vehicle: z.object({ id: idSchema, name: z.string(), maxCondition: z.number().int().positive() }).strict(),
+  }).strict().optional(),
 }).strict();
 export type CampaignContent = z.infer<typeof campaignContentSchema>;
 export type EventDefinition = z.infer<typeof eventDefinitionSchema>;

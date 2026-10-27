@@ -22,6 +22,8 @@ export const routeSchema = z.object({
 const characterSchema = z.object({
   id: idSchema, name: z.string().min(1), role: z.string().min(1),
   maxHealth: z.number().int().min(1).max(1000),
+  attack: z.number().int().min(1).max(100).optional(), defense: z.number().int().min(0).max(100).optional(),
+  maxEnergy: z.number().int().min(1).max(100).optional(), skillIds: z.array(idSchema).optional(),
 }).strict();
 
 export const worldDefinitionSchema = z.object({
