@@ -4,7 +4,7 @@
 **Ủy quyền hiện tại:** người dùng yêu cầu triển khai đến hết Phase 5; lập plan chi tiết trước mỗi phase và giữ file tiến trình chung để tiếp tục khi hết token/context. Cho phép đồng bộ code lên repository đã chỉ định.
 **Kế hoạch:** [PHASE_PLANS.md](PHASE_PLANS.md). **Repository:** https://github.com/phamhuyhoang95/Doomsday-Convoy, branch `main`, SSH origin.
 
-**HIỆN TẠI: PHASE 0–5 ĐÃ HOÀN TẤT.** Gate cuối **86 tests / 4 files pass**, validators/typecheck/production build pass, clean install pass, audit 0 vulnerabilities. Campaign `.4` có **2.400 runs / 1.800 wins / 600 valid losses / 0 softlocks / 0 rejected commands**, mọi save/load+replay khớp. Đã chơi production tới 2 kết cục khác nhau và giữ bản preview tại **http://127.0.0.1:4173**. Chi tiết: [QA_REPORT.md](QA_REPORT.md). Đang chốt commit/push cuối; sau đó không còn bước triển khai Phase 0–5 mở.
+**HIỆN TẠI: PHASE 0–5 ĐÃ HOÀN TẤT.** Gate cuối **86 tests / 4 files pass**, validators/typecheck/production build pass, clean install pass, audit 0 vulnerabilities. Campaign `.4` có **2.400 runs / 1.800 wins / 600 valid losses / 0 softlocks / 0 rejected commands**, mọi save/load+replay khớp. Đã chơi production tới 2 kết cục khác nhau và giữ bản preview tại **http://127.0.0.1:4173**. Chi tiết: [QA_REPORT.md](QA_REPORT.md). Checkpoint code **`ba483d0` đã push lên origin/main và đối chiếu remote SHA**. Không còn bước triển khai Phase 0–5 mở.
 
 ## Trạng thái phase
 
@@ -107,12 +107,12 @@
 
 ## Lỗi/giới hạn cần theo dõi
 
-- Phase 0–1 đã pass; chưa kiểm tra gameplay Phase 2–5.
-- Node hệ thống 23 không nằm trong engines của Vitest 4; cần xử lý cho các lần verification tiếp theo.
-- Chưa có gameplay event/quest/combat/skill/artifact/NPC trong runtime. Không đánh đồng mô phỏng di chuyển với chiến dịch 3 màn hoàn chỉnh.
+- Phase 0–5 đã qua các kiểm tra được liệt kê trong báo cáo; không có blocker triển khai đang mở.
+- Node hệ thống 23 không nằm trong engines của Vitest 4; các gate đã dùng Node 24.22.1 qua npm exec. Tiếp tục dùng Node 24 hoặc Node 22.12+.
+- Assets vẫn là placeholders; chưa có audio asset, cloud save hay online services. Cài đặt sạch được kiểm tra trong thư mục QA tạm riêng.
 - Thời lượng mục tiêu 30–60 phút cần human playtest, không thể xác nhận chỉ từ bot.
 
-## Tiến trình Phase 5 đang làm
+## Nhật ký triển khai Phase 5 (lịch sử, đã đóng)
 
 - Đã tách content thành events/texts/facts/quests/endings/assets/skills/rival và bundle campaign `.3`. Có **12 events**, **4 contracts**, **6 ending contracts**, 3 initial crew + Hà cứu tùy chọn, 4 skills/2 artifacts/1 rule anomaly/1 rival.
 - Thêm nhánh niêm phong bệnh viện + Đèn không tắt, mirror đổi chủ trước khi player tới, rescue ảnh hưởng thoại/parley và ending, prisoner aftercare/mercy, weighted cache trap.
@@ -120,7 +120,7 @@
 - Asset registry đủ 9 kinds, tất cả dùng URI-free fallbacks. Client xử lý missing/broken URI, không có audio asset nên không phát âm thanh.
 - 67 tests cũ đã pass với bộ 12 events sau khi cập nhật test flow cho các event mới. Build phát hiện `exactOptionalPropertyTypes` ở AssetArt ID; đã sửa kiểu, gate đang chạy lại (session 33787).
 - Đã thêm campaign batch runner với 7 policies (5 tuyến thắng + starvation + guaranteed lethal hazard), kiểm tra save/load + replay từng run; chưa chạy báo cáo lớn.
-- NEXT: tests actual NPC death/stolen mirror/location fallback/endings/content extension/assets → batch 300 seeds → browser final peaceful/combat/mobile/save-load → docs/report/check/commit/push.
+- NEXT tại thời điểm ghi log (hiện đã hoàn tất): tests actual NPC death/stolen mirror/location fallback/endings/content extension/assets → batch 300 seeds → browser final peaceful/combat/mobile/save-load → docs/report/check/commit/push.
 
 ### QA phát hiện và sửa thêm
 
@@ -140,4 +140,4 @@
 - Ảnh QA nằm trong `artifacts/`: phase4-ending, phase5-peaceful-ending, phase5-trade-ending, phase5-production-ending, phase5-production-trade, phase5-mobile, phase5-gameplay.
 - README, GAME_BIBLE, ARCHITECTURE, MVP_SCOPE, CONTENT_GUIDE, QA_REPORT, PHASE_PLANS và file này đã cập nhật. Source format thống nhất bằng Prettier 3.6.2, không thêm project dependency.
 - Giới hạn còn lại: thời lượng 30–60 phút/độ khó chưa human playtest; placeholders chưa là art hoàn chỉnh; không có audio asset; save localStorage cùng-origin, toàn log; không multiplayer/server/AI runtime. Không phát hiện lỗi nghiêm trọng trong các kiểm tra đã hoàn tất.
-- Checkpoints trước: `d093641` initial backup → `0380438` Phase 0–1 → `19df90a` Phase 2 → `52b3d6a` Phase 3 → `e7d34b6` Phase 4; Phase 5 đang được commit/push khi hoàn tất báo cáo này.
+- Checkpoints: `d093641` initial backup → `0380438` Phase 0–1 → `19df90a` Phase 2 → `52b3d6a` Phase 3 → `e7d34b6` Phase 4 → **`ba483d0` Phase 5**, tất cả đã push lên GitHub. Một commit docs tiếp theo chỉ chốt trạng thái checkpoint này; xem `git log -1` để biết HEAD mới nhất.
