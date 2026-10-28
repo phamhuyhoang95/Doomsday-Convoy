@@ -2,6 +2,8 @@
 
 Ngày 2026-10-28. Kế hoạch trước triển khai: [PLAYABILITY_PLAN.md](PLAYABILITY_PLAN.md). Content mới `0.1.0-campaign.5-r1`; engine 0.1.0, state/save v3. Không thêm package runtime.
 
+Checkpoint code [d1fbb66](https://github.com/phamhuyhoang95/Doomsday-Convoy/commit/d1fbb66d865fde6dbce600e4cc9eb574f5955afe) đã push và đối chiếu origin/main. Commit tài liệu chốt theo sau.
+
 ## Thay đổi có thể chơi
 
 | Phản hồi | Hành vi đã triển khai |
