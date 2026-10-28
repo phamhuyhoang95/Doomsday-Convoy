@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { actorProgressionSchema } from "../expedition/schema";
 import { commandSchema } from "./commands";
 import { domainEventSchema, failureReasonSchema } from "./events";
 import {
@@ -24,6 +25,7 @@ const counterSchema = z
   .max(Number.MAX_SAFE_INTEGER);
 const actorSchema = z
   .object({
+    progression: actorProgressionSchema.optional(),
     id: idSchema,
     name: z.string().min(1),
     role: z.string().min(1),

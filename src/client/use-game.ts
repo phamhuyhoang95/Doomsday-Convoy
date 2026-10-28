@@ -6,12 +6,21 @@ import { createGame } from "../core/state";
 import type { GameState } from "../core/state-schema";
 import { LocalSaveStore } from "../persistence/local-storage";
 import { SaveError } from "../persistence/save";
+import { summarizeTransition } from "../read-models/transition";
+import type { ActionReport } from "../read-models/transition";
+import { useAudio } from "./audio";
+import { loadCompatibleSlot } from "../persistence/compatible";
 
 export function useGame() {
   const [state, setState] = useState<GameState | null>(null);
+  const [definition, setDefinition] = useState(campaignDefinition);
   const [message, setMessage] = useState("");
-  const store = (): LocalSaveStore =>
-    new LocalSaveStore(window.localStorage, campaignDefinition);
+  const [report, setReport] = useState<ActionReport | null>(null);
+  const audio = useAudio();
+  const store = (content = definition): LocalSaveStore =>
+    new LocalSaveStore(window.localStorage, content);
+  const slotName = (slot: string, content = definition) =>
+    content.campaign?.operations ? `r1-${slot}` : slot;
   const safely = (operation: () => void): void => {
     try {
       operation();
@@ -19,10 +28,8 @@ export function useGame() {
       const saveMessages = {
         INVALID_SAVE: "Bản lưu bị lỗi hoặc thiếu dữ liệu.",
         UNSUPPORTED_VERSION: "Phiên bản bản lưu chưa được hỗ trợ.",
-        CONTENT_MISMATCH:
-          "Bản lưu dùng phiên bản nội dung khác. Hãy bắt đầu một hành trình mới.",
-        REPLAY_MISMATCH:
-          "Bản lưu không khớp lịch sử hành động, không thể khôi phục.",
+        CONTENT_MISMATCH: "Bản lưu dùng phiên bản nội dung khác.",
+        REPLAY_MISMATCH: "Bản lưu không khớp lịch sử hành động.",
         STORAGE_ERROR: "Không truy cập được bộ nhớ trình duyệt.",
         NOT_FOUND: "Chưa có bản lưu ở slot này.",
       };
@@ -37,39 +44,60 @@ export function useGame() {
   };
   const start = (seed: number): void =>
     safely(() => {
+      void audio.unlock();
+      audio.setScene("road");
       const next = createGame(seed, campaignDefinition);
       setState(next);
+      setDefinition(campaignDefinition);
+      setReport(null);
       setMessage(
-        "Đoàn xe đã sẵn sàng. Mỗi hành động tiêu thời gian và khẩu phần.",
+        "R1: Trinh sát lấy cache/intel, nâng chỉ số ngay trên map, rồi tới chợ để thử trận chiến đầu tiên.",
       );
       try {
-        store().save("autosave", next);
+        store(campaignDefinition).save("r1-autosave", next);
       } catch {
-        setMessage(
-          "Đã bắt đầu. Không ghi được autosave; hãy kiểm tra bộ nhớ trình duyệt.",
-        );
+        setMessage("Đã bắt đầu nhưng chưa ghi được autosave.");
       }
     });
   const dispatch = (payload: GameCommand["payload"]): void => {
     if (!state) return;
+    void audio.unlock();
+    const command: GameCommand = {
+      id: `command.${state.commandLog.length + 1}`,
+      issuerId: state.player.id,
+      payload,
+    };
     const result = processCommand(
       state,
-      {
-        id: `command.${state.commandLog.length + 1}`,
-        issuerId: state.player.id,
-        payload,
-      },
+      command,
       { principalId: state.player.id },
-      campaignDefinition,
+      definition,
     );
     if (!result.ok) {
+      setReport(null);
       setMessage(result.error.message);
       return;
     }
+    const summary = summarizeTransition(
+      state,
+      result.state,
+      command,
+      result.events,
+      definition,
+    );
     setState(result.state);
+    setReport(summary);
     setMessage("");
+    audio.setScene(
+      result.state.combat
+        ? "combat"
+        : result.state.status === "active"
+          ? "road"
+          : "menu",
+    );
+    audio.play(summary, result.events);
     try {
-      store().save("autosave", result.state);
+      store().save(slotName("autosave"), result.state);
     } catch {
       setMessage("Hành động đã thực hiện nhưng autosave không ghi được.");
     }
@@ -77,24 +105,48 @@ export function useGame() {
   const save = (): void =>
     safely(() => {
       if (state) {
-        store().save("manual", state);
-        setMessage("Đã lưu vào slot thủ công trên trình duyệt này.");
+        store().save(slotName("manual"), state);
+        setMessage("Đã lưu hành trình. Slot R1 và v0.1 tách riêng.");
       }
     });
   const load = (slot = "manual"): void =>
     safely(() => {
-      const next = store().load(slot);
+      void audio.unlock();
+      const loaded = loadCompatibleSlot(
+        window.localStorage,
+        slot,
+        !!state && !definition.campaign?.operations,
+      );
+      const content = loaded.definition;
+      const next = loaded.state;
+      setDefinition(content);
       setState(next);
-      setMessage("Đã tải game và xác minh lịch sử hành động.");
+      setReport(null);
+      audio.setScene(
+        next.combat ? "combat" : next.status === "active" ? "road" : "menu",
+      );
+      setMessage(
+        content.campaign?.operations
+          ? "Đã tải hành trình R1 và xác minh replay."
+          : "Đã giữ nguyên hành trình v0.1. Để chơi trinh sát/nghỉ/tùy chỉnh mới, về Menu và bắt đầu R1; bản lưu cũ không bị ghi đè.",
+      );
     });
   return {
     state,
+    definition,
     message,
+    report,
+    audio,
     start,
     dispatch,
     save,
     load,
-    menu: () => setState(null),
+    menu: () => {
+      setState(null);
+      setReport(null);
+      audio.setScene("menu");
+    },
     dismiss: () => setMessage(""),
+    dismissReport: () => setReport(null),
   };
 }

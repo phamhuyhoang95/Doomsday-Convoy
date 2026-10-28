@@ -8,6 +8,27 @@ import { campaignEndings } from "./endings";
 import { contentAssets } from "./assets";
 import { skills } from "./skills";
 import { rival } from "./rival";
+import { operations } from "./operations";
+import { marketEncounter } from "./encounters";
+import { choice } from "./builders";
+
+const playableEvents = structuredClone(campaignEvents);
+const cacheEvent = playableEvents.find(
+  (entry) => entry.id === "event.market-cache",
+);
+cacheEvent?.choices.unshift(
+  choice("raid-cache", [
+    { op: "combat", enemyConvoyId: marketEncounter.convoyId, ambush: false },
+  ]),
+);
+const playableTexts: Record<string, string> = {
+  ...campaignTexts,
+  "event.market-cache.text":
+    "Hai kẻ có vũ khí đang giữ kho khẩu phần. Đột kích sẽ mở trận chiến theo lượt ngay tại chợ: 46 và 40 HP. Thắng nhận 22 food, 20 water, 4 fuel, 2 thuốc, 5 phế liệu và 10 XP/người. Bạn cũng có thể lục kho ngoài bằng phế liệu hoặc bỏ đi.",
+  "choice.raid-cache": "Đột kích kho · CHIẾN ĐẤU · loot +22 food / +20 water",
+  "outcome.raid-cache":
+    "Hai bóng người chặn trước cửa kho. Chọn mục tiêu, dùng Phá giáp để hạ nhanh, Cấp cứu để giữ đồng đội sống; mỗi hành động đều tiêu khẩu phần.",
+};
 
 const characters = [
   ...worldDefinition.characters.map((character) => ({
@@ -50,6 +71,26 @@ const characters = [
     maxEnergy: 4,
     skillIds: [],
   },
+  {
+    id: "character.hunger",
+    name: "Kẻ Đói",
+    role: "Cướp kho",
+    maxHealth: 46,
+    attack: 11,
+    defense: 2,
+    maxEnergy: 4,
+    skillIds: [],
+  },
+  {
+    id: "character.watcher",
+    name: "Kẻ Rình",
+    role: "Xạ thủ",
+    maxHealth: 40,
+    attack: 10,
+    defense: 1,
+    maxEnergy: 4,
+    skillIds: [],
+  },
 ];
 const artifacts = [
   {
@@ -84,7 +125,7 @@ const assets = contentAssets([
     kind: "event",
     entries: campaignEvents.map((entry) => ({
       id: entry.id,
-      label: campaignTexts[entry.titleKey] ?? entry.id,
+      label: playableTexts[entry.titleKey] ?? entry.id,
     })),
   },
   {
@@ -119,7 +160,7 @@ const assets = contentAssets([
 
 export const campaignDefinition = validateWorldDefinition({
   ...structuredClone(worldDefinition),
-  contentVersion: "0.1.0-campaign.4",
+  contentVersion: "0.1.0-campaign.5-r1",
   characters,
   start: {
     ...structuredClone(worldDefinition.start),
@@ -127,9 +168,26 @@ export const campaignDefinition = validateWorldDefinition({
   },
   campaign: {
     id: "campaign.last-convoy",
-    texts: campaignTexts,
-    facts: campaignFacts,
-    events: campaignEvents,
+    texts: playableTexts,
+    facts: [
+      ...campaignFacts,
+      ...["cache.secured", "cache.captives", "cache.dead", "cache.escaped"].map(
+        (id) => ({
+          id,
+          description:
+            id === "cache.secured"
+              ? "Đoàn đã chiến thắng bọn cướp ở chợ và nhận vật tư."
+              : id === "cache.captives"
+                ? "Bọn cướp ở chợ đã bị bắt giữ."
+                : id === "cache.dead"
+                  ? "Bọn cướp ở chợ đã chết sau cuộc đụng độ."
+                  : "Đoàn rút khỏi ổ phục kích, bỏ lại loot.",
+        }),
+      ),
+    ],
+    events: playableEvents,
+    operations,
+    encounters: [marketEncounter],
     quests: campaignQuests,
     endings: campaignEndings,
     travelRequirements: {

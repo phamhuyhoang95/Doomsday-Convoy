@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { idSchema } from "../core/primitives";
+import { expeditionStateSchema } from "../expedition/schema";
 
 export const activeEventSchema = z
   .object({
@@ -26,6 +27,7 @@ export const artifactInstanceSchema = z
   .strict();
 export const campaignStateSchema = z
   .object({
+    operations: expeditionStateSchema.optional(),
     id: idSchema,
     eventCounts: z.record(idSchema, z.number().int().nonnegative()),
     pendingHooks: z.array(idSchema),

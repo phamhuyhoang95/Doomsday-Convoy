@@ -1,5 +1,7 @@
 # LAST CONVOY v0.1 — báo cáo QA
 
+**Cập nhật R1:** xem [PLAYABILITY_REPORT.md](PLAYABILITY_REPORT.md) cho content `.5-r1`, 103 tests và browser QA mới. Báo cáo bên dưới là checkpoint Phase 5 trước phản hồi trải nghiệm.
+
 Ngày **2026-10-28**, Asia/Ho_Chi_Minh. Runtime **Node 24.22.1**, TypeScript strict, Vitest **4.1.12**, Vite **7.3.7**. State/save **v3**, engine **0.1.0**, campaign **0.1.0-campaign.4**.
 
 ## Gate và môi trường

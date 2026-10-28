@@ -1,0 +1,2913 @@
+{
+  "contentVersion": "0.1.0-campaign.4",
+  "campaign": {
+    "id": "campaign.last-convoy",
+    "texts": {
+      "event.departure.title": "Trước khi rời thành phố",
+      "event.departure.text": "Minh gạch thêm một địa chỉ khỏi tấm bản đồ. Đài phát thanh chỉ còn lời nhắn từ Bắc Sơn. Lan xếp thuốc vào túi. Bảo đặt tay lên chìa khóa: “Đi thôi, hay kiểm tra nốt kho dự trữ?”",
+      "choice.prepare": "Chia vật tư dự trữ",
+      "outcome.prepare": "Đoàn dùng một giờ chia thêm 12 food và 12 water. Việc chuẩn bị giúp quãng đường dài bớt đáng sợ.",
+      "choice.rush": "Khởi hành ngay, lấy thêm nhiên liệu",
+      "outcome.rush": "Bảo rút 4 nhiên liệu từ chiếc xe bỏ lại. Đoàn lên đường trong ánh sáng cuối ngày.",
+      "event.market-survivor.title": "Tiếng gõ sau cửa sắt",
+      "event.market-survivor.text": "Một người phụ nữ bị kẹt dưới mái sạp đang gõ ba tiếng một. Cô tên Hà, từng sửa vô tuyến cho đoàn sơ tán. Cô bị thương nhưng còn tỉnh: “Đưa tôi lên xe. Tôi biết người ở trạm thu phí.” Cứu thêm một người cũng đồng nghĩa thêm một khẩu phần mỗi giờ.",
+      "choice.rescue-ha": "Cứu Hà · thêm một người trên xe",
+      "outcome.rescue-ha": "Lan dùng thuốc để cầm máu. Hà lên xe cùng túi dự trữ 9 food và 9 water. Từ giờ cô tiêu khẩu phần và có thể giúp đoàn thương lượng.",
+      "choice.leave-ha": "Bỏ lại và tiếp tục đi",
+      "outcome.leave-ha": "Cửa sắt khép lại sau lưng đoàn. Không có thêm khẩu phần phải chia. Hà sẽ không đi cùng bạn tới Bắc Sơn.",
+      "event.market-cache.title": "Kho hàng cuối chợ",
+      "event.market-cache.text": "Bảo thấy vết xước mới trên khóa kho. Bên trong có những thùng khẩu phần, nhưng dây điện căng thấp sát mặt đất. Có thể tháo khóa bằng phế liệu, hoặc bỏ qua để tiết kiệm thời gian.",
+      "choice.search-cache": "Lục soát kho · 1 phế liệu",
+      "outcome.search-cache": "Bảo tháo khóa an toàn. Đoàn tìm được 12 food, 12 water và 1 medicine.",
+      "outcome.cache-trap": "Dây bẫy kéo đổ một kệ hàng, làm xe hư 5. Bạn vẫn lấy được 6 food, 9 water và 3 fuel.",
+      "choice.leave-cache": "Bỏ qua kho hàng",
+      "outcome.leave-cache": "Đoàn không đụng vào khóa kho. Những thùng hàng ở lại trong bóng tối.",
+      "event.overpass-echo.title": "Giọng nói bên dưới cầu",
+      "event.overpass-echo.text": "Vạch phản quang dẫn vòng qua một nhịp cầu nứt. Dưới cầu, giọng một người quen gọi tên Minh. Bảo nhìn radio đã tháo pin. Tiếng gọi không phát ra từ nó.",
+      "choice.follow-reflectors": "Giữ im lặng, lần theo vạch phản quang",
+      "outcome.follow-reflectors": "Đoàn tránh được mặt cầu sụp. Bảo tranh thủ gia cố gầm, hồi 6 condition. Tiếng gọi không theo kịp.",
+      "choice.answer-echo": "Đáp lại và tìm nguồn nhiên liệu",
+      "outcome.answer-echo": "Một tiếng cười bật ra trong đầu mọi người. Mỗi người mất 12 HP. Bạn tìm được 3 fuel và hiểu quy tắc của tiếng gọi bằng cái giá thật.",
+      "event.service-depot.title": "Ngọn đèn không cần dầu",
+      "event.service-depot.text": "Giữa các máy bơm khô, một chiếc đèn vẫn cháy. Tường trạm ghi: “Nếu không thể vào bệnh viện, giữ ngọn đèn và đi đường phía đông.” Kho phụ còn vật tư; cần dùng phế liệu để mở cửa mà không làm vỡ đèn.",
+      "choice.take-lantern": "Lấy đèn và vật tư · 2 phế liệu",
+      "outcome.take-lantern": "Đoàn có Đèn không tắt, thêm 6 fuel, 9 food, 12 water và 3 scrap. Kỳ vật bảo vệ xe và mở một giải pháp thay thế cho bệnh viện.",
+      "choice.strip-pump": "Tháo máy bơm, để đèn lại",
+      "outcome.strip-pump": "Bạn lấy 8 fuel và 4 scrap, đổi lại ngọn đèn vẫn thuộc về trạm.",
+      "choice.bypass-depot": "Không đụng vào kho",
+      "outcome.bypass-depot": "Đoàn để kho và ngọn đèn nguyên vẹn, giữ khoảng cách với thứ đang cháy trong đó.",
+      "event.service-stranger.title": "Người lạ bên máy phát",
+      "event.service-stranger.text": "Một người gác trạm nhận ra ký hiệu Tro Tàn trên chiếc xe tải từng ghé qua. Con gái thủ lĩnh bị tiếng gọi ám; họ tìm Mắt gương vì tin nó chữa được bệnh. Ông còn chỉ đường vòng nếu bạn muốn niêm phong bệnh viện.",
+      "choice.aid-stranger": "Chia thuốc, nghe chuyện Tro Tàn",
+      "outcome.aid-stranger": "Đổi một liều thuốc, người gác trạm cho 12 water và kể rõ động cơ của Tro Tàn. Bạn có cơ sở thương lượng.",
+      "choice.listen-stranger": "Lắng nghe rồi tiếp tục",
+      "outcome.listen-stranger": "Bạn biết Tro Tàn tìm gương để cứu một đứa trẻ. Không phải cuộc đối đầu nào cũng cần kết thúc bằng đổ máu.",
+      "choice.quarantine-hospital": "Dùng đèn, niêm phong bệnh viện và đi đường vòng",
+      "outcome.quarantine-hospital": "Bệnh viện và khu điều trị trở nên không thể tiếp cận. Đèn giữ yên tiếng gọi; hợp đồng nhiệm vụ chuyển sang giải pháp thay thế. Đường trạm dịch vụ → trạm thu phí đã mở.",
+      "event.hospital-bell.title": "Tiếng chuông trong nhà xác",
+      "event.hospital-bell.text": "Chuông reo ba tiếng trong tòa nhà không có điện. Từ hành lang, ai đó gọi đúng tên bạn. Lan nhận ra một câu viết bằng mực khô: “Không trả lời khi chuông ngân.” Giữ im lặng, hoặc thử trả lời và chịu hậu quả.",
+      "choice.listen": "Im lặng, quan sát chuông",
+      "outcome.listen": "Tiếng gọi bỏ qua đoàn. Bạn khám phá quy tắc: không trả lời khi chuông ngân. Sự im lặng cũng cho phép chạm vào Mắt gương.",
+      "choice.ignore-bell": "Đáp lại tiếng gọi",
+      "outcome.ignore-bell": "Giọng nói chui vào đầu cả đoàn, gây 12 HP tổn thương cho từng người. Bạn biết quy tắc sau khi đã vi phạm nó.",
+      "event.hospital-records.title": "Hồ sơ bệnh nhân 07",
+      "event.hospital-records.text": "Trong hồ sơ có ảnh một bé gái và một người đàn ông mang phù hiệu Tro Tàn. Dòng ghi chú cuối: “Bệnh không đi theo máu. Nó đi theo câu trả lời.” Một tủ thuốc niêm phong nằm bên cạnh.",
+      "choice.read-records": "Đọc hồ sơ, lấy một liều thuốc",
+      "outcome.read-records": "Bạn biết động cơ của thủ lĩnh Tro Tàn, giữ được bằng chứng để thương lượng và lấy thêm 1 medicine.",
+      "choice.burn-records": "Đốt hồ sơ, lấy toàn bộ thuốc",
+      "outcome.burn-records": "Bạn lấy 2 medicine. Những bức ảnh thành tro; bằng chứng giúp thuyết phục đối thủ đã mất.",
+      "choice.leave-records": "Để lại hồ sơ",
+      "outcome.leave-records": "Đoàn không mở hồ sơ. Một cơ hội hiểu đối thủ vẫn nằm trên bàn.",
+      "event.ward-patient.title": "Người bệnh còn thở",
+      "event.ward-patient.text": "Trên chiếc giường sát cửa, một người bệnh chỉ vào tấm màn phủ gương. Anh còn thuốc ăn và nước nhưng không thể rời đi. Lan có thể dùng một liều thuốc, hoặc đoàn có thể bỏ qua để tìm kỳ vật trước đối thủ.",
+      "event.ward-patient.rescued": "Hà nghe tiếng vô tuyến dưới gầm giường và tìm thấy người bệnh còn thở. Anh đã gặp thủ lĩnh Tro Tàn đang tìm thuốc cho con. Lan có thể cứu anh, dù việc đó tiêu thêm thời gian và một liều thuốc.",
+      "choice.treat-patient": "Để Lan chữa trị · 1 thuốc",
+      "outcome.treat-patient": "Người bệnh tỉnh lại, chỉ cách bọc gương và xác nhận câu chuyện về con gái thủ lĩnh. Anh chia 6 food và 9 water cho đoàn.",
+      "choice.ignore-patient": "Để lại người bệnh, tìm kỳ vật",
+      "outcome.ignore-patient": "Đoàn bước qua chiếc giường. Tấm màn phía cuối phòng lay động dù không có gió.",
+      "event.ward-mirror.title": "Mắt gương",
+      "event.ward-mirror.text": "Gương phản chiếu một người đứng sau lưng đoàn. Nếu đã hiểu quy tắc, bạn có thể bọc nó trong im lặng. Nếu tới muộn, Tro Tàn có thể đã lấy gương trước. Niêm phong căn phòng luôn là một lựa chọn.",
+      "choice.bind-mirror": "Giữ im lặng và lấy gương",
+      "outcome.bind-mirror": "Mắt gương được bọc trong vải. Quyền sở hữu thuộc về đoàn, tăng sức tấn công khi giao chiến. Bệnh viện đã được giải quyết.",
+      "choice.force-mirror": "Cưỡng đoạt gương · 2 thuốc, chịu quy tắc",
+      "outcome.force-mirror": "Bạn giữ được gương, nhưng mọi người mất 12 HP khi tiếng gọi dội lại. Hai liều thuốc không ngăn được nỗi sợ.",
+      "choice.recover-trail": "Lần theo dấu Tro Tàn đã mang gương đi",
+      "outcome.recover-trail": "Gương đã đổi chủ. Bạn đánh dấu đường rút của đối thủ; cuộc tranh đoạt sẽ tiếp tục ở trạm thu phí.",
+      "choice.seal-ward": "Niêm phong khu điều trị",
+      "outcome.seal-ward": "Khu điều trị bị phong tỏa. Đoàn thoát khỏi bệnh viện, bỏ lại quyền sở hữu gương cho nơi này hoặc kẻ đã tới trước.",
+      "event.checkpoint-parley.title": "Tro Tàn chặn đường",
+      "event.checkpoint-parley.text": "Xe tải chắn ngang trạm thu phí. Quạ bước xuống, hỏi Mắt gương đang ở đâu. Anh muốn kỳ vật để cứu con; bạn muốn đưa đoàn tới nơi trú. Đàm phán cần manh mối hoặc một người có thể làm chứng. Giao chiến và rút lui đều có hậu quả.",
+      "event.checkpoint-parley.rescued": "Hà gọi tên Quạ qua radio. Anh nhận ra người từng sửa bộ đàm cho đoàn mình. Sự có mặt của cô cho bạn cơ hội thuyết phục Tro Tàn nhường đường và giữ lại kỳ vật.",
+      "event.checkpoint-parley.stolen": "Chiếc gương phủ vải nằm trong xe tải Tro Tàn. Quạ đã tới trước bạn. Bạn có thể để anh giữ nó, thuyết phục bằng hồ sơ, hoặc chiến đấu để giành lại quyền sở hữu.",
+      "choice.signal-passage": "Thuyết phục bằng manh mối hoặc Hà",
+      "outcome.signal-passage": "Bạn giải thích thứ đang ám con gái Quạ và cách giữ im lặng trước tiếng gọi. Tro Tàn nhường đường. Kỳ vật ở lại đúng chủ hiện tại; không có chuyển chủ bí mật.",
+      "choice.trade-mirror": "Đổi gương lấy quyền qua và 6 nhiên liệu",
+      "outcome.trade-mirror": "Tro Tàn nhận gương. Bạn có thêm 6 fuel và quyền đi qua; đoàn sẽ tới nơi trú mà không còn Mắt gương.",
+      "choice.fight": "Giao chiến",
+      "outcome.fight": "Tro Tàn khóa đường. Quạ bước về phía xe tải, để lại khoảng im lặng ngắn trước phát súng đầu tiên.",
+      "choice.ambush": "Phục kích (2 phế liệu)",
+      "outcome.ambush": "Bẫy làm mỗi đối thủ mất 10 HP trước khi trận đánh bắt đầu. Hai phế liệu đã được dùng hết.",
+      "choice.yield-passage": "Nhường đường, luồn qua rào chắn",
+      "outcome.yield-passage": "Bạn bỏ cuộc tranh đoạt. Xe mất 10 condition khi vượt rào, nhưng đường lên Bắc Sơn đã mở.",
+      "event.checkpoint-aftermath.title": "Những người còn ở lại",
+      "event.checkpoint-aftermath.text": "Sau cuộc đối đầu, trạm thu phí lặng đi. Có thể chia khẩu phần, vá lại xe và chữa thương trước chặng cuối, hoặc đi ngay khi đường còn mở.",
+      "event.checkpoint-aftermath.captives": "Những người Tro Tàn bị bắt vẫn còn sống. Bạn có thể dùng thuốc để họ vượt qua vết thương, hoặc chỉ chăm sóc đoàn của mình. Việc giữ người sống sẽ theo bạn đến kết cục.",
+      "event.checkpoint-aftermath.dead": "Xe tải không còn tiếng người. Những người chưa được bắt giữ đã chết khi đoàn bỏ lại họ. Lửa trại không xóa được quyết định ấy.",
+      "choice.care-captives": "Chăm sóc người bị bắt · 2 thuốc",
+      "outcome.care-captives": "Tù nhân hồi 12 HP, vẫn thuộc quyền bắt giữ của đoàn. Bạn ghi lại tên họ và lấy 4 scrap để sửa vật dụng.",
+      "choice.share-fire": "Chia khẩu phần, hồi sức và vá xe",
+      "outcome.share-fire": "Đoàn dùng thêm 3 food và 3 water. Người sống hồi 12 HP; xe hồi 8 condition trước chặng cuối.",
+      "choice.press-on": "Tiếp tục ngay",
+      "outcome.press-on": "Minh cho xe nổ máy. Mọi thứ đã chọn ở trạm thu phí được mang theo lên Bắc Sơn.",
+      "quest.departure.title": "Rời khỏi thành phố",
+      "quest.departure.text": "Chuẩn bị đoàn và tìm lối ra. Có thể đi thẳng qua chợ hoặc vòng qua cầu vượt và trạm dịch vụ.",
+      "quest.departure.objective": "Chuẩn bị khởi hành, hoặc vượt thành phố bằng đường khác.",
+      "quest.hospital.title": "Quy tắc của bệnh viện",
+      "quest.hospital.text": "Điều tra tiếng gọi, xử lý Mắt gương hoặc niêm phong khu điều trị. Nếu bệnh viện bị chặn, Đèn không tắt là giải pháp thay thế.",
+      "quest.hospital.objective": "Giải quyết mối nguy bằng điều tra, lấy kỳ vật, theo dấu đối thủ hoặc ngọn đèn.",
+      "quest.rival.title": "Một con đường cho người sống",
+      "quest.rival.text": "Giải quyết Tro Tàn bằng manh mối, trao đổi, chiến đấu hoặc thoát thân. Nếu đối thủ đã chết, đường vẫn tiếp tục mở.",
+      "quest.rival.objective": "Giải quyết cuộc tranh đoạt tại trạm thu phí.",
+      "quest.rescue.title": "Tiếng gõ sau cửa sắt",
+      "quest.rescue.text": "Một người sống sót còn ở sau cửa sắt. Cứu cô sẽ thêm một người cần khẩu phần, nhưng cũng thêm người có thể đưa đoàn qua nguy hiểm.",
+      "quest.rescue.objective": "Cứu Hà hoặc chấp nhận một kết quả khác cho người ở chợ.",
+      "ending.keepers.title": "Những người giữ ánh sáng.",
+      "ending.keepers.text": "Bạn mang cả gương, đèn và người đã cứu tới Bắc Sơn. Một thỏa thuận hoặc lòng thương giữ phần người trong đoàn. Hầm trú có thêm hai kỳ vật và một cơ hội hiểu thế giới mới.",
+      "ending.blood-road.title": "Con đường qua tro tàn.",
+      "ending.blood-road.text": "Bạn mang Mắt gương tới nơi trú, nhưng không ai của Tro Tàn sống để thấy bình minh. Kỳ vật đã thuộc về đoàn. Cái giá cũng vậy.",
+      "ending.shared-dawn.title": "Bình minh có thêm một người.",
+      "ending.shared-dawn.text": "Hà bước xuống xe ở Bắc Sơn. Bạn giữ được Mắt gương và còn để lại người sống sau cuộc đối đầu. Những quyết định ở chợ và trạm thu phí đã thay đổi câu chuyện.",
+      "ending.last-light.title": "Mắt gương trước bình minh.",
+      "ending.last-light.text": "Mắt gương theo đoàn vào hầm trú. Những người đã không lên được chiếc xe vẫn nằm lại bên ngoài. Bắc Sơn có kỳ vật, nhưng chỉ đoàn biết nó đã tới đây bằng cách nào.",
+      "ending.borrowed-dawn.title": "Bình minh từ một thỏa thuận.",
+      "ending.borrowed-dawn.text": "Đoàn tới nơi trú sau một giải pháp hòa bình. Mắt gương không thuộc về bạn. Quyền sở hữu đã đổi lấy lối đi, hoặc thuộc về người tới trước. Những người trên xe vẫn còn cơ hội bắt đầu lại.",
+      "ending.empty-handed.title": "Còn người là còn đường.",
+      "ending.empty-handed.text": "Bạn tới Bắc Sơn mà không giữ Mắt gương. Cuộc tranh đoạt đã ở lại phía sau. Thất bại giành kỳ vật không khóa hành trình của những người còn sống."
+    },
+    "travelRequirements": {
+      "location.checkpoint": {
+        "op": "fact",
+        "id": "hospital.resolved",
+        "value": true
+      },
+      "location.refuge": {
+        "op": "fact",
+        "id": "rival.resolved",
+        "value": true
+      }
+    },
+    "facts": [
+      {
+        "id": "story.departed",
+        "description": "Đoàn đã chuẩn bị để rời thành phố."
+      },
+      {
+        "id": "story.rescued",
+        "description": "Hà, người sửa vô tuyến ở chợ, đã được cứu lên xe."
+      },
+      {
+        "id": "story.abandoned",
+        "description": "Hà bị bỏ lại ở chợ sơ tán."
+      },
+      {
+        "id": "story.survivor-resolved",
+        "description": "Đoàn đã quyết định số phận người ở chợ."
+      },
+      {
+        "id": "story.generous",
+        "description": "Bạn chia thuốc với người lạ tại trạm dịch vụ."
+      },
+      {
+        "id": "story.patient-helped",
+        "description": "Lan đã chữa trị người bệnh ở khu điều trị cũ."
+      },
+      {
+        "id": "cache.searched",
+        "description": "Kho hàng ở chợ đã được xử lý."
+      },
+      {
+        "id": "road.warning",
+        "description": "Các vạch phản quang giúp tránh lối đường đang sụp."
+      },
+      {
+        "id": "depot.searched",
+        "description": "Kho trạm dịch vụ đã được kiểm tra."
+      },
+      {
+        "id": "hospital.rule",
+        "description": "Không trả lời tiếng gọi khi chuông ngân. Im lặng cho phép chạm vào Mắt gương.",
+        "initialValue": true
+      },
+      {
+        "id": "hospital.violated",
+        "description": "Đoàn đã vi phạm quy tắc và chịu tổn thương bởi tiếng gọi."
+      },
+      {
+        "id": "hospital.resolved",
+        "description": "Mối nguy ở bệnh viện đã được xử lý hoặc vượt qua bằng giải pháp khác."
+      },
+      {
+        "id": "hospital.records",
+        "description": "Hồ sơ ở bệnh viện đã được kiểm tra."
+      },
+      {
+        "id": "hospital.records-burned",
+        "description": "Bạn đã đốt hồ sơ và mất những manh mối trong đó."
+      },
+      {
+        "id": "hospital.quarantined",
+        "description": "Bệnh viện bị niêm phong; đèn là con đường dự phòng."
+      },
+      {
+        "id": "ward.patient-resolved",
+        "description": "Đoàn đã quyết định giúp hay bỏ qua người bệnh."
+      },
+      {
+        "id": "rival.motive",
+        "description": "Tro Tàn tìm kỳ vật vì con gái thủ lĩnh đang bị tiếng gọi ám. Họ có thể nghe lời thuyết phục."
+      },
+      {
+        "id": "rival.resolved",
+        "description": "Đoàn đã giải quyết cuộc đối đầu ở trạm thu phí."
+      },
+      {
+        "id": "rival.dead",
+        "description": "Không ai trong đoàn Tro Tàn còn sống."
+      },
+      {
+        "id": "rival.defeated",
+        "description": "Tro Tàn đã bị đánh bại; loot đã đổi chủ."
+      },
+      {
+        "id": "rival.captured",
+        "description": "Bạn đã bắt giữ ít nhất một người Tro Tàn khi họ gục ngã."
+      },
+      {
+        "id": "rival.mercy",
+        "description": "Bạn đã dùng thuốc để chăm sóc những người bị bắt."
+      },
+      {
+        "id": "rival.peaceful",
+        "description": "Cuộc tranh đoạt được giải quyết bằng lời nói hoặc trao đổi."
+      },
+      {
+        "id": "rival.surrendered",
+        "description": "Bạn nhường cuộc đối đầu để giữ đoàn sống sót."
+      },
+      {
+        "id": "rival.escaped",
+        "description": "Đoàn thoát khỏi trận chiến qua đường rút lui."
+      },
+      {
+        "id": "rival.stole-mirror",
+        "description": "Tro Tàn đã tới Mắt gương trước đoàn. Kỳ vật hiện theo đối thủ."
+      },
+      {
+        "id": "checkpoint.settled",
+        "description": "Những việc cuối cùng ở trạm thu phí đã được giải quyết."
+      },
+      {
+        "id": "journey.refuge-reached",
+        "description": "Đoàn đã tới hầm trú Bắc Sơn."
+      }
+    ],
+    "events": [
+      {
+        "id": "event.departure",
+        "version": 2,
+        "tags": ["campaign"],
+        "locationIds": ["location.garage"],
+        "trigger": {
+          "op": "always"
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 10
+        },
+        "titleKey": "event.departure.title",
+        "textKey": "event.departure.text",
+        "variants": [],
+        "choices": [
+          {
+            "id": "prepare",
+            "labelKey": "choice.prepare",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.prepare",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "story.departed",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "food",
+                    "amount": 12
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "water",
+                    "amount": 12
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "rush",
+            "labelKey": "choice.rush",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.rush",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "story.departed",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "fuel",
+                    "amount": 4
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.market-survivor",
+        "version": 1,
+        "tags": ["campaign"],
+        "locationIds": ["location.market"],
+        "trigger": {
+          "op": "always"
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 40
+        },
+        "titleKey": "event.market-survivor.title",
+        "textKey": "event.market-survivor.text",
+        "variants": [],
+        "choices": [
+          {
+            "id": "rescue-ha",
+            "labelKey": "choice.rescue-ha",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 3,
+              "water": 3,
+              "fuel": 0,
+              "medicine": 1,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.rescue-ha",
+                "effects": [
+                  {
+                    "op": "rescue",
+                    "actorId": "character.ha"
+                  },
+                  {
+                    "op": "fact",
+                    "id": "story.rescued",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "story.survivor-resolved",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "food",
+                    "amount": 9
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "water",
+                    "amount": 9
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "leave-ha",
+            "labelKey": "choice.leave-ha",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.leave-ha",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "story.abandoned",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "story.survivor-resolved",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.market-cache",
+        "version": 1,
+        "tags": ["campaign"],
+        "locationIds": ["location.market"],
+        "trigger": {
+          "op": "fact",
+          "id": "story.survivor-resolved",
+          "value": true
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 20
+        },
+        "titleKey": "event.market-cache.title",
+        "textKey": "event.market-cache.text",
+        "variants": [],
+        "choices": [
+          {
+            "id": "search-cache",
+            "labelKey": "choice.search-cache",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 1
+            },
+            "outcomes": [
+              {
+                "weight": 3,
+                "textKey": "outcome.search-cache",
+                "effects": [
+                  {
+                    "op": "resource",
+                    "resource": "food",
+                    "amount": 12
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "water",
+                    "amount": 12
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "medicine",
+                    "amount": 1
+                  },
+                  {
+                    "op": "fact",
+                    "id": "cache.searched",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              },
+              {
+                "weight": 1,
+                "textKey": "outcome.cache-trap",
+                "effects": [
+                  {
+                    "op": "resource",
+                    "resource": "food",
+                    "amount": 6
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "water",
+                    "amount": 9
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "fuel",
+                    "amount": 3
+                  },
+                  {
+                    "op": "damage",
+                    "target": "vehicle",
+                    "amount": 5
+                  },
+                  {
+                    "op": "fact",
+                    "id": "cache.searched",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "leave-cache",
+            "labelKey": "choice.leave-cache",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.leave-cache",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "cache.searched",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.overpass-echo",
+        "version": 1,
+        "tags": ["campaign"],
+        "locationIds": ["location.overpass"],
+        "trigger": {
+          "op": "always"
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 10
+        },
+        "titleKey": "event.overpass-echo.title",
+        "textKey": "event.overpass-echo.text",
+        "variants": [],
+        "choices": [
+          {
+            "id": "follow-reflectors",
+            "labelKey": "choice.follow-reflectors",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.follow-reflectors",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "road.warning",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "repair",
+                    "amount": 6
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "answer-echo",
+            "labelKey": "choice.answer-echo",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.answer-echo",
+                "effects": [
+                  {
+                    "op": "anomaly",
+                    "anomalyId": "anomaly.bell",
+                    "obey": false
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "fuel",
+                    "amount": 3
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.service-depot",
+        "version": 1,
+        "tags": ["campaign"],
+        "locationIds": ["location.service"],
+        "trigger": {
+          "op": "always"
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 40
+        },
+        "titleKey": "event.service-depot.title",
+        "textKey": "event.service-depot.text",
+        "variants": [],
+        "choices": [
+          {
+            "id": "take-lantern",
+            "labelKey": "choice.take-lantern",
+            "requirements": {
+              "op": "owns",
+              "artifactId": "artifact.lantern",
+              "ownerId": "location.service"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 2
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.take-lantern",
+                "effects": [
+                  {
+                    "op": "artifact",
+                    "artifactId": "artifact.lantern",
+                    "fromOwnerId": "location.service",
+                    "toOwnerId": "convoy.player"
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "fuel",
+                    "amount": 6
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "food",
+                    "amount": 9
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "water",
+                    "amount": 12
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "scrap",
+                    "amount": 3
+                  },
+                  {
+                    "op": "fact",
+                    "id": "depot.searched",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "strip-pump",
+            "labelKey": "choice.strip-pump",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.strip-pump",
+                "effects": [
+                  {
+                    "op": "resource",
+                    "resource": "fuel",
+                    "amount": 8
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "scrap",
+                    "amount": 4
+                  },
+                  {
+                    "op": "fact",
+                    "id": "depot.searched",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "bypass-depot",
+            "labelKey": "choice.bypass-depot",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.bypass-depot",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "depot.searched",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.service-stranger",
+        "version": 1,
+        "tags": ["campaign"],
+        "locationIds": ["location.service"],
+        "trigger": {
+          "op": "fact",
+          "id": "depot.searched",
+          "value": true
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 20
+        },
+        "titleKey": "event.service-stranger.title",
+        "textKey": "event.service-stranger.text",
+        "variants": [],
+        "choices": [
+          {
+            "id": "aid-stranger",
+            "labelKey": "choice.aid-stranger",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 1,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.aid-stranger",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "rival.motive",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "story.generous",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "water",
+                    "amount": 12
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "listen-stranger",
+            "labelKey": "choice.listen-stranger",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.listen-stranger",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "rival.motive",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "quarantine-hospital",
+            "labelKey": "choice.quarantine-hospital",
+            "requirements": {
+              "op": "owns",
+              "artifactId": "artifact.lantern",
+              "ownerId": "convoy.player"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.quarantine-hospital",
+                "effects": [
+                  {
+                    "op": "location",
+                    "locationId": "location.hospital",
+                    "accessible": false
+                  },
+                  {
+                    "op": "location",
+                    "locationId": "location.ward",
+                    "accessible": false
+                  },
+                  {
+                    "op": "fact",
+                    "id": "hospital.quarantined",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.hospital-bell",
+        "version": 2,
+        "tags": ["campaign"],
+        "locationIds": ["location.hospital"],
+        "trigger": {
+          "op": "always"
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 40
+        },
+        "titleKey": "event.hospital-bell.title",
+        "textKey": "event.hospital-bell.text",
+        "variants": [],
+        "choices": [
+          {
+            "id": "listen",
+            "labelKey": "choice.listen",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.listen",
+                "effects": [
+                  {
+                    "op": "anomaly",
+                    "anomalyId": "anomaly.bell",
+                    "obey": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "ignore-bell",
+            "labelKey": "choice.ignore-bell",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.ignore-bell",
+                "effects": [
+                  {
+                    "op": "anomaly",
+                    "anomalyId": "anomaly.bell",
+                    "obey": false
+                  },
+                  {
+                    "op": "fact",
+                    "id": "hospital.violated",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.hospital-records",
+        "version": 1,
+        "tags": ["campaign"],
+        "locationIds": ["location.hospital"],
+        "trigger": {
+          "op": "known",
+          "id": "hospital.rule"
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 20
+        },
+        "titleKey": "event.hospital-records.title",
+        "textKey": "event.hospital-records.text",
+        "variants": [],
+        "choices": [
+          {
+            "id": "read-records",
+            "labelKey": "choice.read-records",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.read-records",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "rival.motive",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "hospital.records",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "medicine",
+                    "amount": 1
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "burn-records",
+            "labelKey": "choice.burn-records",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.burn-records",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "hospital.records",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "hospital.records-burned",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "medicine",
+                    "amount": 2
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "leave-records",
+            "labelKey": "choice.leave-records",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.leave-records",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "hospital.records",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.ward-patient",
+        "version": 1,
+        "tags": ["campaign"],
+        "locationIds": ["location.ward"],
+        "trigger": {
+          "op": "always"
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 40
+        },
+        "titleKey": "event.ward-patient.title",
+        "textKey": "event.ward-patient.text",
+        "variants": [
+          {
+            "when": {
+              "op": "fact",
+              "id": "story.rescued",
+              "value": true
+            },
+            "textKey": "event.ward-patient.rescued"
+          }
+        ],
+        "choices": [
+          {
+            "id": "treat-patient",
+            "labelKey": "choice.treat-patient",
+            "requirements": {
+              "op": "actor",
+              "actorId": "character.lan",
+              "status": "active"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 1,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.treat-patient",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "story.patient-helped",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "ward.patient-resolved",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "rival.motive",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "food",
+                    "amount": 6
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "water",
+                    "amount": 9
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "ignore-patient",
+            "labelKey": "choice.ignore-patient",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.ignore-patient",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "ward.patient-resolved",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.ward-mirror",
+        "version": 2,
+        "tags": ["campaign"],
+        "locationIds": ["location.ward"],
+        "trigger": {
+          "op": "fact",
+          "id": "ward.patient-resolved",
+          "value": true
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 20
+        },
+        "titleKey": "event.ward-mirror.title",
+        "textKey": "event.ward-mirror.text",
+        "variants": [],
+        "choices": [
+          {
+            "id": "bind-mirror",
+            "labelKey": "choice.bind-mirror",
+            "requirements": {
+              "op": "all",
+              "conditions": [
+                {
+                  "op": "known",
+                  "id": "hospital.rule"
+                },
+                {
+                  "op": "owns",
+                  "artifactId": "artifact.mirror",
+                  "ownerId": "location.ward"
+                }
+              ]
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.bind-mirror",
+                "effects": [
+                  {
+                    "op": "artifact",
+                    "artifactId": "artifact.mirror",
+                    "fromOwnerId": "location.ward",
+                    "toOwnerId": "convoy.player"
+                  },
+                  {
+                    "op": "fact",
+                    "id": "hospital.resolved",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "force-mirror",
+            "labelKey": "choice.force-mirror",
+            "requirements": {
+              "op": "owns",
+              "artifactId": "artifact.mirror",
+              "ownerId": "location.ward"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 2,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.force-mirror",
+                "effects": [
+                  {
+                    "op": "anomaly",
+                    "anomalyId": "anomaly.bell",
+                    "obey": false
+                  },
+                  {
+                    "op": "artifact",
+                    "artifactId": "artifact.mirror",
+                    "fromOwnerId": "location.ward",
+                    "toOwnerId": "convoy.player"
+                  },
+                  {
+                    "op": "fact",
+                    "id": "hospital.resolved",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "hospital.violated",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "recover-trail",
+            "labelKey": "choice.recover-trail",
+            "requirements": {
+              "op": "owns",
+              "artifactId": "artifact.mirror",
+              "ownerId": "convoy.rival"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.recover-trail",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "hospital.resolved",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "rival.stole-mirror",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "seal-ward",
+            "labelKey": "choice.seal-ward",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.seal-ward",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "hospital.resolved",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "location",
+                    "locationId": "location.ward",
+                    "accessible": false
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.checkpoint-parley",
+        "version": 2,
+        "tags": ["campaign"],
+        "locationIds": ["location.checkpoint"],
+        "trigger": {
+          "op": "all",
+          "conditions": [
+            {
+              "op": "fact",
+              "id": "hospital.resolved",
+              "value": true
+            },
+            {
+              "op": "not",
+              "condition": {
+                "op": "fact",
+                "id": "rival.resolved",
+                "value": true
+              }
+            }
+          ]
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 20
+        },
+        "titleKey": "event.checkpoint-parley.title",
+        "textKey": "event.checkpoint-parley.text",
+        "variants": [
+          {
+            "when": {
+              "op": "fact",
+              "id": "story.rescued",
+              "value": true
+            },
+            "textKey": "event.checkpoint-parley.rescued"
+          },
+          {
+            "when": {
+              "op": "owns",
+              "artifactId": "artifact.mirror",
+              "ownerId": "convoy.rival"
+            },
+            "textKey": "event.checkpoint-parley.stolen"
+          }
+        ],
+        "choices": [
+          {
+            "id": "signal-passage",
+            "labelKey": "choice.signal-passage",
+            "requirements": {
+              "op": "any",
+              "conditions": [
+                {
+                  "op": "known",
+                  "id": "rival.motive"
+                },
+                {
+                  "op": "fact",
+                  "id": "story.rescued",
+                  "value": true
+                }
+              ]
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.signal-passage",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "rival.resolved",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "rival.peaceful",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "trade-mirror",
+            "labelKey": "choice.trade-mirror",
+            "requirements": {
+              "op": "owns",
+              "artifactId": "artifact.mirror",
+              "ownerId": "convoy.player"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.trade-mirror",
+                "effects": [
+                  {
+                    "op": "artifact",
+                    "artifactId": "artifact.mirror",
+                    "fromOwnerId": "convoy.player",
+                    "toOwnerId": "convoy.rival"
+                  },
+                  {
+                    "op": "fact",
+                    "id": "rival.resolved",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "rival.peaceful",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "fuel",
+                    "amount": 6
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "fight",
+            "labelKey": "choice.fight",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.fight",
+                "effects": [
+                  {
+                    "op": "combat",
+                    "enemyConvoyId": "convoy.rival",
+                    "ambush": false
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "ambush",
+            "labelKey": "choice.ambush",
+            "requirements": {
+              "op": "resource",
+              "resource": "scrap",
+              "atLeast": 2
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 2
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.ambush",
+                "effects": [
+                  {
+                    "op": "combat",
+                    "enemyConvoyId": "convoy.rival",
+                    "ambush": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "yield-passage",
+            "labelKey": "choice.yield-passage",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.yield-passage",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "rival.resolved",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "rival.surrendered",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "damage",
+                    "target": "vehicle",
+                    "amount": 10
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "event.checkpoint-aftermath",
+        "version": 1,
+        "tags": ["campaign"],
+        "locationIds": ["location.checkpoint"],
+        "trigger": {
+          "op": "fact",
+          "id": "rival.resolved",
+          "value": true
+        },
+        "spawn": {
+          "maxOccurrences": 1,
+          "priority": 40
+        },
+        "titleKey": "event.checkpoint-aftermath.title",
+        "textKey": "event.checkpoint-aftermath.text",
+        "variants": [
+          {
+            "when": {
+              "op": "fact",
+              "id": "rival.captured",
+              "value": true
+            },
+            "textKey": "event.checkpoint-aftermath.captives"
+          },
+          {
+            "when": {
+              "op": "fact",
+              "id": "rival.dead",
+              "value": true
+            },
+            "textKey": "event.checkpoint-aftermath.dead"
+          }
+        ],
+        "choices": [
+          {
+            "id": "care-captives",
+            "labelKey": "choice.care-captives",
+            "requirements": {
+              "op": "fact",
+              "id": "rival.captured",
+              "value": true
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 2,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.care-captives",
+                "effects": [
+                  {
+                    "op": "restore",
+                    "target": "captives",
+                    "amount": 12
+                  },
+                  {
+                    "op": "fact",
+                    "id": "rival.mercy",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "fact",
+                    "id": "checkpoint.settled",
+                    "value": true,
+                    "reveal": true
+                  },
+                  {
+                    "op": "resource",
+                    "resource": "scrap",
+                    "amount": 4
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "share-fire",
+            "labelKey": "choice.share-fire",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 3,
+              "water": 3,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.share-fire",
+                "effects": [
+                  {
+                    "op": "restore",
+                    "target": "crew",
+                    "amount": 12
+                  },
+                  {
+                    "op": "repair",
+                    "amount": 8
+                  },
+                  {
+                    "op": "fact",
+                    "id": "checkpoint.settled",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          },
+          {
+            "id": "press-on",
+            "labelKey": "choice.press-on",
+            "requirements": {
+              "op": "always"
+            },
+            "costs": {
+              "food": 0,
+              "water": 0,
+              "fuel": 0,
+              "medicine": 0,
+              "scrap": 0
+            },
+            "outcomes": [
+              {
+                "weight": 1,
+                "textKey": "outcome.press-on",
+                "effects": [
+                  {
+                    "op": "fact",
+                    "id": "checkpoint.settled",
+                    "value": true,
+                    "reveal": true
+                  }
+                ],
+                "hooks": []
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "quests": [
+      {
+        "id": "quest.departure",
+        "version": 1,
+        "titleKey": "quest.departure.title",
+        "descriptionKey": "quest.departure.text",
+        "preconditions": {
+          "op": "always"
+        },
+        "dependencies": [],
+        "objectives": [
+          {
+            "id": "objective.departure",
+            "textKey": "quest.departure.objective",
+            "when": {
+              "op": "fact",
+              "id": "story.departed",
+              "value": true
+            }
+          }
+        ],
+        "successWhen": {
+          "op": "fact",
+          "id": "story.departed",
+          "value": true
+        },
+        "failureWhen": {
+          "op": "not",
+          "condition": {
+            "op": "always"
+          }
+        },
+        "alternateWhen": {
+          "op": "not",
+          "condition": {
+            "op": "at",
+            "locationId": "location.garage"
+          }
+        },
+        "onSuccess": [],
+        "onFailure": [],
+        "onAlternate": []
+      },
+      {
+        "id": "quest.hospital",
+        "version": 1,
+        "titleKey": "quest.hospital.title",
+        "descriptionKey": "quest.hospital.text",
+        "preconditions": {
+          "op": "always"
+        },
+        "dependencies": ["quest.departure"],
+        "objectives": [
+          {
+            "id": "objective.hospital",
+            "textKey": "quest.hospital.objective",
+            "when": {
+              "op": "fact",
+              "id": "hospital.resolved",
+              "value": true
+            }
+          }
+        ],
+        "successWhen": {
+          "op": "fact",
+          "id": "hospital.resolved",
+          "value": true
+        },
+        "failureWhen": {
+          "op": "not",
+          "condition": {
+            "op": "always"
+          }
+        },
+        "alternateWhen": {
+          "op": "all",
+          "conditions": [
+            {
+              "op": "location",
+              "locationId": "location.ward",
+              "accessible": false
+            },
+            {
+              "op": "owns",
+              "artifactId": "artifact.lantern",
+              "ownerId": "convoy.player"
+            }
+          ]
+        },
+        "onSuccess": [],
+        "onFailure": [],
+        "onAlternate": [
+          {
+            "op": "fact",
+            "id": "hospital.resolved",
+            "value": true,
+            "reveal": true
+          }
+        ]
+      },
+      {
+        "id": "quest.rival",
+        "version": 1,
+        "titleKey": "quest.rival.title",
+        "descriptionKey": "quest.rival.text",
+        "preconditions": {
+          "op": "always"
+        },
+        "dependencies": ["quest.hospital"],
+        "objectives": [
+          {
+            "id": "objective.rival",
+            "textKey": "quest.rival.objective",
+            "when": {
+              "op": "fact",
+              "id": "rival.resolved",
+              "value": true
+            }
+          }
+        ],
+        "successWhen": {
+          "op": "fact",
+          "id": "rival.resolved",
+          "value": true
+        },
+        "failureWhen": {
+          "op": "not",
+          "condition": {
+            "op": "always"
+          }
+        },
+        "alternateWhen": {
+          "op": "fact",
+          "id": "rival.dead",
+          "value": true
+        },
+        "onSuccess": [],
+        "onFailure": [],
+        "onAlternate": [
+          {
+            "op": "fact",
+            "id": "rival.resolved",
+            "value": true,
+            "reveal": true
+          }
+        ]
+      },
+      {
+        "id": "quest.rescue",
+        "version": 1,
+        "titleKey": "quest.rescue.title",
+        "descriptionKey": "quest.rescue.text",
+        "preconditions": {
+          "op": "any",
+          "conditions": [
+            {
+              "op": "at",
+              "locationId": "location.market"
+            },
+            {
+              "op": "fact",
+              "id": "story.rescued",
+              "value": true
+            },
+            {
+              "op": "fact",
+              "id": "story.abandoned",
+              "value": true
+            }
+          ]
+        },
+        "dependencies": [],
+        "objectives": [
+          {
+            "id": "objective.rescue",
+            "textKey": "quest.rescue.objective",
+            "when": {
+              "op": "fact",
+              "id": "story.rescued",
+              "value": true
+            }
+          }
+        ],
+        "successWhen": {
+          "op": "fact",
+          "id": "story.rescued",
+          "value": true
+        },
+        "failureWhen": {
+          "op": "fact",
+          "id": "story.abandoned",
+          "value": true
+        },
+        "alternateWhen": {
+          "op": "any",
+          "conditions": [
+            {
+              "op": "location",
+              "locationId": "location.market",
+              "accessible": false
+            },
+            {
+              "op": "fact",
+              "id": "journey.refuge-reached",
+              "value": true
+            }
+          ]
+        },
+        "onSuccess": [],
+        "onFailure": [],
+        "onAlternate": []
+      }
+    ],
+    "artifacts": [
+      {
+        "id": "artifact.mirror",
+        "name": "Mắt gương",
+        "description": "Nhìn thấy thứ đang nhìn lại. +3 tấn công cho đoàn sở hữu.",
+        "initialOwnerId": "location.ward",
+        "attackBonus": 3,
+        "defenseBonus": 0,
+        "assetId": "asset.artifact.mirror"
+      },
+      {
+        "id": "artifact.lantern",
+        "name": "Đèn không tắt",
+        "description": "Giữ yên tiếng gọi. +2 phòng thủ và mở nhánh vượt bệnh viện bị niêm phong.",
+        "initialOwnerId": "location.service",
+        "attackBonus": 0,
+        "defenseBonus": 2,
+        "assetId": "asset.artifact.lantern"
+      }
+    ],
+    "skills": [
+      {
+        "id": "skill.strike",
+        "name": "Phá giáp",
+        "description": "Đòn tập trung sát thương lớn.",
+        "target": "enemy",
+        "effect": "damage",
+        "power": 12,
+        "energyCost": 2,
+        "costs": {
+          "food": 0,
+          "water": 0,
+          "fuel": 0,
+          "medicine": 0,
+          "scrap": 0
+        },
+        "cooldownTicks": 2,
+        "assetId": "asset.skill.strike",
+        "requirements": {
+          "op": "always"
+        }
+      },
+      {
+        "id": "skill.heal",
+        "name": "Cấp cứu",
+        "description": "Hồi 24 HP, có thể vực đồng đội downed dậy; tốn 1 medicine.",
+        "target": "ally",
+        "effect": "heal",
+        "power": 24,
+        "energyCost": 1,
+        "costs": {
+          "food": 0,
+          "water": 0,
+          "fuel": 0,
+          "medicine": 1,
+          "scrap": 0
+        },
+        "cooldownTicks": 2,
+        "assetId": "asset.skill.heal",
+        "requirements": {
+          "op": "always"
+        }
+      },
+      {
+        "id": "skill.guard",
+        "name": "Hộ tống",
+        "description": "Giảm sát thương đến lượt kế và hồi 8 HP.",
+        "target": "self",
+        "effect": "guard",
+        "power": 8,
+        "energyCost": 1,
+        "costs": {
+          "food": 0,
+          "water": 0,
+          "fuel": 0,
+          "medicine": 0,
+          "scrap": 0
+        },
+        "cooldownTicks": 1,
+        "assetId": "asset.skill.guard",
+        "requirements": {
+          "op": "always"
+        }
+      },
+      {
+        "id": "skill.sense",
+        "name": "Linh cảm",
+        "description": "Khám phá quy tắc bệnh viện mà không đáp lời tiếng gọi.",
+        "target": "exploration",
+        "effect": "reveal",
+        "power": 0,
+        "energyCost": 2,
+        "costs": {
+          "food": 0,
+          "water": 0,
+          "fuel": 0,
+          "medicine": 0,
+          "scrap": 0
+        },
+        "cooldownTicks": 3,
+        "factId": "hospital.rule",
+        "assetId": "asset.skill.sense",
+        "requirements": {
+          "op": "any",
+          "conditions": [
+            {
+              "op": "at",
+              "locationId": "location.hospital"
+            },
+            {
+              "op": "at",
+              "locationId": "location.ward"
+            }
+          ]
+        }
+      }
+    ],
+    "assets": [
+      {
+        "id": "asset.fallback.location",
+        "kind": "location",
+        "label": "Placeholder location"
+      },
+      {
+        "id": "asset.fallback.event",
+        "kind": "event",
+        "label": "Placeholder event"
+      },
+      {
+        "id": "asset.fallback.portrait",
+        "kind": "portrait",
+        "label": "Placeholder portrait"
+      },
+      {
+        "id": "asset.fallback.skill",
+        "kind": "skill",
+        "label": "Placeholder skill"
+      },
+      {
+        "id": "asset.fallback.artifact",
+        "kind": "artifact",
+        "label": "Placeholder artifact"
+      },
+      {
+        "id": "asset.fallback.vehicle",
+        "kind": "vehicle",
+        "label": "Placeholder vehicle"
+      },
+      {
+        "id": "asset.fallback.anomaly",
+        "kind": "anomaly",
+        "label": "Placeholder anomaly"
+      },
+      {
+        "id": "asset.fallback.sound",
+        "kind": "sound",
+        "label": "Placeholder sound"
+      },
+      {
+        "id": "asset.fallback.fx",
+        "kind": "fx",
+        "label": "Placeholder fx"
+      },
+      {
+        "id": "asset.location.garage",
+        "kind": "location",
+        "label": "Gara cuối phố",
+        "fallbackId": "asset.fallback.location"
+      },
+      {
+        "id": "asset.location.market",
+        "kind": "location",
+        "label": "Chợ sơ tán",
+        "fallbackId": "asset.fallback.location"
+      },
+      {
+        "id": "asset.location.overpass",
+        "kind": "location",
+        "label": "Cầu vượt đổ",
+        "fallbackId": "asset.fallback.location"
+      },
+      {
+        "id": "asset.location.service",
+        "kind": "location",
+        "label": "Trạm dịch vụ",
+        "fallbackId": "asset.fallback.location"
+      },
+      {
+        "id": "asset.location.hospital",
+        "kind": "location",
+        "label": "Sân bệnh viện",
+        "fallbackId": "asset.fallback.location"
+      },
+      {
+        "id": "asset.location.ward",
+        "kind": "location",
+        "label": "Khu điều trị cũ",
+        "fallbackId": "asset.fallback.location"
+      },
+      {
+        "id": "asset.location.checkpoint",
+        "kind": "location",
+        "label": "Trạm thu phí",
+        "fallbackId": "asset.fallback.location"
+      },
+      {
+        "id": "asset.location.refuge",
+        "kind": "location",
+        "label": "Hầm trú Bắc Sơn",
+        "fallbackId": "asset.fallback.location"
+      },
+      {
+        "id": "asset.event.departure",
+        "kind": "event",
+        "label": "Trước khi rời thành phố",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.market-survivor",
+        "kind": "event",
+        "label": "Tiếng gõ sau cửa sắt",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.market-cache",
+        "kind": "event",
+        "label": "Kho hàng cuối chợ",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.overpass-echo",
+        "kind": "event",
+        "label": "Giọng nói bên dưới cầu",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.service-depot",
+        "kind": "event",
+        "label": "Ngọn đèn không cần dầu",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.service-stranger",
+        "kind": "event",
+        "label": "Người lạ bên máy phát",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.hospital-bell",
+        "kind": "event",
+        "label": "Tiếng chuông trong nhà xác",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.hospital-records",
+        "kind": "event",
+        "label": "Hồ sơ bệnh nhân 07",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.ward-patient",
+        "kind": "event",
+        "label": "Người bệnh còn thở",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.ward-mirror",
+        "kind": "event",
+        "label": "Mắt gương",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.checkpoint-parley",
+        "kind": "event",
+        "label": "Tro Tàn chặn đường",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.event.checkpoint-aftermath",
+        "kind": "event",
+        "label": "Những người còn ở lại",
+        "fallbackId": "asset.fallback.event"
+      },
+      {
+        "id": "asset.character.minh",
+        "kind": "portrait",
+        "label": "Minh",
+        "fallbackId": "asset.fallback.portrait"
+      },
+      {
+        "id": "asset.character.lan",
+        "kind": "portrait",
+        "label": "Lan",
+        "fallbackId": "asset.fallback.portrait"
+      },
+      {
+        "id": "asset.character.bao",
+        "kind": "portrait",
+        "label": "Bảo",
+        "fallbackId": "asset.fallback.portrait"
+      },
+      {
+        "id": "asset.character.ha",
+        "kind": "portrait",
+        "label": "Hà",
+        "fallbackId": "asset.fallback.portrait"
+      },
+      {
+        "id": "asset.character.raven",
+        "kind": "portrait",
+        "label": "Quạ",
+        "fallbackId": "asset.fallback.portrait"
+      },
+      {
+        "id": "asset.character.ash",
+        "kind": "portrait",
+        "label": "Tàn",
+        "fallbackId": "asset.fallback.portrait"
+      },
+      {
+        "id": "asset.skill.strike",
+        "kind": "skill",
+        "label": "Phá giáp",
+        "fallbackId": "asset.fallback.skill"
+      },
+      {
+        "id": "asset.skill.heal",
+        "kind": "skill",
+        "label": "Cấp cứu",
+        "fallbackId": "asset.fallback.skill"
+      },
+      {
+        "id": "asset.skill.guard",
+        "kind": "skill",
+        "label": "Hộ tống",
+        "fallbackId": "asset.fallback.skill"
+      },
+      {
+        "id": "asset.skill.sense",
+        "kind": "skill",
+        "label": "Linh cảm",
+        "fallbackId": "asset.fallback.skill"
+      },
+      {
+        "id": "asset.artifact.mirror",
+        "kind": "artifact",
+        "label": "Mắt gương",
+        "fallbackId": "asset.fallback.artifact"
+      },
+      {
+        "id": "asset.artifact.lantern",
+        "kind": "artifact",
+        "label": "Đèn không tắt",
+        "fallbackId": "asset.fallback.artifact"
+      },
+      {
+        "id": "asset.vehicle.bus",
+        "kind": "vehicle",
+        "label": "Xe khách số 07",
+        "fallbackId": "asset.fallback.vehicle"
+      },
+      {
+        "id": "asset.vehicle.rival",
+        "kind": "vehicle",
+        "label": "Xe tải Tro Tàn",
+        "fallbackId": "asset.fallback.vehicle"
+      },
+      {
+        "id": "asset.anomaly.bell",
+        "kind": "anomaly",
+        "label": "Người gọi tên",
+        "fallbackId": "asset.fallback.anomaly"
+      },
+      {
+        "id": "asset.sound.radio",
+        "kind": "sound",
+        "label": "Radio — chưa có audio asset",
+        "fallbackId": "asset.fallback.sound"
+      },
+      {
+        "id": "asset.fx.hazard",
+        "kind": "fx",
+        "label": "Chướng ngại",
+        "fallbackId": "asset.fallback.fx"
+      }
+    ],
+    "endings": [
+      {
+        "id": "ending.keepers",
+        "titleKey": "ending.keepers.title",
+        "textKey": "ending.keepers.text",
+        "when": {
+          "op": "all",
+          "conditions": [
+            {
+              "op": "owns",
+              "artifactId": "artifact.mirror",
+              "ownerId": "convoy.player"
+            },
+            {
+              "op": "owns",
+              "artifactId": "artifact.lantern",
+              "ownerId": "convoy.player"
+            },
+            {
+              "op": "fact",
+              "id": "story.rescued",
+              "value": true
+            },
+            {
+              "op": "any",
+              "conditions": [
+                {
+                  "op": "fact",
+                  "id": "rival.peaceful",
+                  "value": true
+                },
+                {
+                  "op": "fact",
+                  "id": "rival.mercy",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "ending.blood-road",
+        "titleKey": "ending.blood-road.title",
+        "textKey": "ending.blood-road.text",
+        "when": {
+          "op": "all",
+          "conditions": [
+            {
+              "op": "owns",
+              "artifactId": "artifact.mirror",
+              "ownerId": "convoy.player"
+            },
+            {
+              "op": "fact",
+              "id": "rival.dead",
+              "value": true
+            }
+          ]
+        }
+      },
+      {
+        "id": "ending.shared-dawn",
+        "titleKey": "ending.shared-dawn.title",
+        "textKey": "ending.shared-dawn.text",
+        "when": {
+          "op": "all",
+          "conditions": [
+            {
+              "op": "owns",
+              "artifactId": "artifact.mirror",
+              "ownerId": "convoy.player"
+            },
+            {
+              "op": "fact",
+              "id": "story.rescued",
+              "value": true
+            },
+            {
+              "op": "any",
+              "conditions": [
+                {
+                  "op": "fact",
+                  "id": "rival.peaceful",
+                  "value": true
+                },
+                {
+                  "op": "fact",
+                  "id": "rival.captured",
+                  "value": true
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "id": "ending.last-light",
+        "titleKey": "ending.last-light.title",
+        "textKey": "ending.last-light.text",
+        "when": {
+          "op": "owns",
+          "artifactId": "artifact.mirror",
+          "ownerId": "convoy.player"
+        }
+      },
+      {
+        "id": "ending.borrowed-dawn",
+        "titleKey": "ending.borrowed-dawn.title",
+        "textKey": "ending.borrowed-dawn.text",
+        "when": {
+          "op": "all",
+          "conditions": [
+            {
+              "op": "fact",
+              "id": "rival.peaceful",
+              "value": true
+            },
+            {
+              "op": "not",
+              "condition": {
+                "op": "owns",
+                "artifactId": "artifact.mirror",
+                "ownerId": "convoy.player"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "id": "ending.empty-handed",
+        "titleKey": "ending.empty-handed.title",
+        "textKey": "ending.empty-handed.text",
+        "when": {
+          "op": "always"
+        }
+      }
+    ],
+    "anomalies": [
+      {
+        "id": "anomaly.bell",
+        "name": "Người gọi tên",
+        "ruleFactId": "hospital.rule",
+        "violationEffects": [
+          {
+            "op": "damage",
+            "target": "crew",
+            "amount": 12
+          }
+        ]
+      }
+    ],
+    "rival": {
+      "id": "convoy.rival",
+      "name": "Đoàn Tro Tàn",
+      "characterIds": ["character.raven", "character.ash"],
+      "startingLocationId": "location.checkpoint",
+      "interceptLocationId": "location.checkpoint",
+      "goalArtifactId": "artifact.mirror",
+      "acquireAfterTick": 22,
+      "resources": {
+        "food": 24,
+        "water": 30,
+        "fuel": 18,
+        "medicine": 2,
+        "scrap": 6
+      },
+      "negotiationCondition": {
+        "op": "any",
+        "conditions": [
+          {
+            "op": "known",
+            "id": "rival.motive"
+          },
+          {
+            "op": "fact",
+            "id": "story.rescued",
+            "value": true
+          }
+        ]
+      },
+      "vehicle": {
+        "id": "vehicle.rival",
+        "name": "Xe tải Tro Tàn",
+        "maxCondition": 80
+      }
+    }
+  },
+  "regions": [
+    {
+      "id": "region.city",
+      "name": "Thành phố tắt đèn"
+    },
+    {
+      "id": "region.hospital",
+      "name": "Bệnh viện Thánh An"
+    },
+    {
+      "id": "region.outskirts",
+      "name": "Vành đai phía bắc"
+    }
+  ],
+  "locations": [
+    {
+      "id": "location.garage",
+      "regionId": "region.city",
+      "name": "Gara cuối phố",
+      "description": "Ba người sống sót và một chiếc xe còn chạy được."
+    },
+    {
+      "id": "location.market",
+      "regionId": "region.city",
+      "name": "Chợ sơ tán",
+      "description": "Những tấm bạt vẫn đập vào sạp hàng bỏ trống."
+    },
+    {
+      "id": "location.overpass",
+      "regionId": "region.city",
+      "name": "Cầu vượt đổ",
+      "description": "Lối vòng qua dòng xe đã chết."
+    },
+    {
+      "id": "location.service",
+      "regionId": "region.city",
+      "name": "Trạm dịch vụ",
+      "description": "Một đường tránh dài nhưng ít nguy hiểm hơn."
+    },
+    {
+      "id": "location.hospital",
+      "regionId": "region.hospital",
+      "name": "Sân bệnh viện",
+      "description": "Đèn cấp cứu sáng trong một tòa nhà không có điện."
+    },
+    {
+      "id": "location.ward",
+      "regionId": "region.hospital",
+      "name": "Khu điều trị cũ",
+      "description": "Không tiếng bước chân nào vọng lại đúng nhịp."
+    },
+    {
+      "id": "location.checkpoint",
+      "regionId": "region.outskirts",
+      "name": "Trạm thu phí",
+      "description": "Những vệt bánh xe mới dẫn về phía bắc."
+    },
+    {
+      "id": "location.refuge",
+      "regionId": "region.outskirts",
+      "name": "Hầm trú Bắc Sơn",
+      "description": "Tín hiệu cứu hộ phát ra sau cánh cửa thép."
+    }
+  ],
+  "routes": [
+    {
+      "id": "route.garage-market",
+      "from": "location.garage",
+      "to": "location.market",
+      "bidirectional": true,
+      "travelTicks": 2,
+      "fuelCost": 4,
+      "risk": {
+        "chanceBps": 1500,
+        "minDamage": 6,
+        "maxDamage": 12
+      }
+    },
+    {
+      "id": "route.garage-overpass",
+      "from": "location.garage",
+      "to": "location.overpass",
+      "bidirectional": true,
+      "travelTicks": 3,
+      "fuelCost": 3,
+      "risk": {
+        "chanceBps": 1000,
+        "minDamage": 5,
+        "maxDamage": 10
+      }
+    },
+    {
+      "id": "route.market-service",
+      "from": "location.market",
+      "to": "location.service",
+      "bidirectional": true,
+      "travelTicks": 2,
+      "fuelCost": 3,
+      "risk": {
+        "chanceBps": 800,
+        "minDamage": 4,
+        "maxDamage": 8
+      }
+    },
+    {
+      "id": "route.market-hospital",
+      "from": "location.market",
+      "to": "location.hospital",
+      "bidirectional": true,
+      "travelTicks": 3,
+      "fuelCost": 5,
+      "risk": {
+        "chanceBps": 2000,
+        "minDamage": 8,
+        "maxDamage": 18
+      }
+    },
+    {
+      "id": "route.overpass-service",
+      "from": "location.overpass",
+      "to": "location.service",
+      "bidirectional": true,
+      "travelTicks": 3,
+      "fuelCost": 4,
+      "risk": {
+        "chanceBps": 500,
+        "minDamage": 4,
+        "maxDamage": 8
+      }
+    },
+    {
+      "id": "route.service-hospital",
+      "from": "location.service",
+      "to": "location.hospital",
+      "bidirectional": true,
+      "travelTicks": 2,
+      "fuelCost": 3,
+      "risk": {
+        "chanceBps": 800,
+        "minDamage": 5,
+        "maxDamage": 10
+      }
+    },
+    {
+      "id": "route.hospital-ward",
+      "from": "location.hospital",
+      "to": "location.ward",
+      "bidirectional": true,
+      "travelTicks": 1,
+      "fuelCost": 1,
+      "risk": {
+        "chanceBps": 1000,
+        "minDamage": 2,
+        "maxDamage": 5
+      }
+    },
+    {
+      "id": "route.hospital-checkpoint",
+      "from": "location.hospital",
+      "to": "location.checkpoint",
+      "bidirectional": true,
+      "travelTicks": 3,
+      "fuelCost": 5,
+      "risk": {
+        "chanceBps": 2000,
+        "minDamage": 10,
+        "maxDamage": 20
+      }
+    },
+    {
+      "id": "route.ward-checkpoint",
+      "from": "location.ward",
+      "to": "location.checkpoint",
+      "bidirectional": true,
+      "travelTicks": 2,
+      "fuelCost": 4,
+      "risk": {
+        "chanceBps": 2500,
+        "minDamage": 10,
+        "maxDamage": 20
+      }
+    },
+    {
+      "id": "route.service-checkpoint",
+      "from": "location.service",
+      "to": "location.checkpoint",
+      "bidirectional": true,
+      "travelTicks": 5,
+      "fuelCost": 8,
+      "risk": {
+        "chanceBps": 1000,
+        "minDamage": 6,
+        "maxDamage": 12
+      }
+    },
+    {
+      "id": "route.checkpoint-refuge",
+      "from": "location.checkpoint",
+      "to": "location.refuge",
+      "bidirectional": false,
+      "travelTicks": 3,
+      "fuelCost": 5,
+      "risk": {
+        "chanceBps": 1500,
+        "minDamage": 8,
+        "maxDamage": 15
+      }
+    }
+  ],
+  "characters": [
+    {
+      "id": "character.minh",
+      "name": "Minh",
+      "role": "Chỉ huy",
+      "maxHealth": 100,
+      "attack": 14,
+      "defense": 3,
+      "maxEnergy": 6,
+      "skillIds": ["skill.strike", "skill.guard"]
+    },
+    {
+      "id": "character.lan",
+      "name": "Lan",
+      "role": "Y sĩ",
+      "maxHealth": 80,
+      "attack": 11,
+      "defense": 3,
+      "maxEnergy": 6,
+      "skillIds": ["skill.heal", "skill.sense"]
+    },
+    {
+      "id": "character.bao",
+      "name": "Bảo",
+      "role": "Thợ máy",
+      "maxHealth": 90,
+      "attack": 11,
+      "defense": 3,
+      "maxEnergy": 6,
+      "skillIds": ["skill.strike", "skill.guard"]
+    },
+    {
+      "id": "character.ha",
+      "name": "Hà",
+      "role": "Kỹ thuật vô tuyến",
+      "maxHealth": 64,
+      "attack": 8,
+      "defense": 2,
+      "maxEnergy": 5,
+      "skillIds": ["skill.guard"]
+    },
+    {
+      "id": "character.raven",
+      "name": "Quạ",
+      "role": "Thủ lĩnh Tro Tàn",
+      "maxHealth": 36,
+      "attack": 9,
+      "defense": 2,
+      "maxEnergy": 4,
+      "skillIds": []
+    },
+    {
+      "id": "character.ash",
+      "name": "Tàn",
+      "role": "Hộ vệ",
+      "maxHealth": 30,
+      "attack": 8,
+      "defense": 1,
+      "maxEnergy": 4,
+      "skillIds": []
+    }
+  ],
+  "start": {
+    "playerId": "player.local",
+    "convoyId": "convoy.player",
+    "locationId": "location.garage",
+    "characterIds": ["character.minh", "character.lan", "character.bao"],
+    "resources": {
+      "food": 96,
+      "water": 108,
+      "fuel": 34,
+      "medicine": 8,
+      "scrap": 12
+    },
+    "vehicle": {
+      "id": "vehicle.bus",
+      "name": "Xe khách số 07",
+      "maxCondition": 100
+    }
+  },
+  "rules": {
+    "foodPerCrewPerTick": 1,
+    "waterPerCrewPerTick": 1,
+    "tickMinutes": 60
+  },
+  "goal": {
+    "locationIds": ["location.refuge"],
+    "endingId": "ending.arrival",
+    "factId": "journey.refuge-reached"
+  }
+}

@@ -1,9 +1,10 @@
-import { campaignDefinition as definition } from "../../content/campaign";
+import { useDefinition } from "../definition";
 import type { GameState } from "../../core/state-schema";
 import { eventEligibility } from "../../narrative/director";
 import { statusLabels } from "./shared";
 
 export function Journal({ state }: { state: GameState }) {
+  const definition = useDefinition();
   const texts = definition.campaign?.texts ?? {};
   return (
     <div className="journal-grid">
@@ -65,6 +66,7 @@ export function Journal({ state }: { state: GameState }) {
 }
 
 export function DebugPanel({ state }: { state: GameState }) {
+  const definition = useDefinition();
   const eligibility = eventEligibility(state, definition);
   return (
     <section className="panel padded debug-panel">

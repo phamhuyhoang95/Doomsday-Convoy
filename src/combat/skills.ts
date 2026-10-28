@@ -6,6 +6,7 @@ import { evaluateCondition } from "../narrative/conditions";
 import type { Emit } from "../narrative/effects";
 import type { WorldDefinition } from "../world/schema";
 import { dealDamage } from "./actions";
+import { scoutLocation } from "../expedition/operations";
 
 export function useSkill(
   state: GameState,
@@ -32,7 +33,8 @@ export function useSkill(
   if (
     state.combat
       ? skill.target === "exploration"
-      : skill.target !== "exploration"
+      : skill.target !== "exploration" &&
+        !(definition.campaign?.operations && skill.effect === "heal")
   )
     throw new CommandError(
       "SKILL_UNAVAILABLE",
@@ -71,6 +73,13 @@ export function useSkill(
     throw new CommandError("INVALID_TARGET", "Select a living ally.");
   if (skill.target === "self" && target?.id !== actor.id)
     throw new CommandError("INVALID_TARGET", "Skill targets its caster.");
+  if (
+    definition.campaign?.operations &&
+    skill.effect === "heal" &&
+    target &&
+    target.health === target.maxHealth
+  )
+    throw new CommandError("REQUIREMENTS_NOT_MET", "Mục tiêu đã đầy HP.");
   convoy.resources = subtractResources(convoy.resources, skill.costs);
   actor.energy = (actor.energy ?? 0) - skill.energyCost;
   actor.cooldowns ??= {};
@@ -90,6 +99,7 @@ export function useSkill(
       break;
     case "heal":
       if (!target) throw new CommandError("INVALID_TARGET", "Missing ally");
+      const healed = Math.min(skill.power, target.maxHealth - target.health);
       target.health = Math.min(target.maxHealth, target.health + skill.power);
       if (target.health > 0 && target.status === "downed")
         target.status = "active";
@@ -98,7 +108,7 @@ export function useSkill(
         actorId: actor.id,
         action: "heal",
         targetId: target.id,
-        amount: skill.power,
+        amount: definition.campaign?.operations ? healed : skill.power,
       });
       break;
     case "guard":
@@ -108,6 +118,8 @@ export function useSkill(
       break;
     case "reveal":
       if (skill.factId) establishFact(state, skill.factId, true);
+      if (definition.campaign?.operations)
+        scoutLocation(state, definition, emit, 2000);
       break;
   }
   emit({

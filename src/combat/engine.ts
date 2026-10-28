@@ -9,6 +9,8 @@ import type { WorldDefinition } from "../world/schema";
 import { dealDamage } from "./actions";
 import { lootConvoy, transferOwnedArtifacts } from "./ownership";
 import { useSkill } from "./skills";
+import { RESOURCE_IDS, emptyResources } from "../core/primitives";
+import { awardExperience } from "../expedition/progression";
 
 const activeTeam = (state: GameState, convoyId: string): ActorState[] =>
   (state.convoys[convoyId]?.actorIds ?? []).flatMap((id) => {
@@ -61,9 +63,14 @@ export function startCombat(
   emit({ type: "combat.started", combatId: state.combat.id, enemyConvoyId });
 }
 
-function checkBattleEnd(state: GameState, emit: Emit): boolean {
+function checkBattleEnd(
+  state: GameState,
+  definition: WorldDefinition,
+  emit: Emit,
+): boolean {
   const combat = state.combat;
   if (!combat) return true;
+  if (combat.phase === "aftermath") return true;
   if (activeTeam(state, state.player.convoyId).length === 0) {
     lootConvoy(state, state.player.convoyId, combat.enemyConvoyId, emit);
     state.combat = null;
@@ -77,9 +84,33 @@ function checkBattleEnd(state: GameState, emit: Emit): boolean {
         state.actors[id]?.convoyId === state.player.convoyId &&
         state.actors[id]?.status === "active",
     );
+    const player = state.convoys[state.player.convoyId];
+    const before = player ? { ...player.resources } : emptyResources();
     lootConvoy(state, combat.enemyConvoyId, state.player.convoyId, emit);
-    establishFact(state, "rival.resolved", true);
-    establishFact(state, "rival.defeated", true);
+    const encounter = definition.campaign?.encounters?.find(
+      (entry) => entry.convoyId === combat.enemyConvoyId,
+    );
+    if (encounter) establishFact(state, encounter.victoryFactId, true);
+    else {
+      establishFact(state, "rival.resolved", true);
+      establishFact(state, "rival.defeated", true);
+    }
+    if (definition.campaign?.operations && player) {
+      const xp =
+        encounter?.rewardXp ??
+        definition.campaign.operations.progression.rivalXp;
+      awardExperience(state, xp, definition, emit);
+      const rewards = emptyResources();
+      RESOURCE_IDS.forEach((id) => {
+        rewards[id] = player.resources[id] - before[id];
+      });
+      emit({
+        type: "combat.victory",
+        enemyConvoyId: combat.enemyConvoyId,
+        rewards,
+        xp,
+      });
+    }
     const npc = state.world.npcs[combat.enemyConvoyId];
     if (npc) npc.intent = "defeated";
     return true;
@@ -93,7 +124,7 @@ function advanceTurn(
   emit: Emit,
 ): void {
   const combat = state.combat;
-  if (!combat || checkBattleEnd(state, emit)) return;
+  if (!combat || checkBattleEnd(state, definition, emit)) return;
   for (let step = 0; step < combat.turnOrder.length * 2; step += 1) {
     combat.turnIndex = (combat.turnIndex + 1) % combat.turnOrder.length;
     if (combat.turnIndex === 0) combat.round += 1;
@@ -111,13 +142,13 @@ function advanceTurn(
       (a, b) => a.health - b.health || (a.id < b.id ? -1 : 1),
     )[0];
     if (!target) {
-      checkBattleEnd(state, emit);
+      checkBattleEnd(state, definition, emit);
       return;
     }
     dealDamage(state, actor.id, target.id, 0, definition, emit);
     const vehicle = state.convoys[state.player.convoyId]?.vehicle;
     if (vehicle) vehicle.condition = Math.max(0, vehicle.condition - 2);
-    if (checkBattleEnd(state, emit)) return;
+    if (checkBattleEnd(state, definition, emit)) return;
   }
   throw new Error("Combat turn order has no active player");
 }
@@ -144,6 +175,10 @@ export function resolveCombatCommand(
   const enemy = state.convoys[combat.enemyConvoyId];
   const convoy = state.convoys[state.player.convoyId];
   if (!enemy || !convoy) throw new Error("Missing combat convoy");
+  const encounter = definition.campaign?.encounters?.find(
+    (entry) => entry.convoyId === enemy.id,
+  );
+  const capturedFact = encounter?.capturedFactId ?? "rival.captured";
   if (payload.type === "use-skill") {
     if (combat.phase !== "active")
       throw new CommandError("SKILL_UNAVAILABLE", "Battle is over");
@@ -169,7 +204,7 @@ export function resolveCombatCommand(
           "Only downed opponents can be captured.",
         );
       target.status = "captured";
-      establishFact(state, "rival.captured", true);
+      establishFact(state, capturedFact, true);
       emit({
         type: "combat.action",
         actorId: actor.id,
@@ -189,7 +224,7 @@ export function resolveCombatCommand(
       if (target?.status === "downed") target.status = "dead";
     });
     if (enemy.actorIds.every((id) => state.actors[id]?.status === "dead"))
-      establishFact(state, "rival.dead", true);
+      establishFact(state, encounter?.deadFactId ?? "rival.dead", true);
     state.combat = null;
     emit({ type: "combat.ended", result: "victory" });
     return;
@@ -221,8 +256,11 @@ export function resolveCombatCommand(
       state.rng = roll.rng;
       if (roll.value < 8000) {
         convoy.vehicle.condition = Math.max(0, convoy.vehicle.condition - 5);
-        establishFact(state, "rival.resolved", true);
-        establishFact(state, "rival.escaped", true);
+        if (encounter) establishFact(state, encounter.escapeFactId, true);
+        else {
+          establishFact(state, "rival.resolved", true);
+          establishFact(state, "rival.escaped", true);
+        }
         state.combat = null;
         emit({ type: "combat.ended", result: "retreat" });
         return;
@@ -236,7 +274,9 @@ export function resolveCombatCommand(
       break;
     }
     case "negotiate": {
-      const requirement = definition.campaign?.rival?.negotiationCondition;
+      const requirement = encounter
+        ? undefined
+        : definition.campaign?.rival?.negotiationCondition;
       if (!requirement || !evaluateCondition(state, requirement))
         throw new CommandError(
           "REQUIREMENTS_NOT_MET",
@@ -251,8 +291,11 @@ export function resolveCombatCommand(
     case "surrender":
       transferOwnedArtifacts(state, convoy.id, enemy.id, emit);
       convoy.resources.scrap = Math.max(0, convoy.resources.scrap - 4);
-      establishFact(state, "rival.resolved", true);
-      establishFact(state, "rival.surrendered", true);
+      if (encounter) establishFact(state, encounter.escapeFactId, true);
+      else {
+        establishFact(state, "rival.resolved", true);
+        establishFact(state, "rival.surrendered", true);
+      }
       state.combat = null;
       emit({ type: "combat.ended", result: "surrendered" });
       return;
@@ -266,7 +309,7 @@ export function resolveCombatCommand(
           "Only downed opponents can be captured",
         );
       target.status = "captured";
-      establishFact(state, "rival.captured", true);
+      establishFact(state, capturedFact, true);
       emit({
         type: "combat.action",
         actorId: actor.id,

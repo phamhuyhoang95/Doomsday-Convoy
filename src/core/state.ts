@@ -5,6 +5,7 @@ import { validateWorldDefinition } from "../world/registry";
 import type { WorldDefinition } from "../world/schema";
 import { refreshNarrative } from "../narrative/director";
 import { createActor } from "./actors";
+import { initializeProgression } from "../expedition/progression";
 
 export function createGame(seed: number, input: WorldDefinition): GameState {
   const definition = validateWorldDefinition(input);
@@ -98,6 +99,30 @@ export function createGame(seed: number, input: WorldDefinition): GameState {
     eventSequence: 0,
     commandLog: [],
   };
+  if (definition.campaign?.operations && state.campaign) {
+    state.campaign.operations = { recon: {} };
+    Object.values(state.actors).forEach((actor) =>
+      initializeProgression(actor, definition),
+    );
+  }
+  for (const encounter of definition.campaign?.encounters ?? []) {
+    state.convoys[encounter.convoyId] = {
+      id: encounter.convoyId,
+      controllerId: "npc.encounter",
+      locationId: encounter.locationId,
+      actorIds: [...encounter.characterIds],
+      resources: { ...encounter.resources },
+      vehicle: {
+        ...encounter.vehicle,
+        condition: encounter.vehicle.maxCondition,
+      },
+    };
+    for (const id of encounter.characterIds) {
+      const character = definition.characters.find((entry) => entry.id === id);
+      if (!character) throw new Error("Missing encounter actor");
+      state.actors[id] = createActor(character, encounter.convoyId, true);
+    }
+  }
   const rival = definition.campaign?.rival;
   if (rival) {
     state.convoys[rival.id] = {

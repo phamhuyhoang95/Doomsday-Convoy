@@ -30,7 +30,7 @@ export function Costs({ resources }: { resources: Resources }) {
     <span className="costs">
       {RESOURCE_IDS.filter((id) => resources[id] > 0).map((id) => (
         <span key={id} title={resourceLabels[id]}>
-          {resourceSymbols[id]} {resources[id]}
+          {resources[id]} {resourceLabels[id].toLocaleLowerCase("vi")}
         </span>
       ))}
     </span>

@@ -1,4 +1,4 @@
-import { campaignDefinition as definition } from "../../content/campaign";
+import { useDefinition } from "../definition";
 import type { GameCommand } from "../../core/commands";
 import type { GameState } from "../../core/state-schema";
 import { evaluateCondition } from "../../narrative/conditions";
@@ -13,6 +13,7 @@ export function Convoy({
   state: GameState;
   dispatch: (payload: GameCommand["payload"]) => void;
 }) {
+  const definition = useDefinition();
   const convoy = state.convoys[state.player.convoyId];
   if (!convoy) return null;
   return (
@@ -100,6 +101,7 @@ export function Convoy({
 }
 
 export function Inventory({ state }: { state: GameState }) {
+  const definition = useDefinition();
   const convoy = state.convoys[state.player.convoyId];
   if (!convoy) return null;
   const owned = Object.values(state.inventory.artifactInstances).filter(

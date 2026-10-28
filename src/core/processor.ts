@@ -17,6 +17,12 @@ import { resolveCombatCommand } from "../combat/engine";
 import { useSkill } from "../combat/skills";
 import { updateRival } from "../world/npc";
 import { evaluateCondition } from "../narrative/conditions";
+import {
+  scoutLocation,
+  restConvoy,
+  repairVehicle,
+} from "../expedition/operations";
+import { configureActor } from "../expedition/progression";
 
 export type CommandResult =
   | { ok: true; state: GameState; events: DomainEvent[] }
@@ -87,11 +93,16 @@ export function processCommand(
         "INVALID_COMMAND",
         "Campaign command requires campaign mode.",
       );
-    const ticks = plan
-      ? plan.route.travelTicks
-      : command.payload.type === "wait"
-        ? command.payload.ticks
-        : 1;
+    const configuring =
+      command.payload.type === "train-actor" ||
+      command.payload.type === "set-stance";
+    const ticks = configuring
+      ? 0
+      : plan
+        ? plan.route.travelTicks
+        : command.payload.type === "wait"
+          ? command.payload.ticks
+          : 1;
     const costs = plan
       ? plan.costs
       : supplyCosts(state, convoy, ticks, definition);
@@ -113,28 +124,33 @@ export function processCommand(
         payload,
       });
     };
-    updatedConvoy.resources = subtractResources(updatedConvoy.resources, costs);
-    emit({
-      type: "resources.consumed",
-      convoyId: convoy.id,
-      costs,
-      reason: plan
-        ? "travel"
-        : command.payload.type === "wait"
-          ? "wait"
-          : "event",
-    });
-    next.world.tick += ticks;
-    emit({
-      type: "time.advanced",
-      from: state.world.tick,
-      to: next.world.tick,
-    });
+    if (ticks > 0) {
+      updatedConvoy.resources = subtractResources(
+        updatedConvoy.resources,
+        costs,
+      );
+      emit({
+        type: "resources.consumed",
+        convoyId: convoy.id,
+        costs,
+        reason: plan
+          ? "travel"
+          : command.payload.type === "wait"
+            ? "wait"
+            : "event",
+      });
+      next.world.tick += ticks;
+      emit({
+        type: "time.advanced",
+        from: state.world.tick,
+        to: next.world.tick,
+      });
+    }
     if (plan) {
       // Each travel consumes one risk draw, even when the configured chance is zero.
       const riskRoll = nextInt(next.rng, 10_000);
       next.rng = riskRoll.rng;
-      if (riskRoll.value < plan.route.risk.chanceBps) {
+      if (riskRoll.value < plan.riskBps) {
         const damageRoll = nextInt(
           next.rng,
           plan.route.risk.maxDamage - plan.route.risk.minDamage + 1,
@@ -173,6 +189,7 @@ export function processCommand(
       }
     } else if (command.payload.type === "wait") {
       emit({ type: "convoy.waited", convoyId: convoy.id, ticks });
+      restConvoy(next, ticks, definition, emit);
     } else if (command.payload.type === "choose") {
       resolveChoice(
         next,
@@ -182,7 +199,27 @@ export function processCommand(
         emit,
       );
     } else if (command.payload.type === "investigate") {
-      refreshNarrative(next, definition, emit);
+      if (definition.campaign?.operations)
+        scoutLocation(next, definition, emit);
+      else refreshNarrative(next, definition, emit);
+    } else if (command.payload.type === "repair") {
+      repairVehicle(next, definition, emit);
+    } else if (command.payload.type === "train-actor") {
+      configureActor(
+        next,
+        command.payload.actorId,
+        { upgradeId: command.payload.upgradeId },
+        definition,
+        emit,
+      );
+    } else if (command.payload.type === "set-stance") {
+      configureActor(
+        next,
+        command.payload.actorId,
+        { stanceId: command.payload.stanceId },
+        definition,
+        emit,
+      );
     } else if (command.payload.type === "combat") {
       resolveCombatCommand(next, command.payload, definition, emit);
     } else if (command.payload.type === "use-skill") {

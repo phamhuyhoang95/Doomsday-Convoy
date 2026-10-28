@@ -19,6 +19,7 @@ export function inspectCampaignContent(
     ...locations,
     definition.start.convoyId,
     ...(content.rival ? [content.rival.id] : []),
+    ...(content.encounters ?? []).map((entry) => entry.convoyId),
   ]);
   const seen = new Set(
     [
@@ -101,7 +102,12 @@ export function inspectCampaignContent(
         ref(locations, item.locationId, "effect");
         break;
       case "combat":
-        if (item.enemyConvoyId !== content.rival?.id)
+        if (
+          item.enemyConvoyId !== content.rival?.id &&
+          !content.encounters?.some(
+            (entry) => entry.convoyId === item.enemyConvoyId,
+          )
+        )
           issues.push({ path: "combat", message: "Unknown combat opponent" });
         break;
       case "anomaly":
@@ -279,6 +285,68 @@ export function inspectCampaignContent(
         path: "rival",
         message: "Duplicate or shared crew membership",
       });
+  }
+  const allocated = new Set([
+    ...definition.start.characterIds,
+    ...(content.rival?.characterIds ?? []),
+  ]);
+  const convoyIds = new Set([
+    definition.start.convoyId,
+    ...(content.rival ? [content.rival.id] : []),
+  ]);
+  for (const encounter of content.encounters ?? []) {
+    if (
+      seen.has(encounter.id) ||
+      owners.has(encounter.id) ||
+      encounter.convoyId === definition.start.convoyId ||
+      encounter.convoyId === content.rival?.id
+    )
+      issues.push({ path: encounter.id, message: "Duplicate encounter ID" });
+    seen.add(encounter.id);
+    if (convoyIds.has(encounter.convoyId) || seen.has(encounter.convoyId))
+      issues.push({
+        path: encounter.convoyId,
+        message: "Duplicate encounter convoy ID",
+      });
+    convoyIds.add(encounter.convoyId);
+    seen.add(encounter.convoyId);
+    ref(locations, encounter.locationId, encounter.id);
+    [
+      encounter.victoryFactId,
+      encounter.capturedFactId,
+      encounter.deadFactId,
+      encounter.escapeFactId,
+    ].forEach((id) => ref(facts, id, encounter.id));
+    for (const id of encounter.characterIds) {
+      ref(actors, id, encounter.id);
+      if (allocated.has(id))
+        issues.push({ path: encounter.id, message: "Shared encounter crew" });
+      allocated.add(id);
+    }
+  }
+  if (content.operations) {
+    const reconLocations = new Set<string>();
+    for (const recon of content.operations.recon) {
+      ref(locations, recon.locationId, "operations.recon");
+      recon.factIds.forEach((id) => ref(facts, id, "operations.recon"));
+      if (reconLocations.has(recon.locationId))
+        issues.push({
+          path: recon.locationId,
+          message: "Duplicate recon profile",
+        });
+      reconLocations.add(recon.locationId);
+    }
+    for (const entry of [
+      ...content.operations.stances,
+      ...content.operations.upgrades,
+    ]) {
+      if (seen.has(entry.id))
+        issues.push({
+          path: entry.id,
+          message: "Duplicate customization ID",
+        });
+      seen.add(entry.id);
+    }
   }
   return issues;
 }

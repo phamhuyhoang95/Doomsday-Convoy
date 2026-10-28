@@ -37,6 +37,7 @@ export function assertGameState(
     sameIds(Object.keys(state.convoys), [
       definition.start.convoyId,
       ...(definition.campaign?.rival ? [definition.campaign.rival.id] : []),
+      ...(definition.campaign?.encounters ?? []).map((entry) => entry.convoyId),
     ]),
     "unexpected convoy set",
   );
@@ -74,7 +75,11 @@ export function assertGameState(
     ensure(convoy.id === id, "convoy key mismatch");
     ensure(
       convoy.controllerId ===
-        (convoy.id === state.player.convoyId ? state.player.id : "npc.tro-tan"),
+        (convoy.id === state.player.convoyId
+          ? state.player.id
+          : convoy.id === definition.campaign?.rival?.id
+            ? "npc.tro-tan"
+            : "npc.encounter"),
       "unknown controller",
     );
     ensure(
@@ -93,7 +98,11 @@ export function assertGameState(
     const vehicleDefinition =
       convoy.id === state.player.convoyId
         ? definition.start.vehicle
-        : definition.campaign?.rival?.vehicle;
+        : convoy.id === definition.campaign?.rival?.id
+          ? definition.campaign.rival.vehicle
+          : definition.campaign?.encounters?.find(
+              (entry) => entry.convoyId === convoy.id,
+            )?.vehicle;
     ensure(convoy.vehicle.id === vehicleDefinition?.id, "unknown vehicle");
     ensure(
       convoy.vehicle.maxCondition === vehicleDefinition.maxCondition,
@@ -113,8 +122,46 @@ export function assertGameState(
         actor.id === actorId && actor.convoyId === id,
         "actor ownership mismatch",
       );
+      const upgrades = definition.campaign?.operations?.upgrades ?? [];
+      const healthBonus = upgrades
+        .filter((entry) => entry.attribute === "maxHealth")
+        .reduce(
+          (sum, entry) =>
+            sum + entry.amount * (actor.progression?.upgrades[entry.id] ?? 0),
+          0,
+        );
+      if (actor.progression) {
+        const config = definition.campaign?.operations;
+        ensure(
+          config && actor.convoyId === state.player.convoyId,
+          "invalid progression owner",
+        );
+        ensure(
+          config.stances.some(
+            (stance) => stance.id === actor.progression?.stanceId,
+          ),
+          "unknown actor stance",
+        );
+        ensure(
+          Object.keys(actor.progression.upgrades).every((id) =>
+            upgrades.some((entry) => entry.id === id),
+          ),
+          "unknown upgrade",
+        );
+        const spent = Object.values(actor.progression.upgrades).reduce(
+          (sum, count) => sum + count,
+          0,
+        );
+        ensure(
+          actor.progression.points ===
+            config.progression.startingPoints +
+              Math.floor(actor.progression.xp / config.progression.xpPerPoint) -
+              spent,
+          "invalid training point balance",
+        );
+      }
       ensure(
-        actor.maxHealth === character.maxHealth &&
+        actor.maxHealth === character.maxHealth + healthBonus &&
           actor.health <= actor.maxHealth,
         "invalid actor health",
       );
@@ -279,7 +326,7 @@ export function assertGameState(
     );
     commandIds.add(record.command.id);
     ensure(
-      record.tickBefore === tick && record.tickAfter > tick,
+      record.tickBefore === tick && record.tickAfter >= tick,
       "non-contiguous command ticks",
     );
     ensure(

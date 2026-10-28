@@ -55,7 +55,10 @@ export function updateRival(
       establishFact(state, "rival.dead", true);
     return;
   }
-  if (state.combat || state.world.facts["rival.resolved"]?.value === true)
+  if (
+    state.combat?.enemyConvoyId === rival.id ||
+    state.world.facts["rival.resolved"]?.value === true
+  )
     return;
   const goal = Object.values(state.inventory.artifactInstances).find(
     (entry) => entry.artifactId === rival.goalArtifactId,

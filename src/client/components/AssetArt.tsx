@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { resolveAsset } from "../../assets/registry";
 import type { AssetKind } from "../../assets/registry";
-import { campaignDefinition } from "../../content/campaign";
+import { useDefinition } from "../definition";
 
 export function AssetArt({
   id,
@@ -14,12 +14,9 @@ export function AssetArt({
   label: string;
   className?: string;
 }) {
+  const definition = useDefinition();
   const [failedUri, setFailedUri] = useState<string | null>(null);
-  const asset = resolveAsset(
-    campaignDefinition.campaign?.assets ?? [],
-    id,
-    kind,
-  );
+  const asset = resolveAsset(definition.campaign?.assets ?? [], id, kind);
   if (asset.uri && asset.uri !== failedUri && kind !== "sound")
     return (
       <img

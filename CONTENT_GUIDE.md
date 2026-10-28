@@ -28,7 +28,13 @@ Thêm region và các location tham chiếu region đó; thêm routes với from
 
 ## Asset
 
-Registry gồm ID/kind/label, optional URI và fallbackId. `src/content/assets.ts` tạo các ID ổn định dạng `asset.<content-id>`, đủ 9 kinds; `src/assets/registry.ts` resolve fallback và phòng cycle. Asset chỉ phục vụ client; engine chạy hoàn toàn khi URI vắng mặt. `AssetArt` xử lý cả URI thiếu và image load error. Thêm URI vào definition để dùng hình riêng; không gắn path vào gameplay. Không phát sound khi chưa có sound asset.
+Registry gồm ID/kind/label, optional URI và fallbackId. `src/content/assets.ts` tạo các ID ổn định dạng `asset.<content-id>`, đủ 9 kinds; `src/assets/registry.ts` resolve fallback và phòng cycle. Asset chỉ phục vụ client; engine chạy hoàn toàn khi URI vắng mặt. `AssetArt` xử lý cả URI thiếu và image load error. Thêm URI vào definition để dùng hình riêng; không gắn path vào gameplay. R1 có audio procedural trong client, không cần file sound; không đưa AudioContext vào engine.
+
+## Recon / tùy chỉnh / encounter R1
+
+`src/content/operations.ts` cấu hình rest/repair, recon profile từng location (rewards/facts/duration/riskReductionBps), XP và upgrades/stances. Cache nhận một lần; scout lại sau khi hết intel chỉ làm mới thông tin. Địa điểm mới cần recon profile nếu muốn dùng hành động này. Upgrade dùng ba attribute có sẵn: attack/maxHealth/maxEnergy; stance đổi công/thủ.
+
+`src/content/encounters.ts` định nghĩa encounter phụ: ID/convoyId, characterIds, location, resources, vehicle, XP và fact IDs cho victory/capture/death/escape. Khai báo characters/facts/assets và thêm vào `campaign.encounters`; event dùng effect `{op: 'combat', enemyConvoyId, ambush: false}`. Mỗi encounter phải có convoy ID/roster riêng; validator từ chối duplicate/shared crew. Không đổi main rival facts từ encounter phụ. Thêm encounter theo data không cần sửa combat engine.
 
 ## Kết cục và thoại phản ứng
 

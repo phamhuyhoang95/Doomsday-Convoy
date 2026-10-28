@@ -2,6 +2,8 @@
 
 Game chiến thuật đoàn xe sinh tồn với core TypeScript headless và client React/Vite. Đã triển khai Phase 0–5: một chiến dịch ba màn có di chuyển, event, điều tra, kỹ năng, kỳ vật, NPC đối thủ, chiến đấu theo lượt, bắt giữ, nhiều kết cục và save/load.
 
+**R1 — cải thiện trải nghiệm:** thêm trận kho hàng ở chợ, trinh sát có cache/intel, nghỉ hồi sức, sửa xe, XP/huấn luyện/thế đánh, skill preview, bảng hậu quả và âm thanh Web Audio. [Kế hoạch](PLAYABILITY_PLAN.md), [báo cáo thực tế](PLAYABILITY_REPORT.md).
+
 ## Chơi trên trình duyệt
 
 Dùng Node.js 24 (xem `.nvmrc`), hoặc Node 22.12+.
@@ -17,9 +19,11 @@ Mở http://127.0.0.1:5173, chọn seed rồi bắt đầu. Trên máy đang dù
 npm exec --yes --package=node@24 -- npm run dev
 ```
 
-Chọn event ở cột tình huống, chọn tuyến trong bản đồ, xem kỹ chi phí gồm khẩu phần. Tab Đoàn xe có health/energy/kỹ năng; Kho đồ cho biết kỳ vật hiện thuộc đoàn. Nhiệm vụ & manh mối chỉ hiển thị thông tin đã khám phá. Trong combat, chọn mục tiêu rồi attack/defend/skill, hoặc đàm phán/rút lui/đầu hàng. Đối thủ downed có thể bị bắt; người downed bị bỏ lại khi kết thúc trận sẽ chết.
+Chọn **Bắt đầu hành trình** để chơi R1. HP/năng lượng/công/thủ và điểm nâng hiện ngay trên map; nhấp nhân vật để huấn luyện, đổi thế đánh hoặc dùng Cấp cứu/Linh cảm. Trinh sát nhận cache một lần và giảm rủi ro tuyến trong 5 giờ. Nghỉ hồi sức nhưng tiêu khẩu phần và cho NPC thời gian; sửa xe tiêu phế liệu. Mỗi hành động có bảng kết quả và chi phí/phần thưởng thực tế.
 
-Autosave ghi sau mỗi command hợp lệ. Lưu game/Tải game dùng slot thủ công riêng trong localStorage của browser/origin này. Đổi trình duyệt hoặc port sẽ không chia sẻ save. Save campaign có version nội dung khác sẽ báo không tương thích; save logistics Phase 1 có migration.
+Tới **Chợ sơ tán**, giải quyết chuyện Hà rồi chọn **Đột kích kho** để mở trận đầu. Trong combat, chọn đối thủ, chọn skill để xem sát thương/chi phí rồi **Thi triển**; có thể chọn đồng đội bị thương để Cấp cứu. Thắng nhận loot và XP thật. Đối thủ downed có thể bị bắt; người downed bị bỏ lại khi kết thúc trận sẽ chết. Nhiệm vụ & manh mối ghi thông tin đã khám phá; Kho đồ ghi quyền sở hữu kỳ vật.
+
+Autosave ghi sau mỗi command hợp lệ. Lưu game/Tải game dùng slot thủ công riêng trong localStorage của browser/origin này. Đổi trình duyệt hoặc port sẽ không chia sẻ save. R1 dùng slot `r1-autosave/r1-manual`, giữ nguyên slot v0.1 cũ. Nút **Tải hành trình v0.1 cũ** tải bằng bundle rules/content lịch sử `.4`; các cơ chế R1 cần chuyến mới. Save không thuộc bundle được hỗ trợ sẽ báo không tương thích; save logistics Phase 1 có migration.
 
 ## Kiểm tra và chạy headless
 
@@ -41,15 +45,16 @@ npm run preview
 ## Nội dung và kiến trúc
 
 - 8 địa điểm, 11 tuyến, 12 event, 4 Story Contract, 6 kết cục đến nơi trú cùng các trạng thái thất bại.
-- 3 nhân vật ban đầu; có thể cứu Hà lên xe. 1 đoàn đối thủ có mục tiêu riêng và có thể lấy gương trước bạn.
+- 3 nhân vật ban đầu; có thể cứu Hà lên xe. 1 đoàn đối thủ có mục tiêu riêng và có thể lấy gương trước bạn; thêm encounter phụ hai kẻ giữ kho chợ.
 - 4 skill data driven, 2 artifact instances có owner duy nhất, 1 anomaly có quy tắc, 5 tài nguyên.
 - `src/core/`: state/commands/RNG/invariants/events/replay, độc lập React/storage/network.
 - `src/world/`, `src/narrative/`, `src/combat/`: bản đồ/NPC, conditions/effects/director/contracts, combat/skills/loot.
+- `src/expedition/`, `src/read-models/`: trinh sát/nghỉ/sửa xe/XP/tùy chỉnh và preview/báo cáo thuần TypeScript.
 - `src/content/`, `src/assets/`: content registry bằng Zod, asset IDs và fallbacks.
 - `src/client/`: render state, read models và dispatch commands; không tự resolve kết quả gameplay.
 - `src/persistence/`, `src/simulation/`, `scripts/`, `tests/`: save migration, bots, CLI và verification.
 
-Không cần hình hoặc âm thanh để chạy engine. Client dùng CSS/SVG/typographic placeholders và xử lý asset thiếu/lỗi. Chưa có audio asset nên không phát âm thanh. Debug tab hiện trong dev; production có thể bật bằng `?debug=1`. Dev mobile harness: http://127.0.0.1:5173/qa/mobile.html.
+Không cần hình hoặc âm thanh để chạy engine. Client dùng CSS/SVG/typographic placeholders và xử lý asset thiếu/lỗi. Web Audio tạo drone/gió và cues hành động/combat/phần thưởng sau click đầu; có mute/volume được lưu. Chưa có bản nhạc/voice thu âm. Debug tab hiện trong dev; production có thể bật bằng `?debug=1`. Dev mobile harness: http://127.0.0.1:5173/qa/mobile.html.
 
 ## Tài liệu và bằng chứng
 

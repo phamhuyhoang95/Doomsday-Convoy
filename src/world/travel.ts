@@ -10,6 +10,7 @@ export interface TravelPlan {
   from: string;
   to: string;
   costs: Resources;
+  riskBps: number;
 }
 
 export function planTravel(
@@ -47,7 +48,16 @@ export function planTravel(
     );
   const costs = supplyCosts(state, convoy, route.travelTicks, definition);
   costs.fuel += route.fuelCost;
-  return { route, from: convoy.locationId, to, costs };
+  const recon = state.campaign?.operations?.recon[convoy.locationId];
+  const reduction =
+    recon && recon.expiresAt > state.world.tick ? recon.riskReductionBps : 0;
+  return {
+    route,
+    from: convoy.locationId,
+    to,
+    costs,
+    riskBps: Math.floor((route.risk.chanceBps * (10000 - reduction)) / 10000),
+  };
 }
 
 export interface RouteOption {
@@ -76,7 +86,7 @@ export function availableRoutes(
           routeId: route.id,
           destinationId: plan.to,
           travelTicks: route.travelTicks,
-          riskBps: route.risk.chanceBps,
+          riskBps: plan.riskBps,
           costs: plan.costs,
           affordable: canAfford(convoy.resources, plan.costs),
         },

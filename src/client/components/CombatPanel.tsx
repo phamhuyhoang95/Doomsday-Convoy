@@ -1,10 +1,12 @@
 import { useState } from "react";
-import { campaignDefinition as definition } from "../../content/campaign";
+import { useDefinition } from "../definition";
 import { currentCombatActor } from "../../combat/engine";
+import { damageRange } from "../../combat/actions";
 import type { GameCommand } from "../../core/commands";
 import type { GameState } from "../../core/state-schema";
 import { evaluateCondition } from "../../narrative/conditions";
-import { Meter, statusLabels } from "./shared";
+import { skillView } from "../../read-models/skills";
+import { Meter, Costs, statusLabels } from "./shared";
 import { AssetArt } from "./AssetArt";
 
 export function CombatPanel({
@@ -14,7 +16,10 @@ export function CombatPanel({
   state: GameState;
   dispatch: (payload: GameCommand["payload"]) => void;
 }) {
-  const [targetId, setTargetId] = useState("");
+  const definition = useDefinition();
+  const [enemyTargetId, setEnemyTargetId] = useState("");
+  const [allyTargetId, setAllyTargetId] = useState("");
+  const [skillId, setSkillId] = useState<string | null>(null);
   const combat = state.combat;
   const current = currentCombatActor(state);
   if (!combat || !current) return null;
@@ -24,14 +29,45 @@ export function CombatPanel({
   const enemies = Object.values(state.actors).filter(
     (actor) => actor.convoyId === combat.enemyConvoyId,
   );
-  const activeTarget =
+  const encounter = definition.campaign?.encounters?.find(
+    (entry) => entry.convoyId === combat.enemyConvoyId,
+  );
+  const enemyName =
+    encounter?.name ?? definition.campaign?.rival?.name ?? "Đối thủ";
+  const enemy =
     enemies.find(
-      (actor) => actor.id === targetId && actor.status === "active",
+      (actor) => actor.id === enemyTargetId && actor.status === "active",
     ) ?? enemies.find((actor) => actor.status === "active");
+  const ally =
+    allies.find(
+      (actor) =>
+        actor.id === allyTargetId &&
+        actor.status !== "dead" &&
+        actor.status !== "captured",
+    ) ??
+    [...allies]
+      .filter((actor) => actor.status !== "dead" && actor.status !== "captured")
+      .sort((a, b) => a.health / a.maxHealth - b.health / b.maxHealth)[0];
+  const selected = definition.campaign?.skills.find(
+    (entry) => entry.id === skillId && current.skillIds?.includes(entry.id),
+  );
+  const targetId =
+    selected?.target === "ally"
+      ? ally?.id
+      : selected?.target === "self"
+        ? current.id
+        : enemy?.id;
+  const selectedView = selected
+    ? skillView(state, current.id, selected.id, targetId, definition)
+    : null;
+  const attack = enemy
+    ? damageRange(state, current.id, enemy.id, 0, definition)
+    : [0, 0];
   const action = (
     type: Extract<GameCommand["payload"], { type: "combat" }>["action"],
     target?: string,
-  ) =>
+  ) => {
+    setSkillId(null);
     dispatch({
       type: "combat",
       convoyId: state.player.convoyId,
@@ -39,29 +75,91 @@ export function CombatPanel({
       action: type,
       ...(target ? { targetId: target } : {}),
     });
+  };
   const peaceful =
+    !encounter &&
     definition.campaign?.rival &&
     evaluateCondition(state, definition.campaign.rival.negotiationCondition);
+  const recent = state.commandLog.at(-1)?.events ?? [];
+  const damageTo = (id: string) =>
+    recent.reduce(
+      (sum, event) =>
+        event.payload.type === "combat.action" &&
+        event.payload.targetId === id &&
+        event.payload.action !== "capture"
+          ? sum +
+            (event.payload.action === "heal"
+              ? event.payload.amount
+              : -event.payload.amount)
+          : sum,
+      0,
+    );
+  const victory = [...state.commandLog]
+    .reverse()
+    .flatMap((record) => record.events)
+    .find(
+      (event) =>
+        event.payload.type === "combat.victory" &&
+        event.payload.enemyConvoyId === combat.enemyConvoyId,
+    )?.payload;
   return (
-    <section className="panel combat-panel">
+    <section className="panel combat-panel improved-combat">
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">ĐỐI ĐẦU / ĐOÀN TRO TÀN</p>
+          <p className="eyebrow">ĐỤNG ĐỘ / {enemyName}</p>
           <h2>
             {combat.phase === "aftermath"
-              ? "Đối thủ đã gục ngã"
+              ? "★ CHIẾN THẮNG — LOOT ĐÃ VÀO KHO"
               : `Vòng ${combat.round} · Lượt của ${current.name}`}
           </h2>
         </div>
-        <span className="badge danger">CHIẾN ĐẤU</span>
+        <span className="badge danger">
+          {combat.phase === "active"
+            ? "CHỌN MỤC TIÊU → HÀNH ĐỘNG"
+            : "XỬ LÝ HẬU CHIẾN"}
+        </span>
       </div>
+      <div className="turn-order" aria-label="Thứ tự lượt">
+        {combat.turnOrder.map((id) => (
+          <span
+            key={id}
+            className={`${id === current.id ? "current-turn" : ""} ${state.actors[id]?.status !== "active" ? "turn-skipped" : ""}`}
+          >
+            {id === current.id ? "▶ " : ""}
+            {state.actors[id]?.name}
+            <small>{state.actors[id]?.health} HP</small>
+          </span>
+        ))}
+      </div>
+      {combat.phase === "aftermath" && (
+        <div className="victory-loot">
+          <strong>Đối thủ bị hạ. Bạn quyết định ai được sống.</strong>
+          {victory?.type === "combat.victory" && (
+            <p>
+              Nhận <Costs resources={victory.rewards} /> · +{victory.xp}{" "}
+              XP/người. Nhấp nhân vật trên map để dùng điểm nâng sau trận.
+            </p>
+          )}
+          <p>
+            Bắt giữ người gục ngã để giữ họ sống. Kết thúc ngay sẽ bỏ lại người
+            chưa bắt.
+          </p>
+        </div>
+      )}
       <div className="battlefield">
         <div className="team">
-          <p className="eyebrow">ĐOÀN CỦA BẠN</p>
+          <p className="eyebrow">
+            ĐOÀN XE{" "}
+            {selected?.target === "ally"
+              ? "· CHỌN NGƯỜI NHẬN KỸ NĂNG"
+              : "· HEALTH / NĂNG LƯỢNG"}
+          </p>
           {allies.map((actor) => (
-            <div
-              className={`fighter ${actor.id === current.id ? "acting" : ""} ${actor.status !== "active" ? "incapacitated" : ""}`}
-              key={actor.id}
+            <button
+              key={`${actor.id}-${state.commandLog.length}`}
+              className={`fighter ${current.id === actor.id ? "acting" : ""} ${selected?.target === "ally" && ally?.id === actor.id ? "selected" : ""} ${actor.status !== "active" ? "incapacitated" : ""}`}
+              onClick={() => setAllyTargetId(actor.id)}
+              aria-label={`Chọn đồng đội ${actor.name}`}
             >
               <div className="fighter-heading">
                 <AssetArt
@@ -83,27 +181,43 @@ export function CombatPanel({
                 label="HP"
                 danger={actor.health < actor.maxHealth / 3}
               />
+              <span className="energy-pips">
+                {Array.from(
+                  { length: actor.attributes?.maxEnergy ?? 6 },
+                  (_, i) => (
+                    <i
+                      key={i}
+                      className={i < (actor.energy ?? 0) ? "filled" : ""}
+                    />
+                  ),
+                )}
+              </span>
               <small>
-                Năng lượng {actor.energy ?? 0} /{" "}
-                {actor.attributes?.maxEnergy ?? 0}
+                {actor.energy}/{actor.attributes?.maxEnergy} NL{" "}
                 {combat.defendedActorIds.includes(actor.id)
-                  ? " · Phòng thủ"
+                  ? "· PHÒNG THỦ 50%"
                   : ""}
               </small>
-            </div>
+              {damageTo(actor.id) !== 0 && (
+                <span
+                  className={`floating-delta ${damageTo(actor.id) > 0 ? "gain" : "loss"}`}
+                >
+                  {damageTo(actor.id) > 0 ? "+" : ""}
+                  {damageTo(actor.id)} HP
+                </span>
+              )}
+            </button>
           ))}
         </div>
         <span className="versus">VS</span>
         <div className="team">
-          <p className="eyebrow">TRO TÀN · CHỌN MỤC TIÊU</p>
+          <p className="eyebrow">{enemyName} · CHẠM ĐỂ CHỌN MỤC TIÊU</p>
           {enemies.map((actor) => (
             <button
-              className={`fighter target ${activeTarget?.id === actor.id ? "selected" : ""} ${actor.status !== "active" ? "incapacitated" : ""}`}
-              key={actor.id}
-              disabled={
-                actor.status !== "active" && combat.phase !== "aftermath"
-              }
-              onClick={() => setTargetId(actor.id)}
+              key={`${actor.id}-${state.commandLog.length}`}
+              className={`fighter target ${enemy?.id === actor.id ? "selected" : ""} ${actor.status !== "active" ? "incapacitated" : ""}`}
+              disabled={actor.status !== "active"}
+              onClick={() => setEnemyTargetId(actor.id)}
               aria-label={`Chọn ${actor.name}`}
             >
               <div className="fighter-heading">
@@ -126,83 +240,117 @@ export function CombatPanel({
                 label="HP"
                 danger
               />
+              {enemy?.id === actor.id && actor.status === "active" && (
+                <small className="target-selected">◎ ĐANG NHẮM</small>
+              )}
+              {damageTo(actor.id) !== 0 && (
+                <span className="floating-delta loss">
+                  {damageTo(actor.id)} HP
+                </span>
+              )}
             </button>
           ))}
         </div>
       </div>
-      <div className="battle-actions">
-        {combat.phase === "aftermath" ? (
-          <>
-            {enemies
-              .filter((actor) => actor.status === "downed")
-              .map((actor) => (
-                <button
-                  className="button"
-                  key={actor.id}
-                  onClick={() => action("capture", actor.id)}
-                >
-                  Bắt giữ {actor.name}
-                </button>
-              ))}
-            <button className="button primary" onClick={() => action("finish")}>
-              Kết thúc trận · Bỏ lại người chưa bắt
-            </button>
-          </>
-        ) : (
-          <>
+      {combat.phase === "aftermath" ? (
+        <div className="battle-actions">
+          {enemies
+            .filter((actor) => actor.status === "downed")
+            .map((actor) => (
+              <button
+                className="button"
+                key={actor.id}
+                onClick={() => action("capture", actor.id)}
+              >
+                Bắt giữ {actor.name} · 1h
+              </button>
+            ))}
+          <button className="button primary" onClick={() => action("finish")}>
+            Kết thúc trận · Bỏ lại người chưa bắt
+          </button>
+        </div>
+      ) : (
+        <>
+          <div className="battle-actions primary-actions">
             <button
               className="button primary"
-              disabled={!activeTarget}
-              onClick={() => action("attack", activeTarget?.id)}
+              disabled={!enemy}
+              onClick={() => action("attack", enemy?.id)}
             >
-              Tấn công {activeTarget?.name}
+              Tấn công {enemy?.name} · {attack[0]}–{attack[1]} HP
             </button>
             <button className="button" onClick={() => action("defend")}>
-              Phòng thủ
+              Phòng thủ · giảm 50% damage
             </button>
-            {(current.skillIds ?? []).map((id) => {
-              const skill = definition.campaign?.skills.find(
-                (entry) => entry.id === id,
-              );
-              if (!skill || skill.target === "exploration") return null;
-              const disabled =
-                (current.energy ?? 0) < skill.energyCost ||
-                (current.cooldowns?.[id] ?? 0) > state.world.tick + 1;
-              const ally = [...allies]
-                .filter(
-                  (actor) =>
-                    actor.status !== "dead" && actor.status !== "captured",
-                )
-                .sort(
-                  (a, b) => a.health / a.maxHealth - b.health / b.maxHealth,
-                )[0];
-              const target =
-                skill.target === "enemy"
-                  ? activeTarget?.id
-                  : skill.target === "ally"
+          </div>
+          <div className="combat-skill-picker">
+            <p className="eyebrow">
+              KỸ NĂNG CỦA {current.name} · CHỌN ĐỂ XEM HIỆU QUẢ
+            </p>
+            <div>
+              {(current.skillIds ?? []).map((id) => {
+                const skill = definition.campaign?.skills.find(
+                  (entry) => entry.id === id,
+                );
+                if (!skill || skill.target === "exploration") return null;
+                const target =
+                  skill.target === "ally"
                     ? ally?.id
-                    : current.id;
-              return (
+                    : skill.target === "self"
+                      ? current.id
+                      : enemy?.id;
+                const v = skillView(state, current.id, id, target, definition);
+                return (
+                  <button
+                    className={`button skill-button ${selected?.id === id ? "chosen" : ""}`}
+                    key={id}
+                    disabled={!v.enabled}
+                    title={v.reason || skill.description}
+                    onClick={() => setSkillId(id)}
+                  >
+                    <strong>{skill.name}</strong>
+                    <small>
+                      {v.impact} · {skill.energyCost} NL
+                      {v.cooldown ? ` · hồi ${v.cooldown}h` : ""}
+                    </small>
+                  </button>
+                );
+              })}
+            </div>
+            {selected && selectedView && (
+              <div className="ability-preview">
+                <div>
+                  <strong>
+                    {selected.name} → {state.actors[targetId ?? ""]?.name}
+                  </strong>
+                  <p>{selected.description}</p>
+                  <b>{selectedView.impact}</b>
+                  <small>
+                    {selected.energyCost} năng lượng · hồi{" "}
+                    {selected.cooldownTicks} giờ ·{" "}
+                    <Costs resources={selectedView.costs ?? selected.costs} />
+                  </small>
+                </div>
                 <button
-                  className="button skill-button"
-                  key={id}
-                  title={skill.description}
-                  disabled={disabled || !target}
-                  onClick={() =>
+                  className="button primary"
+                  disabled={!selectedView.enabled}
+                  onClick={() => {
                     dispatch({
                       type: "use-skill",
                       convoyId: state.player.convoyId,
                       actorId: current.id,
-                      skillId: id,
-                      ...(target ? { targetId: target } : {}),
-                    })
-                  }
+                      skillId: selected.id,
+                      ...(targetId ? { targetId } : {}),
+                    });
+                    setSkillId(null);
+                  }}
                 >
-                  {skill.name} · {skill.energyCost} NL
-                  {skill.target === "ally" && ally ? ` → ${ally.name}` : ""}
+                  Thi triển {selected.name}
                 </button>
-              );
-            })}
+              </div>
+            )}
+          </div>
+          <div className="battle-actions secondary-actions">
             {enemies
               .filter((actor) => actor.status === "downed")
               .map((actor) => (
@@ -217,6 +365,11 @@ export function CombatPanel({
             <button
               className="button"
               disabled={!peaceful}
+              title={
+                encounter
+                  ? "Bọn cướp không chấp nhận đàm phán."
+                  : "Cần manh mối hoặc Hà."
+              }
               onClick={() => action("negotiate")}
             >
               Đàm phán
@@ -228,25 +381,25 @@ export function CombatPanel({
               }
               onClick={() => action("retreat")}
             >
-              Rút lui · 2 nhiên liệu · 80%
+              Rút lui · 2 fuel · 80%
             </button>
             <button
               className="button danger-button"
               onClick={() => action("surrender")}
             >
-              Đầu hàng · Giao kỳ vật
+              Đầu hàng · mất kỳ vật
             </button>
-          </>
-        )}
-      </div>
+          </div>
+        </>
+      )}
       <div className="combat-log" aria-live="polite">
-        {combat.log.slice(-5).map((line, index) => (
-          <p key={`${index}-${line}`}>{line}</p>
+        {combat.log.slice(-6).map((line, i) => (
+          <p key={i}>{line}</p>
         ))}
       </div>
-      <p className="muted footnote">
-        Mỗi hành động tiêu 1 giờ và khẩu phần. Kết thúc trận sẽ bỏ lại người
-        chưa bắt; họ không còn sống sót.
+      <p className="footnote muted">
+        Mỗi lượt tiêu 1 giờ và khẩu phần. Enemy AI sẽ hành động khi hết lượt
+        người trên xe. Đổi thế đánh/huấn luyện thực hiện ngoài trận.
       </p>
     </section>
   );

@@ -1,6 +1,7 @@
 @import "./styles/menu.css";
 @import "./styles/map.css";
 @import "./styles/panels.css";
+@import "./styles/playability.css";
 :root {
   font-family: "Segoe UI", system-ui, sans-serif;
   color: #e7e9de;

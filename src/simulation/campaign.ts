@@ -172,7 +172,11 @@ export function playCampaign(
         policy === "ruthless"
           ? ["fight", "leave-ha", "ignore-patient", ...common]
           : policy === "combat" || policy === "surrender"
-            ? ["fight", ...common]
+            ? [
+                ...(policy === "combat" ? ["raid-cache"] : []),
+                "fight",
+                ...common,
+              ]
             : policy === "trade"
               ? ["trade-mirror", ...common]
               : policy === "fallback"
@@ -197,12 +201,12 @@ export function playCampaign(
           rejectedCommands: 0,
           issue: "no-affordable-choice",
         };
+      const combatEffect = selected.outcomes
+        .flatMap((outcome) => outcome.effects)
+        .find((effect) => effect.op === "combat");
       if (
-        selected.outcomes.some((outcome) =>
-          outcome.effects.some((effect) => effect.op === "combat"),
-        ) &&
-        definition.campaign?.rival &&
-        state.convoys[definition.campaign.rival.id]?.locationId !==
+        combatEffect?.op === "combat" &&
+        state.convoys[combatEffect.enemyConvoyId]?.locationId !==
           convoy.locationId
       )
         command = waitCommand(state, 1);

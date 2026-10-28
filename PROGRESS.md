@@ -1,10 +1,24 @@
 # LAST CONVOY — tiến trình chung và điểm tiếp tục
 
 **Cập nhật:** 2026-10-28, Asia/Ho_Chi_Minh.
+**HIỆN TẠI — R1 ĐÃ TRIỂN KHAI, ĐANG CHỐT CHECKPOINT GIT:** hoàn tất đợt sửa theo phản hồi game nhàm chán. Kế hoạch trước code: [PLAYABILITY_PLAN.md](PLAYABILITY_PLAN.md). Báo cáo chi tiết: [PLAYABILITY_REPORT.md](PLAYABILITY_REPORT.md). Các phần Phase 0–5 bên dưới là lịch sử.
+
+### Điểm tiếp tục mới nhất — R1 (2026-10-28)
+
+- `src/expedition/`: scout cache/XP một lần, intel giảm risk tuyến có hạn; nghỉ hồi HP/energy, repair tiêu scrap; progression/points/upgrades/stances có hiệu lực combat. Config training/stance là command 0 tick.
+- Encounter chợ: 2 đối thủ 46/40 HP, loot thật và 10 XP; không giải nhầm main rival. 12 event, boss màn 3 còn nguyên. Tro Tàn tiếp tục clock khi đánh encounter phụ. Đã chặn attack/skill target ngoài battle hiện tại.
+- `src/read-models/` và UI: crew HP/energy/công/thủ/điểm ngay trên map; chọn nhân vật mở training/stance/skill tại chỗ. Command deck có tổng cost/benefit, action report có costs/gains/net/HP/energy/xe/XP/quests/ownership. Combat chọn target/skill rồi cast, damage preview cùng formula resolver. Cấp cứu ngoài trận và Linh cảm có scout sâu.
+- `src/client/audio.ts`: Web Audio procedural ambient/cues, mute/volume lưu preference. Browser xác minh context running sau click, mute/unmute và volume 0/100/40; chưa human listening review.
+- Bundle `.4` snapshot trong `src/content/archive/`; `.5-r1` mới dùng slot riêng. Genuine fixtures từ Git `8f987d7` (mid/completed/waited) load/replay nguyên snapshot. Tải manual trong legacy vẫn dùng slot legacy.
+- **Gate cuối:** `npm exec --yes --package=node@24 -- npm run check`: **103 tests / 5 files pass**, validators/typecheck/build pass. Build có warning Zod annotation và JS ~534 KB (gzip ~157 KB). `git diff --check` pass, không thấy Math.random/Date.now/eval trong modules gameplay.
+- Browser production seed42: scout/training/stance → chợ combat/capture → nghỉ/sửa/Cấp cứu → hospital Sense/records/patient → mirror bị NPC lấy trước → main combat/loot/capture/care → **ending.shared-dawn**, T40, 4 người/1 kỳ vật/xe100%, food3. Save → rest → load khôi phục đúng HUD/crew/tick. Console production và dev trực tiếp không có warning/error ghi nhận.
+- Mobile harness390×844: scout/result, training/stance, chọn target và cast Phá giáp 33 HP hoạt động; screenshot trong `artifacts/r1-*`. Harness có log MutationObserver riêng, không tái hiện khi mở game dev/prod trực tiếp; không gán chắc nguồn lỗi cho game.
+- Simulation R1 cuối300 seed: **2.400 runs / 1.800 thắng / 600 thua hợp lệ / 0 softlocks / 0 rejected**, **2.400 save/load+replay khớp**, issue list rỗng, max32 commands. `artifacts/r1-simulation.json` chứa batch cuối; không cộng batch100 trước vì trùng seed.
+- NEXT: commit/push main thường và đối chiếu remote SHA. Preview4173 đã reload build mới, menu R1 sẵn. Sau bàn giao chờ human playtest/review; không tự mở scope asset/animation.
 **Ủy quyền hiện tại:** người dùng yêu cầu triển khai đến hết Phase 5; lập plan chi tiết trước mỗi phase và giữ file tiến trình chung để tiếp tục khi hết token/context. Cho phép đồng bộ code lên repository đã chỉ định.
 **Kế hoạch:** [PHASE_PLANS.md](PHASE_PLANS.md). **Repository:** https://github.com/phamhuyhoang95/Doomsday-Convoy, branch `main`, SSH origin.
 
-**HIỆN TẠI: PHASE 0–5 ĐÃ HOÀN TẤT.** Gate cuối **86 tests / 4 files pass**, validators/typecheck/production build pass, clean install pass, audit 0 vulnerabilities. Campaign `.4` có **2.400 runs / 1.800 wins / 600 valid losses / 0 softlocks / 0 rejected commands**, mọi save/load+replay khớp. Đã chơi production tới 2 kết cục khác nhau và giữ bản preview tại **http://127.0.0.1:4173**. Chi tiết: [QA_REPORT.md](QA_REPORT.md). Checkpoint code **`ba483d0` đã push lên origin/main và đối chiếu remote SHA**. Không còn bước triển khai Phase 0–5 mở.
+**LỊCH SỬ CHECKPOINT PHASE 0–5.** Gate khi đó **86 tests / 4 files pass**, validators/typecheck/production build pass, clean install pass, audit 0 vulnerabilities. Campaign `.4` có **2.400 runs / 1.800 wins / 600 valid losses / 0 softlocks / 0 rejected commands**, mọi save/load+replay khớp. Đã chơi production tới 2 kết cục khác nhau. Chi tiết: [QA_REPORT.md](QA_REPORT.md). Checkpoint code **`ba483d0` đã push lên origin/main và đối chiếu remote SHA**.
 
 ## Trạng thái phase
 

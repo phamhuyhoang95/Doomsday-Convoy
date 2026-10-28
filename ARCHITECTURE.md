@@ -13,6 +13,8 @@ Core không phụ thuộc React/DOM/storage/network. Trên server tương lai, a
 | src/core | State/version, RNG, command processor, invariants, resources, events và replay |
 | src/world | Graph definition/schema/reference validation, access và route costs |
 | src/content | Content versioned theo ID ổn định |
+| src/expedition | Recon/intel/cache, rest/repair và progression/upgrades/stances |
+| src/read-models | Skill/effect preview và transition report từ state/domain events |
 | src/persistence | Save envelope, migration, load/replay verification và injected storage |
 | src/simulation | Các bot/scenario dùng đúng command API |
 | scripts | CLI và filesystem adapters |
@@ -25,11 +27,15 @@ Core không phụ thuộc React/DOM/storage/network. Trên server tương lai, a
 
 Mulberry32-v1 lưu seed/state/draw count, không dùng Math.random hoặc đồng hồ hệ thống. ID event và sequence phụ thuộc state. Cùng initial seed + engine/content version + command history tạo cùng state/events. Canonical JSON loại khác biệt thứ tự object keys.
 
-Hiện tại state/save schema **v3**, engine 0.1.0, logistics content `0.1.0-foundation.1`, campaign content `0.1.0-campaign.4`. Save chứa snapshot và accepted-command log, load replay toàn bộ và đối chiếu. Có migration development envelope v0, logistics state/save v1 và v2; future version bị từ chối. Đây là kiểm tra integrity, không phải chữ ký chống gian lận. Chỉ load đúng phiên bản content; migration schema không tự biến đổi rules/content cũ. Muốn hỗ trợ campaign cũ cần giữ bundle rules/content tương ứng, chưa có kho bundle lịch sử trong MVP.
+Hiện tại state/save schema **v3**, engine 0.1.0, logistics content `0.1.0-foundation.1`, campaign mới `0.1.0-campaign.5-r1`. Các fields operations/progression là optional additive. Rules mới được bật bởi campaign.operations; bundle `.4` tại `src/content/archive/campaign-v4.json` giữ command semantics cũ. Fixtures được tạo bằng code Git `8f987d7` kiểm tra snapshot/replay cũ thật. `src/persistence/compatible.ts` chọn definition và namespace slot đúng, không âm thầm fallback khi save R1 hỏng. Trong một chuyến legacy, tải thủ công vẫn dùng slot legacy.
+
+Save chứa snapshot và accepted-command log, load replay toàn bộ và đối chiếu. Có migration development envelope v0, logistics state/save v1 và v2; future version bị từ chối. Đây là kiểm tra integrity, không phải chữ ký chống gian lận. Chỉ load đúng phiên bản content; migration schema không tự biến đổi rules/content cũ.
 
 ## Rule logistics
 
 Tick 60 phút. Living crew tiêu food/water từng tick; travel thêm fuel và roll hazard. Event/combat/skill/investigate đều tiêu 1 tick, wait 1–12 ticks. Travel là turn nguyên tử, arrival được ghi nhận kể cả nếu xe bị phá hủy trên đường (thua). Refuge cho phép đến bằng khẩu phần cuối; ở nơi khác thiếu một tick supplies sẽ thua. Invalid command không ghi log hoặc tiêu RNG.
+
+R1: train-actor/set-stance là command hợp lệ **0 tick**, vẫn log/replay nhưng không tiêu khẩu phần. Recon lưu theo location: cache/XP một lần, intel có hạn giảm riskBps thực tế của travel. Nghỉ hồi HP/energy người active; repair tiêu scrap và hồi condition có trần. Dữ liệu rest/recon/progression/upgrades/stances nằm trong content, không nằm trong React.
 
 Sau player action, rival xử lý các hành động đến hạn trên world clock, quest contracts cập nhật, event director chọn situation eligible và terminal condition được giải. Enemy combat actions chạy tới lượt player tiếp theo trong cùng transaction. Kết quả terminal ưu tiên xe/crew còn hoạt động, sau đó ending contract theo facts/ownership, rồi thất bại supplies. Không có background timer.
 
@@ -38,6 +44,8 @@ Sau player action, rival xử lý các hành động đến hạn trên world cl
 Một turn order chứa actor IDs, một player action mỗi lượt, energy/cooldown theo actor. Damage/heal/guard/reveal là operator kỹ năng; không switch theo skill ID. Enemy AI dùng RNG riêng của state. Combat victory chuyển loot/owner ngay và sang aftermath cho capture/finish; finish bỏ lại downed NPC thành dead. Surrender giao kỳ vật, retreat tiêu fuel và có xác suất thành công. Captives vẫn giữ convoy gốc để truy nguyên, status/facts ghi việc bị player bắt (MVP có một captor).
 
 Artifact definition bất biến; mỗi loại có một instance và ownerId nằm trong convoy/location registry. Rescue thay roster và chi phí khẩu phần. NPC có convoy/vehicle/resources/location/goal/intent/nextActionTick; có thể sở hữu cùng mirror instance và làm nhánh ward chuyển sang truy dấu.
+
+Encounter phụ dùng roster/resources/location/terminal fact IDs từ content. Thắng/capture/retreat ở chợ không giải nhầm main rival; Tro Tàn tiếp tục clock khi người chơi đánh encounter phụ. Damage command/skill chỉ nhắm actor tham gia trận hiện tại. UI damage range dùng cùng formula với resolver. Transition report dùng trước/sau và events, không tự thay đổi state. Web Audio nằm hoàn toàn trong client, không đi vào RNG/log/save gameplay.
 
 Validator tĩnh kiểm tra schema/operators/IDs/refs/weights/costs/free fallback/dependency cycles/ending fallback và các contract rõ ràng không có terminal. Nó không chứng minh SAT cho mọi condition hoặc tính solvable của mọi trạng thái; scenario/bot tests kiểm tra các tuyến quan trọng và fallback cụ thể.
 

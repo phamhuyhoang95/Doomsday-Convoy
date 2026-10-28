@@ -1,6 +1,6 @@
 # LAST CONVOY — quy ước cho coding agent
 
-MVP Phase 0–5 đã hoàn tất; đọc trạng thái mới nhất trong `PROGRESS.md` trước khi làm việc. Không triển khai lại hoặc tự mở rộng scope khi người dùng chưa yêu cầu.
+MVP Phase 0–5 và đợt cải thiện R1 đã hoàn tất; đọc trạng thái mới nhất trong `PROGRESS.md` trước khi làm việc. Không triển khai lại hoặc tự mở rộng scope khi người dùng chưa yêu cầu. R1 plan/report nằm trong `PLAYABILITY_PLAN.md` và `PLAYABILITY_REPORT.md`.
 
 ## Phạm vi và kiến trúc
 

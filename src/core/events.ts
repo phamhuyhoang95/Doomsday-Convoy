@@ -10,6 +10,55 @@ export type FailureReason = z.infer<typeof failureReasonSchema>;
 const payloadSchema = z.discriminatedUnion("type", [
   z
     .object({
+      type: z.literal("expedition.scouted"),
+      locationId: idSchema,
+      firstVisit: z.boolean(),
+      expiresAt: z.number().int().nonnegative(),
+      riskReductionBps: z.number().int().nonnegative(),
+      rewards: resourcesSchema,
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("expedition.rested"),
+      ticks: z.number().int().positive(),
+      healthRestored: z.number().int().nonnegative(),
+      energyRestored: z.number().int().nonnegative(),
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("vehicle.repaired"),
+      amount: z.number().int().positive(),
+      scrapCost: z.number().int().positive(),
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("actor.progressed"),
+      actorId: idSchema,
+      xp: z.number().int().nonnegative(),
+      pointsGained: z.number().int().nonnegative(),
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("actor.configured"),
+      actorId: idSchema,
+      upgradeId: idSchema.optional(),
+      stanceId: idSchema.optional(),
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("combat.victory"),
+      enemyConvoyId: idSchema,
+      rewards: resourcesSchema,
+      xp: z.number().int().nonnegative(),
+    })
+    .strict(),
+  z
+    .object({
       type: z.literal("resources.consumed"),
       convoyId: idSchema,
       costs: resourcesSchema,

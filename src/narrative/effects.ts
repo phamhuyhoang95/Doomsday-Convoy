@@ -6,6 +6,7 @@ import type { Effect } from "./schema";
 import { createActor } from "../core/actors";
 import { startCombat } from "../combat/engine";
 import { establishFact } from "../core/facts";
+import { initializeProgression } from "../expedition/progression";
 
 export type Emit = (payload: DomainEventPayload) => void;
 /** Called only on the command transaction's cloned state, never directly from content/UI. */
@@ -70,6 +71,7 @@ export function applyEffects(
         );
         if (!character) throw new Error("Unknown rescue character");
         state.actors[effect.actorId] = createActor(character, convoy.id, true);
+        initializeProgression(state.actors[effect.actorId]!, definition);
         convoy.actorIds.push(effect.actorId);
         break;
       }

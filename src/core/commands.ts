@@ -52,6 +52,25 @@ const skillSchema = z
     targetId: idSchema.optional(),
   })
   .strict();
+const repairSchema = z
+  .object({ type: z.literal("repair"), convoyId: idSchema })
+  .strict();
+const trainSchema = z
+  .object({
+    type: z.literal("train-actor"),
+    convoyId: idSchema,
+    actorId: idSchema,
+    upgradeId: idSchema,
+  })
+  .strict();
+const stanceSchema = z
+  .object({
+    type: z.literal("set-stance"),
+    convoyId: idSchema,
+    actorId: idSchema,
+    stanceId: idSchema,
+  })
+  .strict();
 
 export const commandSchema = z
   .object({
@@ -64,6 +83,9 @@ export const commandSchema = z
       investigateSchema,
       combatSchema,
       skillSchema,
+      repairSchema,
+      trainSchema,
+      stanceSchema,
     ]),
   })
   .strict();

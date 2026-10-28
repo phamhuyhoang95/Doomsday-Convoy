@@ -1,14 +1,19 @@
 import { useState } from "react";
-import { campaignDefinition as definition } from "../content/campaign";
+import { DefinitionContext, useDefinition } from "./definition";
 import { RESOURCE_IDS } from "../core/primitives";
 import type { GameState } from "../core/state-schema";
 import { CombatPanel } from "./components/CombatPanel";
-import { Convoy, Inventory } from "./components/Convoy";
+import { Inventory } from "./components/Convoy";
 import { EventPanel } from "./components/EventPanel";
 import { DebugPanel, Journal } from "./components/Journal";
 import { Meter, resourceLabels, resourceSymbols } from "./components/shared";
 import { WorldMap } from "./components/WorldMap";
 import { useGame } from "./use-game";
+import { AudioControl } from "./components/AudioControl";
+import { CrewConsole } from "./components/CrewConsole";
+import { ActionDeck } from "./components/ActionDeck";
+import { ActionReportPanel } from "./components/ActionReport";
+import { operationPreview } from "../expedition/read-model";
 
 function Brand() {
   return (
@@ -25,9 +30,11 @@ function Brand() {
 function MainMenu({
   start,
   load,
+  audio,
 }: {
   start: (seed: number) => void;
   load: (slot?: string) => void;
+  audio: ReturnType<typeof useGame>["audio"];
 }) {
   const [seed, setSeed] = useState("42");
   const [error, setError] = useState("");
@@ -35,7 +42,8 @@ function MainMenu({
     <div className="menu-shell">
       <header>
         <Brand />
-        <span className="badge">MVP v0.1</span>
+        <AudioControl audio={audio} />
+        <span className="badge">R1 · CHIẾN ĐẤU & SINH TỒN</span>
       </header>
       <main className="menu-main">
         <div className="menu-copy">
@@ -48,6 +56,11 @@ function MainMenu({
           <p className="menu-description">
             Thành phố đã tắt đèn. Tiếng gọi vẫn vọng ra từ bệnh viện. Bạn còn
             một đoàn xe, ba người sống sót và một cơ hội tới Bắc Sơn.
+          </p>
+          <p className="r1-menu-note">
+            Mới: đột kích kho chợ bằng combat theo lượt, huấn luyện và thế đánh,
+            trinh sát có cache/intel, nghỉ hồi sức, sửa xe, âm thanh và bảng hậu
+            quả ngay sau mỗi hành động.
           </p>
           <form
             onSubmit={(event) => {
@@ -95,6 +108,9 @@ function MainMenu({
             <button className="text-button" onClick={() => load("manual")}>
               Tải bản lưu thủ công
             </button>
+            <button className="text-button" onClick={() => load("legacy")}>
+              Tải hành trình v0.1 cũ
+            </button>
           </div>
           <div className="menu-guidance">
             <span>01 · RỜI THÀNH PHỐ</span>
@@ -130,6 +146,7 @@ function MainMenu({
 }
 
 function Ending({ state }: { state: GameState }) {
+  const definition = useDefinition();
   const convoy = state.convoys[state.player.convoyId];
   const ending = definition.campaign?.endings.find(
     (entry) => entry.id === state.ending?.id,
@@ -196,6 +213,7 @@ function Ending({ state }: { state: GameState }) {
 }
 
 function RecentLog({ state }: { state: GameState }) {
+  const definition = useDefinition();
   const rows = state.commandLog
     .flatMap((record) =>
       record.events.flatMap((event) => {
@@ -226,6 +244,54 @@ function RecentLog({ state }: { state: GameState }) {
               text: `Chướng ngại trên đường. Xe hư hại ${payload.damage}.`,
             },
           ];
+        if (payload.type === "expedition.scouted")
+          return [
+            {
+              id: event.id,
+              tick: event.tick,
+              text: `Trinh sát: giảm ${payload.riskReductionBps / 100}% rủi ro đến T${payload.expiresAt}${payload.firstVisit ? ", đã nhận cache và XP." : ", cache đã lấy trước đó."}`,
+            },
+          ];
+        if (payload.type === "expedition.rested")
+          return [
+            {
+              id: event.id,
+              tick: event.tick,
+              text: `Nghỉ ${payload.ticks}h: +${payload.healthRestored} HP, +${payload.energyRestored} năng lượng.`,
+            },
+          ];
+        if (payload.type === "vehicle.repaired")
+          return [
+            {
+              id: event.id,
+              tick: event.tick,
+              text: `Sửa xe: +${payload.amount} tình trạng, −${payload.scrapCost} phế liệu.`,
+            },
+          ];
+        if (payload.type === "combat.victory")
+          return [
+            {
+              id: event.id,
+              tick: event.tick,
+              text: `Thắng trận: +${payload.rewards.food} food, +${payload.rewards.water} water, +${payload.xp} XP/người. Loot đã vào kho.`,
+            },
+          ];
+        if (payload.type === "combat.ended")
+          return [
+            {
+              id: event.id,
+              tick: event.tick,
+              text: `Trận chiến kết thúc: ${{ victory: "chiến thắng", defeat: "thất bại", retreat: "rút lui", negotiated: "đàm phán", surrendered: "đầu hàng" }[payload.result]}.`,
+            },
+          ];
+        if (payload.type === "actor.configured")
+          return [
+            {
+              id: event.id,
+              tick: event.tick,
+              text: `${state.actors[payload.actorId]?.name}: ${payload.upgradeId ? "đã dùng 1 điểm huấn luyện" : "đã đổi thế đánh"}, không trôi giờ.`,
+            },
+          ];
         return [];
       }),
     )
@@ -252,6 +318,15 @@ function RecentLog({ state }: { state: GameState }) {
 
 export default function App() {
   const game = useGame();
+  return (
+    <DefinitionContext.Provider value={game.definition}>
+      <GameView game={game} />
+    </DefinitionContext.Provider>
+  );
+}
+
+function GameView({ game }: { game: ReturnType<typeof useGame> }) {
+  const definition = useDefinition();
   const [tab, setTab] = useState("map");
   const state = game.state;
   const toast = game.message && (
@@ -275,6 +350,7 @@ export default function App() {
             game.start(seed);
           }}
           load={game.load}
+          audio={game.audio}
         />
         {toast}
       </>
@@ -292,6 +368,7 @@ export default function App() {
   const alive = convoy.actorIds.filter(
     (id) => state.actors[id]?.status !== "dead",
   ).length;
+  const operations = operationPreview(state, "wait", definition);
   const tabs = [
     ["map", "Bản đồ hành trình"],
     ["crew", "Đoàn xe"],
@@ -313,6 +390,7 @@ export default function App() {
           <strong>{String(hour).padStart(2, "0")}:00</strong>
         </div>
         <div className="save-controls">
+          <AudioControl audio={game.audio} />
           <button className="button subtle" onClick={game.save}>
             Lưu game
           </button>
@@ -327,13 +405,19 @@ export default function App() {
       <div className="resource-bar">
         {RESOURCE_IDS.map((id) => (
           <div
-            className={`resource ${convoy.resources[id] < 6 ? "low" : ""}`}
-            key={id}
+            className={`resource ${convoy.resources[id] < 6 ? "low" : ""} ${game.report?.net[id] ? (game.report.net[id] > 0 ? "resource-gained" : "resource-spent") : ""}`}
+            key={`${id}-${game.report?.id ?? "start"}`}
           >
             <span className="resource-icon">{resourceSymbols[id]}</span>
             <span>
               <small>{resourceLabels[id]}</small>
               <strong>{convoy.resources[id]}</strong>
+              {!!game.report?.net[id] && (
+                <em className="resource-change">
+                  {game.report.net[id] > 0 ? "+" : ""}
+                  {game.report.net[id]}
+                </em>
+              )}
             </span>
           </div>
         ))}
@@ -351,6 +435,12 @@ export default function App() {
         </div>
       </div>
       <main className="game-main">
+        {!definition.campaign?.operations && (
+          <div className="legacy-banner">
+            Hành trình v0.1 được giữ nguyên rules/save. Bắt đầu chuyến mới từ
+            Menu để chơi trinh sát, huấn luyện và encounter R1.
+          </div>
+        )}
         <div className="location-heading">
           <div>
             <p className="eyebrow">
@@ -385,6 +475,32 @@ export default function App() {
             </button>
           ))}
         </nav>
+        {tab === "map" && (
+          <>
+            <div className="reserve-line">
+              <span>
+                Khẩu phần còn khoảng{" "}
+                <strong>{operations.reserveHours} giờ</strong>
+              </span>
+              <span>
+                Mỗi giờ: {operations.costs.food} food + {operations.costs.water}{" "}
+                water · đang có {convoy.vehicle.condition}% xe
+              </span>
+              {state.campaign?.operations?.recon[convoy.locationId] && (
+                <span className="intel-badge">
+                  ⌖ Intel{" "}
+                  {Math.max(
+                    0,
+                    state.campaign.operations.recon[convoy.locationId]!
+                      .expiresAt - state.world.tick,
+                  )}
+                  h
+                </span>
+              )}
+            </div>
+            <CrewConsole state={state} dispatch={game.dispatch} compact />
+          </>
+        )}
         {tab === "map" ? (
           <>
             {state.status !== "active" ? (
@@ -401,47 +517,18 @@ export default function App() {
               <RecentLog state={state} />
               <section className="panel action-panel">
                 <p className="eyebrow">QUYỀN CHỈ HUY</p>
-                <h3>Mỗi giờ đều có giá.</h3>
+                <h3>Chiến thuật cho chặng này</h3>
                 <p className="muted">
-                  {alive} người đang cần khẩu phần. Chờ đợi cũng cho đối thủ
-                  thời gian hành động.
+                  Trinh sát làm giảm rủi ro tuyến và chỉ nhận cache một lần.
+                  Nghỉ hồi HP/năng lượng nhưng đối thủ vẫn đi. Sửa xe dùng 2 phế
+                  liệu. Nhấp nhân vật phía trên để dùng điểm nâng hoặc Cấp cứu
+                  ngoài trận.
                 </p>
-                <div>
-                  <button
-                    className="button"
-                    disabled={
-                      state.status !== "active" || Boolean(state.combat)
-                    }
-                    onClick={() =>
-                      game.dispatch({
-                        type: "wait",
-                        convoyId: convoy.id,
-                        ticks: 1,
-                      })
-                    }
-                  >
-                    Chờ 1 giờ
-                  </button>
-                  <button
-                    className="button"
-                    disabled={
-                      state.status !== "active" || Boolean(state.combat)
-                    }
-                    onClick={() =>
-                      game.dispatch({
-                        type: "investigate",
-                        convoyId: convoy.id,
-                      })
-                    }
-                  >
-                    Trinh sát · 1 giờ
-                  </button>
-                </div>
               </section>
             </div>
           </>
         ) : tab === "crew" ? (
-          <Convoy state={state} dispatch={game.dispatch} />
+          <CrewConsole state={state} dispatch={game.dispatch} />
         ) : tab === "inventory" ? (
           <Inventory state={state} />
         ) : tab === "journal" ? (
@@ -450,8 +537,16 @@ export default function App() {
           <DebugPanel state={state} />
         )}
       </main>
+      {tab === "map" && <ActionDeck state={state} dispatch={game.dispatch} />}
+      {game.report && (
+        <ActionReportPanel
+          key={game.report.id}
+          report={game.report}
+          close={game.dismissReport}
+        />
+      )}
       <footer className="game-footer">
-        <span>LAST CONVOY / MVP 0.1</span>
+        <span>LAST CONVOY / R1</span>
         <span>MỘT CHUYẾN XE. MỌI QUYẾT ĐỊNH ĐỀU CÓ HẬU QUẢ.</span>
         <span>SEED {state.initialSeed}</span>
       </footer>

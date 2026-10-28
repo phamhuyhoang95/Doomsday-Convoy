@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { campaignDefinition as definition } from "../../content/campaign";
+import { useDefinition } from "../definition";
 import type { GameCommand } from "../../core/commands";
 import { canAfford } from "../../core/resources";
 import type { GameState } from "../../core/state-schema";
@@ -25,6 +25,7 @@ export function WorldMap({
   dispatch: (payload: GameCommand["payload"]) => void;
 }) {
   const [selected, setSelected] = useState<string | null>(null);
+  const definition = useDefinition();
   const convoy = state.convoys[state.player.convoyId];
   if (!convoy) return null;
   const routes = definition.routes.filter(
@@ -187,7 +188,13 @@ export function WorldMap({
               <div>
                 <strong>{destination?.name}</strong>
                 <p>
-                  {route.travelTicks} giờ · Rủi ro {route.risk.chanceBps / 100}%{" "}
+                  {route.travelTicks} giờ · Rủi ro{" "}
+                  {(plan?.riskBps ?? route.risk.chanceBps) / 100}%{" "}
+                  {plan && plan.riskBps < route.risk.chanceBps && (
+                    <span className="intel-badge">
+                      Intel: từ {route.risk.chanceBps / 100}%
+                    </span>
+                  )}
                   {plan && <Costs resources={plan.costs} />}
                 </p>
                 {reason && (

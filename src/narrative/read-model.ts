@@ -28,7 +28,7 @@ export function choiceAvailability(
   if (!evaluateCondition(forecast, choice.requirements))
     return {
       enabled: false,
-      reason: conditionDescription(choice.requirements, definition),
+      reason: conditionDescription(choice.requirements, definition, forecast),
     };
   if (!canAfford(forecast.convoys[convoy.id]!.resources, choice.costs))
     return {
@@ -68,6 +68,7 @@ export function choiceAvailability(
 export function conditionDescription(
   condition: Condition,
   definition: WorldDefinition,
+  state?: GameState,
 ): string {
   const factText = (id: string): string =>
     definition.campaign?.facts.find((fact) => fact.id === id)?.description ??
@@ -77,11 +78,12 @@ export function conditionDescription(
       return "Không có điều kiện bổ sung";
     case "all":
       return condition.conditions
-        .map((item) => conditionDescription(item, definition))
+        .filter((item) => !state || !evaluateCondition(state, item))
+        .map((item) => conditionDescription(item, definition, state))
         .join(" · ");
     case "any":
       return condition.conditions
-        .map((item) => conditionDescription(item, definition))
+        .map((item) => conditionDescription(item, definition, state))
         .join(" hoặc ");
     case "not":
       return `Chưa: ${conditionDescription(condition.condition, definition)}`;
@@ -93,8 +95,20 @@ export function conditionDescription(
       return `Cần ${condition.atLeast} ${condition.resource}`;
     case "at":
       return `Tại ${definition.locations.find((entry) => entry.id === condition.locationId)?.name ?? condition.locationId}`;
-    case "owns":
-      return `Cần sở hữu ${definition.campaign?.artifacts.find((entry) => entry.id === condition.artifactId)?.name ?? condition.artifactId}`;
+    case "owns": {
+      const artifact =
+        definition.campaign?.artifacts.find(
+          (entry) => entry.id === condition.artifactId,
+        )?.name ?? condition.artifactId;
+      const owner = definition.locations.find(
+        (entry) => entry.id === condition.ownerId,
+      )?.name;
+      return owner
+        ? `${artifact} phải còn ở ${owner}`
+        : condition.ownerId === definition.start.convoyId
+          ? `Đoàn cần sở hữu ${artifact}`
+          : `${artifact} phải còn thuộc ${definition.campaign?.rival?.id === condition.ownerId ? definition.campaign.rival.name : condition.ownerId}`;
+    }
     case "actor":
       return `Cần ${definition.characters.find((entry) => entry.id === condition.actorId)?.name ?? condition.actorId}: ${condition.status}`;
     case "location":

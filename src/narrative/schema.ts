@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { operationsDefinitionSchema } from "../expedition/schema";
 import {
   amountSchema,
   emptyResources,
@@ -266,6 +267,33 @@ export const assetDefinitionSchema = z
   .strict();
 export const campaignContentSchema = z
   .object({
+    operations: operationsDefinitionSchema.optional(),
+    encounters: z
+      .array(
+        z
+          .object({
+            id: idSchema,
+            name: z.string(),
+            convoyId: idSchema,
+            characterIds: z.array(idSchema).min(1),
+            locationId: idSchema,
+            resources: resourcesSchema,
+            vehicle: z
+              .object({
+                id: idSchema,
+                name: z.string(),
+                maxCondition: z.number().int().positive(),
+              })
+              .strict(),
+            victoryFactId: idSchema,
+            capturedFactId: idSchema,
+            deadFactId: idSchema,
+            escapeFactId: idSchema,
+            rewardXp: z.number().int().nonnegative(),
+          })
+          .strict(),
+      )
+      .optional(),
     id: idSchema,
     texts: z.record(idSchema, z.string().min(1)),
     travelRequirements: z.record(idSchema, conditionSchema).default({}),
