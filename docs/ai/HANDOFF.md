@@ -1,12 +1,11 @@
 # Bàn giao hiện tại
 
-**Ngày:** 2026-10-28, Asia/Saigon. **Trạng thái:** test/QA tạm dừng theo yêu cầu trực tiếp của người dùng.
+**Ngày:** 2026-10-28, Asia/Saigon. **Trạng thái:** Bắt đầu triển khai đợt nâng cấp lớn R2 theo yêu cầu trực tiếp của người dùng.
 
 ## Yêu cầu mới nhất
 
-Người dùng: “dừng test lại để viết file agents.md trước và nhớ tạo thư mục để lưu trữ tất cả docs cần biết cho AI mới dùng để hiểu dự án”.
-
-Ưu tiên hiện tại là AGENTS + kho docs. Không tự chạy tiếp npm test/check/build, validator, simulation, browser QA hoặc image generation sau khi viết docs. Chờ yêu cầu tiếp tục mới hơn. Dev/preview có thể vẫn phục vụ trang; không coi server phục vụ là test cần hủy.
+Người dùng: "bắt đầu đi" — Triển khai đợt nâng cấp toàn diện R2 theo kế hoạch [R2_UPGRADE_PLAN](../plans/R2_UPGRADE_PLAN.md).
+Trọng tâm: Nâng cấp trải nghiệm chơi, sửa từ ngữ bớt word-by-word, bổ sung Game Feel / Visual Juice, phân tầng áp lực Combat và nâng cấp âm thanh.
 
 ## Bối cảnh đã hoàn tất trước A2
 

@@ -25,6 +25,7 @@
 
 - [PHASE_PLANS](plans/PHASE_PLANS.md): Phase0–5 đã triển khai.
 - [PLAYABILITY_PLAN](plans/PLAYABILITY_PLAN.md): R1 theo phản hồi game sơ sài.
+- [R2_UPGRADE_PLAN](plans/R2_UPGRADE_PLAN.md): Đợt nâng cấp toàn diện R2 (Game feel, Combat depth, Narrative polish, Survival tension).
 - [ASSET_PLAN](plans/ASSET_PLAN.md): bộ mẫu A1.
 - [ASSET_PRODUCTION_PLAN](plans/ASSET_PRODUCTION_PLAN.md): A2 đang chốt.
 

@@ -1,187 +1,187 @@
 export const campaignTexts: Record<string, string> = {
-  "event.departure.title": "Trước khi rời thành phố",
+  "event.departure.title": "Đêm cuối trước khi rời thành phố",
   "event.departure.text":
-    "Minh gạch thêm một địa chỉ khỏi tấm bản đồ. Đài phát thanh chỉ còn lời nhắn từ Bắc Sơn. Lan xếp thuốc vào túi. Bảo đặt tay lên chìa khóa: “Đi thôi, hay kiểm tra nốt kho dự trữ?”",
-  "choice.prepare": "Chia vật tư dự trữ",
+    "Minh vạch một đường phấn đỏ lên tấm bản đồ nhàu nát. Trên sóng radio, tín hiệu kêu gọi từ Bắc Sơn chập chờn rồi lịm dần giữa tiếng rè rè vô vọng. Lan cẩn thận cất những ống tiêm cuối cùng vào túi da. Bảo vừa vặn chặt con ốc bánh xe vừa thở dốc: “Động cơ đã nổ, nhưng bình xăng còn vơi một nửa. Minh, ta kiểm tra nốt kho phụ hay đạp ga đi luôn?”",
+  "choice.prepare": "Kiểm kho, chia đều vật tư dự phòng",
   "outcome.prepare":
-    "Đoàn dùng một giờ chia thêm 12 food và 12 water. Việc chuẩn bị giúp quãng đường dài bớt đáng sợ.",
-  "choice.rush": "Khởi hành ngay, lấy thêm nhiên liệu",
+    "Đoàn nán lại một giờ gom góp từng can nước và túi gạo khô. Sự chuẩn bị kỹ lưỡng khiến quãng đường tăm tối phía trước bớt phần nghẹt thở.",
+  "choice.rush": "Lên đường ngay, chắt nốt nhiên liệu xe hỏng",
   "outcome.rush":
-    "Bảo rút 4 nhiên liệu từ chiếc xe bỏ lại. Đoàn lên đường trong ánh sáng cuối ngày.",
-  "event.market-survivor.title": "Tiếng gõ sau cửa sắt",
+    "Bảo cắm ống hút cạn những giọt xăng cuối cùng từ chiếc xe buýt phế liệu bên đường. Đèn pha quét qua màn đêm, đoàn xe bắt đầu lăn bánh.",
+  "event.market-survivor.title": "Tiếng gõ sau cánh cửa sắt",
   "event.market-survivor.text":
-    "Một người phụ nữ bị kẹt dưới mái sạp đang gõ ba tiếng một. Cô tên Hà, từng sửa vô tuyến cho đoàn sơ tán. Cô bị thương nhưng còn tỉnh: “Đưa tôi lên xe. Tôi biết người ở trạm thu phí.” Cứu thêm một người cũng đồng nghĩa thêm một khẩu phần mỗi giờ.",
-  "choice.rescue-ha": "Cứu Hà · thêm một người trên xe",
+    "Dưới mái sạp tôn sụp đổ, tiếng gõ sắt vang lên đều đặn ba nhịp một. Một người phụ nữ với bàn tay dính máu đang tựa vào thanh giằng: “Đừng bắn... Tôi là Hà, thợ vô tuyến đoàn sơ tán. Tôi biết mã mở rào trạm thu phí. Cứu tôi lên xe, tôi sẽ không thành gánh nặng đâu...” Bảo nhìn sang Minh nhíu mày: xe sẽ chật hơn, và mỗi ngày lại thêm một miệng ăn.",
+  "choice.rescue-ha": "Cứu Hà · Thêm một người đồng hành",
   "outcome.rescue-ha":
-    "Lan dùng thuốc để cầm máu. Hà lên xe cùng túi dự trữ 9 food và 9 water. Từ giờ cô tiêu khẩu phần và có thể giúp đoàn thương lượng.",
-  "choice.leave-ha": "Bỏ lại và tiếp tục đi",
+    "Lan dùng băng gạc garô khẩn cấp vết thương ở chân cho Hà. Cô gắng gượng trèo lên khoang sau, trao lại chiếc radio dã chiến và túi đồ khô. Từ giờ, mọi ngụm nước sẻ chia sẽ phải tính toán từng giọt.",
+  "choice.leave-ha": "Bỏ lại phía sau, giữ vững lộ trình",
   "outcome.leave-ha":
-    "Cửa sắt khép lại sau lưng đoàn. Không có thêm khẩu phần phải chia. Hà sẽ không đi cùng bạn tới Bắc Sơn.",
-  "event.market-cache.title": "Kho hàng cuối chợ",
+    "Tiếng cửa sắt nặng nề khép lại, cắt đứt ánh nhìn tuyệt vọng của người phụ nữ. Chiếc xe lướt đi trong im lặng lạnh lùng. Không thêm miệng ăn, nhưng một cơ hội qua trạm thu phí đã vĩnh viễn ở lại chợ.",
+  "event.market-cache.title": "Ổ khóa kho hàng bỏ hoang",
   "event.market-cache.text":
-    "Bảo thấy vết xước mới trên khóa kho. Bên trong có những thùng khẩu phần, nhưng dây điện căng thấp sát mặt đất. Có thể tháo khóa bằng phế liệu, hoặc bỏ qua để tiết kiệm thời gian.",
-  "choice.search-cache": "Lục soát kho · 1 phế liệu",
+    "Bảo soi đèn pin thấy những vết cạy xước sâu trên ổ khóa dây xích. Phía sau cánh cửa gỗ mục là những thùng đồ cứu trợ còn nguyên niêm phong, nhưng một sợi dây cước mảnh như tơ giăng ngang mặt đất. Một cái bẫy mìn tự chế.",
+  "choice.search-cache": "Khéo léo vô hiệu hóa bẫy · 1 phế liệu",
   "outcome.search-cache":
-    "Bảo tháo khóa an toàn. Đoàn tìm được 12 food, 12 water và 1 medicine.",
+    "Bảo dùng kìm cắt dây cước trong gang tấc. Cả đoàn thở phào khi khiêng ra những thùng lương khô và thuốc men còn nguyên vẹn.",
   "outcome.cache-trap":
-    "Dây bẫy kéo đổ một kệ hàng, làm xe hư 5. Bạn vẫn lấy được 6 food, 9 water và 3 fuel.",
-  "choice.leave-cache": "Bỏ qua kho hàng",
+    "Dây bẫy giật nảy! Khối kim loại nặng rơi ầm xuống nắp ca-pô làm xe móp méo, nhưng đoàn vẫn kịp kéo ra số nhu yếu phẩm quý giá.",
+  "choice.leave-cache": "Bỏ qua kho hàng, tránh rủi ro",
   "outcome.leave-cache":
-    "Đoàn không đụng vào khóa kho. Những thùng hàng ở lại trong bóng tối.",
-  "event.overpass-echo.title": "Giọng nói bên dưới cầu",
+    "Đoàn xe lùi lại, để những thùng hàng tiếp tục nằm im lìm trong bóng tối cùng cạm bẫy.",
+  "event.overpass-echo.title": "Tiếng gọi dưới dạ cầu vượt",
   "event.overpass-echo.text":
-    "Vạch phản quang dẫn vòng qua một nhịp cầu nứt. Dưới cầu, giọng một người quen gọi tên Minh. Bảo nhìn radio đã tháo pin. Tiếng gọi không phát ra từ nó.",
-  "choice.follow-reflectors": "Giữ im lặng, lần theo vạch phản quang",
+    "Vạch sơn phản quang dẫn lối quanh nhịp cầu bê tông gãy đôi. Giữa tiếng gió rít qua khe nứt, một giọng nói quen thuộc đến rợn người gọi rành rọt tên Minh từ vực sâu tăm tối bên dưới. Bảo liếc nhìn đài radio đã ngắt nguồn từ lâu: tiếng gọi phát ra từ chính không khí đặc quánh.",
+  "choice.follow-reflectors": "Bịt tai đi thẳng, lần theo vạch phản quang",
   "outcome.follow-reflectors":
-    "Đoàn tránh được mặt cầu sụp. Bảo tranh thủ gia cố gầm, hồi 6 condition. Tiếng gọi không theo kịp.",
-  "choice.answer-echo": "Đáp lại và tìm nguồn nhiên liệu",
+    "Đoàn xe nghiến răng tăng ga vượt qua mặt cầu rung lắc. Tiếng gọi ma quái bị bỏ lại sau lưng cùng làn khói xả; Bảo thở phào siết lại thanh giằng gầm xe.",
+  "choice.answer-echo": "Lần xuống đáy cầu tìm câu trả lời",
   "outcome.answer-echo":
-    "Một tiếng cười bật ra trong đầu mọi người. Mỗi người mất 12 HP. Bạn tìm được 3 fuel và hiểu quy tắc của tiếng gọi bằng cái giá thật.",
-  "event.service-depot.title": "Ngọn đèn không cần dầu",
+    "Khoảnh khắc cất lời đáp, một cơn đau buốt nhói dội thẳng vào màng nhĩ cả đoàn kèm tiếng cười the thé vô hình. Trả giá bằng cơn chấn động tâm lý nặng nề, Minh tìm thấy vài can nhiên liệu của kẻ xấu số bỏ lại và hiểu được sự hiểm độc của tiếng gọi quỷ dị.",
+  "event.service-depot.title": "Ngọn đèn bão không dầu",
   "event.service-depot.text":
-    "Giữa các máy bơm khô, một chiếc đèn vẫn cháy. Tường trạm ghi: “Nếu không thể vào bệnh viện, giữ ngọn đèn và đi đường phía đông.” Kho phụ còn vật tư; cần dùng phế liệu để mở cửa mà không làm vỡ đèn.",
-  "choice.take-lantern": "Lấy đèn và vật tư · 2 phế liệu",
+    "Giữa các cột bơm xăng han rỉ, một ngọn đèn bão kỳ lạ vẫn tỏa ánh sáng vàng ấm áp mà không cần tim đèn hay giọt dầu nào. Trên vách tường loang lổ vết máu khô có dòng chữ nguệch ngoạc: “Nếu Bệnh viện Thánh An đã hóa địa ngục, hãy mang theo ngọn đèn này mà đi đường vòng phía đông.”",
+  "choice.take-lantern": "Thu giữ ngọn đèn và vật tư · 2 phế liệu",
   "outcome.take-lantern":
-    "Đoàn có Đèn không tắt, thêm 6 fuel, 9 food, 12 water và 3 scrap. Kỳ vật bảo vệ xe và mở một giải pháp thay thế cho bệnh viện.",
-  "choice.strip-pump": "Tháo máy bơm, để đèn lại",
+    "Bảo khéo léo gỡ móc sắt giữ đèn. Ánh sáng của Đèn Không Tắt xua tan cái lạnh quanh xe, mở ra một lối đi an toàn vòng qua bệnh viện bị nguyền rủa.",
+  "choice.strip-pump": "Rút nhiên liệu từ bồn ngầm, để đèn lại",
   "outcome.strip-pump":
-    "Bạn lấy 8 fuel và 4 scrap, đổi lại ngọn đèn vẫn thuộc về trạm.",
-  "choice.bypass-depot": "Không đụng vào kho",
+    "Đoàn hút được thêm nhiên liệu từ máy bơm phụ nhưng quyết định không chạm vào thứ ánh sáng quỷ dị kia.",
+  "choice.bypass-depot": "Rời khỏi trạm dịch vụ",
   "outcome.bypass-depot":
-    "Đoàn để kho và ngọn đèn nguyên vẹn, giữ khoảng cách với thứ đang cháy trong đó.",
-  "event.service-stranger.title": "Người lạ bên máy phát",
+    "Chiếc xe lướt qua trạm xăng, ngọn đèn bão cô độc vẫn cháy leo lét dõi theo bóng xe vào đêm đen.",
+  "event.service-stranger.title": "Kẻ gác trạm bên máy phát điện",
   "event.service-stranger.text":
-    "Một người gác trạm nhận ra ký hiệu Tro Tàn trên chiếc xe tải từng ghé qua. Con gái thủ lĩnh bị tiếng gọi ám; họ tìm Mắt gương vì tin nó chữa được bệnh. Ông còn chỉ đường vòng nếu bạn muốn niêm phong bệnh viện.",
-  "choice.aid-stranger": "Chia thuốc, nghe chuyện Tro Tàn",
+    "Một gã gác trạm râu ria xồm xoàm ló đầu sau máy phát điện hỏng, nhận ra dấu vết đoàn xe Tro Tàn: “Lũ người đó vừa qua đây nửa ngày trước. Thủ lĩnh của chúng - gã Quạ - đang phát điên vì đứa con gái nhỏ bị tiếng gọi quỷ ám. Chúng săn lùng Mắt Gương bằng mọi giá để cứu con bé.”",
+  "choice.aid-stranger": "Chia sẻ liều thuốc, nghe ngọn ngành câu chuyện",
   "outcome.aid-stranger":
-    "Đổi một liều thuốc, người gác trạm cho 12 water và kể rõ động cơ của Tro Tàn. Bạn có cơ sở thương lượng.",
-  "choice.listen-stranger": "Lắng nghe rồi tiếp tục",
+    "Gã gác trạm run rẩy nhận viên thuốc giảm đau, chỉ tường tận điểm yếu và động cơ cứu con của gã Quạ. Manh mối quý giá để đàm phán đã nằm trong tay bạn.",
+  "choice.listen-stranger": "Gật đầu ghi nhận rồi tiếp tục đi",
   "outcome.listen-stranger":
-    "Bạn biết Tro Tàn tìm gương để cứu một đứa trẻ. Không phải cuộc đối đầu nào cũng cần kết thúc bằng đổ máu.",
+    "Đoàn hiểu rằng đối thủ phía trước không phải lũ quái vật vô tri, mà là những kẻ tuyệt vọng sẵn sàng giết chóc vì người thân.",
   "choice.quarantine-hospital":
-    "Dùng đèn, niêm phong bệnh viện và đi đường vòng",
+    "Dùng ngọn đèn niêm phong bệnh viện, mở đường vòng",
   "outcome.quarantine-hospital":
-    "Bệnh viện và khu điều trị trở nên không thể tiếp cận. Đèn giữ yên tiếng gọi; hợp đồng nhiệm vụ chuyển sang giải pháp thay thế. Đường trạm dịch vụ → trạm thu phí đã mở.",
-  "event.hospital-bell.title": "Tiếng chuông trong nhà xác",
+    "Ánh sáng ngọn đèn phong tỏa lối vào bệnh viện, cô lập tiếng gọi tà ác bên trong. Cửa ải đã khép, đoàn mở đường tiến thẳng tới trạm thu phí.",
+  "event.hospital-bell.title": "Tiếng chuông tử thần trong bệnh viện",
   "event.hospital-bell.text":
-    "Chuông reo ba tiếng trong tòa nhà không có điện. Từ hành lang, ai đó gọi đúng tên bạn. Lan nhận ra một câu viết bằng mực khô: “Không trả lời khi chuông ngân.” Giữ im lặng, hoặc thử trả lời và chịu hậu quả.",
-  "choice.listen": "Im lặng, quan sát chuông",
+    "Ba tiếng chuông đồng ngân lên rền rĩ từ nóc nhà xác bệnh viện hoang phế. Từ đáy hành lang hun hút tối tăm, một giọng nói thì thầm nỉ non gọi chính xác tên từng người trên xe. Lan phát hiện dòng huyết thư cào trên tường phòng cấp cứu: “TUYỆT ĐỐI KHÔNG LÊN TIẾNG KHI CHUÔNG NGÂN!”",
+  "choice.listen": "Cắn chặt môi giữ im lặng, quan sát chuông",
   "outcome.listen":
-    "Tiếng gọi bỏ qua đoàn. Bạn khám phá quy tắc: không trả lời khi chuông ngân. Sự im lặng cũng cho phép chạm vào Mắt gương.",
-  "choice.ignore-bell": "Đáp lại tiếng gọi",
+    "Cả đoàn nín thở, tiếng chuông ngân tắt dần trong gió lạnh. Thực thể vô hình trôi qua khoang xe mà không phát hiện con mồi. Bạn đã thấu suốt quy tắc sinh tử của nơi này.",
+  "choice.ignore-bell": "Lên tiếng đáp lời bóng tối",
   "outcome.ignore-bell":
-    "Giọng nói chui vào đầu cả đoàn, gây 12 HP tổn thương cho từng người. Bạn biết quy tắc sau khi đã vi phạm nó.",
-  "event.hospital-records.title": "Hồ sơ bệnh nhân 07",
+    "Một tiếng thét kinh hoàng bùng nổ trong tâm trí từng người! Máu ứa ra từ khóe tai khi bóng ma vô hình cắn xé linh hồn. Bài học về quy tắc quỷ dị phải trả bằng máu.",
+  "event.hospital-records.title": "Tập bệnh án số 07",
   "event.hospital-records.text":
-    "Trong hồ sơ có ảnh một bé gái và một người đàn ông mang phù hiệu Tro Tàn. Dòng ghi chú cuối: “Bệnh không đi theo máu. Nó đi theo câu trả lời.” Một tủ thuốc niêm phong nằm bên cạnh.",
-  "choice.read-records": "Đọc hồ sơ, lấy một liều thuốc",
+    "Dưới ánh đèn pin lờ mờ, tập hồ sơ bệnh án ố vàng nằm cạnh tủ thuốc niêm phong. Bên trong có tấm ảnh một bé gái với đôi mắt vô hồn và gã đàn ông xăm hình Quạ. Bác sĩ trưởng ghi dòng cuối: “Thực thể không lây qua máu. Nó chỉ xâm nhập khi vật chủ mở miệng đáp lời.”",
+  "choice.read-records": "Đọc hồ sơ bệnh án, lấy ống thuốc trợ tim",
   "outcome.read-records":
-    "Bạn biết động cơ của thủ lĩnh Tro Tàn, giữ được bằng chứng để thương lượng và lấy thêm 1 medicine.",
-  "choice.burn-records": "Đốt hồ sơ, lấy toàn bộ thuốc",
+    "Minh cẩn thận cất hồ sơ của con gái Quạ vào túi áo. Tấm bệnh án này là chìa khóa cảm xúc để phá vỡ thế đối đầu sinh tử với đoàn xe Tro Tàn.",
+  "choice.burn-records": "Đốt hồ sơ lấy tro sưởi ấm, vơ vét tủ thuốc",
   "outcome.burn-records":
-    "Bạn lấy 2 medicine. Những bức ảnh thành tro; bằng chứng giúp thuyết phục đối thủ đã mất.",
-  "choice.leave-records": "Để lại hồ sơ",
+    "Tập bệnh án cháy rụi thành tro tàn. Đoàn lấy được toàn bộ thuốc men quý giá nhưng vĩnh viễn mất đi bằng chứng để thức tỉnh đối thủ.",
+  "choice.leave-records": "Không chạm vào hồ sơ, rời khỏi phòng",
   "outcome.leave-records":
-    "Đoàn không mở hồ sơ. Một cơ hội hiểu đối thủ vẫn nằm trên bàn.",
-  "event.ward-patient.title": "Người bệnh còn thở",
+    "Đoàn quay lưng bước đi, để lại tập hồ sơ phủ bụi trên bàn mổ lạnh lẽo.",
+  "event.ward-patient.title": "Hơi thở thoi thóp ở góc phòng",
   "event.ward-patient.text":
-    "Trên chiếc giường sát cửa, một người bệnh chỉ vào tấm màn phủ gương. Anh còn thuốc ăn và nước nhưng không thể rời đi. Lan có thể dùng một liều thuốc, hoặc đoàn có thể bỏ qua để tìm kỳ vật trước đối thủ.",
+    "Trên chiếc giường bệnh rỉ sét, một bệnh nhân kiệt sức đang bám chặt vào góc tấm màn nhung phủ một vật thể hình chữ nhật lớn. Anh thều thào qua hơi thở đứt quãng: “Gương... đừng để nó nhìn thấy mặt các người... Quạ đã tới đây...” Lan nhìn lượng thuốc men còn lại trên tay đầy lưỡng lự.",
   "event.ward-patient.rescued":
-    "Hà nghe tiếng vô tuyến dưới gầm giường và tìm thấy người bệnh còn thở. Anh đã gặp thủ lĩnh Tro Tàn đang tìm thuốc cho con. Lan có thể cứu anh, dù việc đó tiêu thêm thời gian và một liều thuốc.",
-  "choice.treat-patient": "Để Lan chữa trị · 1 thuốc",
+    "Hà bắt được tín hiệu định vị yếu ớt dưới gầm giường và tìm ra người bệnh còn thoi thóp. Anh xác nhận gã Quạ đã vác súng lùng sục khắp nơi. Lan có thể cứu anh, dẫu sẽ tốn thêm thời gian và thuốc men quý giá.",
+  "choice.treat-patient": "Để Lan tiêm thuốc cấp cứu người bệnh",
   "outcome.treat-patient":
-    "Người bệnh tỉnh lại, chỉ cách bọc gương và xác nhận câu chuyện về con gái thủ lĩnh. Anh chia 6 food và 9 water cho đoàn.",
-  "choice.ignore-patient": "Để lại người bệnh, tìm kỳ vật",
+    "Mũi tiêm thuốc trợ lực kịp thời giật người bệnh về từ cõi chết. Anh run rẩy chỉ cho đoàn cách bọc kín Mắt Gương bằng vải thô mà không kích hoạt lời nguyền.",
+  "choice.ignore-patient": "Bỏ mặc người bệnh, nhắm thẳng kỳ vật",
   "outcome.ignore-patient":
-    "Đoàn bước qua chiếc giường. Tấm màn phía cuối phòng lay động dù không có gió.",
-  "event.ward-mirror.title": "Mắt gương",
+    "Đoàn lạnh lùng bước qua giường bệnh. Phía sau lưng, tấm màn nhung lay động dữ dội như có bàn tay vô hình đang cào xé.",
+  "event.ward-mirror.title": "Kỳ vật Mắt Gương",
   "event.ward-mirror.text":
-    "Gương phản chiếu một người đứng sau lưng đoàn. Nếu đã hiểu quy tắc, bạn có thể bọc nó trong im lặng. Nếu tới muộn, Tro Tàn có thể đã lấy gương trước. Niêm phong căn phòng luôn là một lựa chọn.",
-  "choice.bind-mirror": "Giữ im lặng và lấy gương",
+    "Mặt gương cổ phản chiếu một bóng người kỳ dị đang đứng áp sát sau lưng cả đoàn dù căn phòng trống rỗng. Lớp sương đen lượn lờ quanh khung viền gỗ lim. Nếu đã nắm rõ quy tắc, bạn có thể niêm phong nó trong câm lặng trước khi đoàn xe Tro Tàn kịp ập tới.",
+  "choice.bind-mirror": "Nín thở phủ vải thô, phong ấn Mắt Gương",
   "outcome.bind-mirror":
-    "Mắt gương được bọc trong vải. Quyền sở hữu thuộc về đoàn, tăng sức tấn công khi giao chiến. Bệnh viện đã được giải quyết.",
-  "choice.force-mirror": "Cưỡng đoạt gương · 2 thuốc, chịu quy tắc",
+    "Lớp vải thô trùm kín mặt gương trong sự tĩnh lặng tuyệt đối. Mắt Gương quy phục đoàn xe, tỏa ra uy lực gia tăng sát thương cho mọi cuộc chiến sinh tồn phía trước.",
+  "choice.force-mirror": "Dùng bạo lực giật lấy gương, chấp nhận bị nguyền",
   "outcome.force-mirror":
-    "Bạn giữ được gương, nhưng mọi người mất 12 HP khi tiếng gọi dội lại. Hai liều thuốc không ngăn được nỗi sợ.",
-  "choice.recover-trail": "Lần theo dấu Tro Tàn đã mang gương đi",
+    "Tiếng thét xé màng nhĩ dội ngược khi tấm vải bị giật phăng! Cả đoàn ôm đầu ngã quỵ vì đòn tấn công tâm linh trước khi Bảo kịp nhét gương vào hòm thép.",
+  "choice.recover-trail": "Lần theo vết bánh xe Tro Tàn vừa cướp gương",
   "outcome.recover-trail":
-    "Gương đã đổi chủ. Bạn đánh dấu đường rút của đối thủ; cuộc tranh đoạt sẽ tiếp tục ở trạm thu phí.",
-  "choice.seal-ward": "Niêm phong khu điều trị",
+    "Chiếc giá gương đã trống trơn, trên sàn còn vương tàn thuốc lá của gã Quạ. Cuộc tranh đoạt sinh tử dời đến trạm thu phí chân đèo.",
+  "choice.seal-ward": "Hàn chết cửa khu điều trị, chôn vùi kỳ vật",
   "outcome.seal-ward":
-    "Khu điều trị bị phong tỏa. Đoàn thoát khỏi bệnh viện, bỏ lại quyền sở hữu gương cho nơi này hoặc kẻ đã tới trước.",
-  "event.checkpoint-parley.title": "Tro Tàn chặn đường",
+    "Bảo dùng mỏ hàn sắt khóa chặt cánh cửa khu điều trị, vĩnh viễn phong ấn Mắt Gương cùng những bóng ma bệnh viện trong lòng đất.",
+  "event.checkpoint-parley.title": "Cuộc đối đầu sinh tử tại Trạm Thu Phí",
   "event.checkpoint-parley.text":
-    "Xe tải chắn ngang trạm thu phí. Quạ bước xuống, hỏi Mắt gương đang ở đâu. Anh muốn kỳ vật để cứu con; bạn muốn đưa đoàn tới nơi trú. Đàm phán cần manh mối hoặc một người có thể làm chứng. Giao chiến và rút lui đều có hậu quả.",
+    "Hai chiếc xe tải bọc thép hạng nặng của Tro Tàn dàn hàng ngang bịt kín lối lên đèo Bắc Sơn. Gã Quạ bước xuống, họng súng săn chĩa thẳng vào kính lái xe bạn, gằn từng tiếng khàn đặc: “Giao Mắt Gương ra đây nếu muốn con gái tao sống! Hoặc toàn bộ các người sẽ thành tro bụi dưới bánh xe tao!”",
   "event.checkpoint-parley.rescued":
-    "Hà gọi tên Quạ qua radio. Anh nhận ra người từng sửa bộ đàm cho đoàn mình. Sự có mặt của cô cho bạn cơ hội thuyết phục Tro Tàn nhường đường và giữ lại kỳ vật.",
+    "Hà bước ra cửa sổ xe gọi tên Quạ. Nhìn thấy người kỹ thuật viên từng cứu sống đồng đội mình, ánh mắt gã thủ lĩnh hung hãn thoáng chao đảo, nòng súng săn hơi hạ xuống.",
   "event.checkpoint-parley.stolen":
-    "Chiếc gương phủ vải nằm trong xe tải Tro Tàn. Quạ đã tới trước bạn. Bạn có thể để anh giữ nó, thuyết phục bằng hồ sơ, hoặc chiến đấu để giành lại quyền sở hữu.",
-  "choice.signal-passage": "Thuyết phục bằng manh mối hoặc Hà",
+    "Chiếc gương phủ vải đen nằm lù lù trên thùng xe tải Tro Tàn. Gã Quạ đã cướp nó trước một bước và đang lạnh lùng lên đạn chờ bạn mắc sai lầm.",
+  "choice.signal-passage": "Dùng bệnh án và lời Hà thuyết phục Quạ buông súng",
   "outcome.signal-passage":
-    "Bạn giải thích thứ đang ám con gái Quạ và cách giữ im lặng trước tiếng gọi. Tro Tàn nhường đường. Kỳ vật ở lại đúng chủ hiện tại; không có chuyển chủ bí mật.",
-  "choice.trade-mirror": "Đổi gương lấy quyền qua và 6 nhiên liệu",
+    "Minh chìa ra bức ảnh và hồ sơ bệnh viện, giải thích căn bệnh của con gái Quạ chỉ cần sự im lặng chứ không cần tế mạng bằng Mắt Gương. Gã thủ lĩnh gục đầu rơi súng, ra lệnh cho đoàn xe Tro Tàn rẽ lối nhường đường trong hòa bình.",
+  "choice.trade-mirror": "Giao nộp Mắt Gương đổi lấy nhiên liệu và lối đi",
   "outcome.trade-mirror":
-    "Tro Tàn nhận gương. Bạn có thêm 6 fuel và quyền đi qua; đoàn sẽ tới nơi trú mà không còn Mắt gương.",
-  "choice.fight": "Giao chiến",
+    "Quạ đón lấy kỳ vật với ánh mắt run rẩy, mở rào chắn và chia sẻ 6 can nhiên liệu. Đoàn tiếp tục hành trình trong sự toàn mạng, dẫu kỳ vật đã vuột khỏi tay.",
+  "choice.fight": "Lên đạn khai hỏa! Quyết chiến tới cùng",
   "outcome.fight":
-    "Tro Tàn khóa đường. Quạ bước về phía xe tải, để lại khoảng im lặng ngắn trước phát súng đầu tiên.",
-  "choice.ambush": "Phục kích (2 phế liệu)",
+    "Không còn lời nào để nói giữa hai đoàn xe tận thế! Tiếng súng nổ rền vang xé toạc màn đêm trạm thu phí khi Minh và Bảo nổ súng đánh úp!",
+  "choice.ambush": "Kích nổ bẫy phế liệu phục kích (2 phế liệu)",
   "outcome.ambush":
-    "Bẫy làm mỗi đối thủ mất 10 HP trước khi trận đánh bắt đầu. Hai phế liệu đã được dùng hết.",
-  "choice.yield-passage": "Nhường đường, luồn qua rào chắn",
+    "Khối phế liệu và thuốc súng tự chế phát nổ vang trời ngay dưới gầm xe Tro Tàn! Khói lửa mù mịt khiến địch choáng váng tổn thất nặng nề trước trận đánh.",
+  "choice.yield-passage": "Đạp lút ga húc tung rào chắn tháo chạy",
   "outcome.yield-passage":
-    "Bạn bỏ cuộc tranh đoạt. Xe mất 10 condition khi vượt rào, nhưng đường lên Bắc Sơn đã mở.",
-  "event.checkpoint-aftermath.title": "Những người còn ở lại",
+    "Bảo nhấn lút chân ga, chiếc xe buýt chồm lên húc văng hàng rào thép gai trong cơn mưa đạn! Gầm xe nát bét nhưng đoàn đã phá được vòng vây phóng thẳng lên Bắc Sơn.",
+  "event.checkpoint-aftermath.title": "Tro tàn sau trận chiến",
   "event.checkpoint-aftermath.text":
-    "Sau cuộc đối đầu, trạm thu phí lặng đi. Có thể chia khẩu phần, vá lại xe và chữa thương trước chặng cuối, hoặc đi ngay khi đường còn mở.",
+    "Tiếng súng tắt ngấm, chỉ còn tiếng động cơ nổ cầm chừng và khói đen bốc lên từ xác xe đổ nát. Trước khi vượt con dốc cuối cùng lên hầm trú, đoàn xe phải quyết định số phận của những kẻ sống sót và chiến tích thu được.",
   "event.checkpoint-aftermath.captives":
-    "Những người Tro Tàn bị bắt vẫn còn sống. Bạn có thể dùng thuốc để họ vượt qua vết thương, hoặc chỉ chăm sóc đoàn của mình. Việc giữ người sống sẽ theo bạn đến kết cục.",
+    "Những tên lính Tro Tàn bị bắt trói nghiến đang rên rỉ vì vết thương. Giữ mạng cho chúng sẽ tiêu tốn thuốc men quý giá, nhưng bỏ mặc chúng chết cóng giữa tro tàn sẽ ám ảnh lương tâm đoàn xe mãi mãi.",
   "event.checkpoint-aftermath.dead":
-    "Xe tải không còn tiếng người. Những người chưa được bắt giữ đã chết khi đoàn bỏ lại họ. Lửa trại không xóa được quyết định ấy.",
-  "choice.care-captives": "Chăm sóc người bị bắt · 2 thuốc",
+    "Chiếc xe tải của Tro Tàn im lìm như nấm mồ thép. Không một ai sống sót sau trận đọ súng tàn khốc. Mùi thuốc súng và máu tanh sẽ theo đoàn xe tới tận hầm trú.",
+  "choice.care-captives": "Băng bó cho tù binh, gom phế liệu · 2 thuốc",
   "outcome.care-captives":
-    "Tù nhân hồi 12 HP, vẫn thuộc quyền bắt giữ của đoàn. Bạn ghi lại tên họ và lấy 4 scrap để sửa vật dụng.",
-  "choice.share-fire": "Chia khẩu phần, hồi sức và vá xe",
+    "Lan tận tụy băng bó vết thương cho kẻ thù vừa nổ súng vào mình. Sự nhân đạo giữ lại chút tính người cuối cùng giữa thế giới đổ nát; Bảo tháo thêm được 4 mảnh giáp từ xe địch.",
+  "choice.share-fire": "Đốt lửa trại chia sẻ khẩu phần, hàn lại vỏ xe",
   "outcome.share-fire":
-    "Đoàn dùng thêm 3 food và 3 water. Người sống hồi 12 HP; xe hồi 8 condition trước chặng cuối.",
-  "choice.press-on": "Tiếp tục ngay",
+    "Bên đống lửa bập bùng giữa đèo, cả đoàn quây quần chia nhau ngụm nước ấm và mẩu lương khô. Vết thương dịu lại, vỏ xe được hàn gắn trước chặng cuối.",
+  "choice.press-on": "Không chần chừ, đạp ga lên đỉnh đèo",
   "outcome.press-on":
-    "Minh cho xe nổ máy. Mọi thứ đã chọn ở trạm thu phí được mang theo lên Bắc Sơn.",
-  "quest.departure.title": "Rời khỏi thành phố",
+    "Minh vặn chìa khóa nổ máy. Chiếc xe buýt lao vút vào bóng đêm sương mù, hướng thẳng về cánh cổng hầm trú ẩn Bắc Sơn.",
+  "quest.departure.title": "Rời khỏi thành phố tắt đèn",
   "quest.departure.text":
-    "Chuẩn bị đoàn và tìm lối ra. Có thể đi thẳng qua chợ hoặc vòng qua cầu vượt và trạm dịch vụ.",
+    "Thu dọn tàn tích gara và tìm đường thoát thân trước khi thành phố nuốt chửng đoàn xe.",
   "quest.departure.objective":
-    "Chuẩn bị khởi hành, hoặc vượt thành phố bằng đường khác.",
-  "quest.hospital.title": "Quy tắc của bệnh viện",
+    "Lựa chọn mở đường qua Chợ Sơ Tán hoặc men theo Cầu Vượt Đổ.",
+  "quest.hospital.title": "Quy tắc cấm kỵ tại Bệnh viện",
   "quest.hospital.text":
-    "Điều tra tiếng gọi, xử lý Mắt gương hoặc niêm phong khu điều trị. Nếu bệnh viện bị chặn, Đèn không tắt là giải pháp thay thế.",
+    "Điều tra tiếng chuông quỷ dị, thu hồi Mắt Gương hoặc niêm phong nơi này bằng Đèn Không Tắt.",
   "quest.hospital.objective":
-    "Giải quyết mối nguy bằng điều tra, lấy kỳ vật, theo dấu đối thủ hoặc ngọn đèn.",
-  "quest.rival.title": "Một con đường cho người sống",
+    "Giải mã quy tắc tiếng chuông hoặc phong ấn bệnh viện đi đường vòng.",
+  "quest.rival.title": "Lằn ranh sinh tử với Tro Tàn",
   "quest.rival.text":
-    "Giải quyết Tro Tàn bằng manh mối, trao đổi, chiến đấu hoặc thoát thân. Nếu đối thủ đã chết, đường vẫn tiếp tục mở.",
-  "quest.rival.objective": "Giải quyết cuộc tranh đoạt tại trạm thu phí.",
-  "quest.rescue.title": "Tiếng gõ sau cửa sắt",
+    "Giải quyết mối ân oán với gã Quạ bằng đàm phán, thỏa hiệp hoặc một trận huyết chiến.",
+  "quest.rival.objective": "Vượt qua trạm thu phí để mở lối lên hầm trú.",
+  "quest.rescue.title": "Tiếng gõ sau cánh cửa sắt",
   "quest.rescue.text":
-    "Một người sống sót còn ở sau cửa sắt. Cứu cô sẽ thêm một người cần khẩu phần, nhưng cũng thêm người có thể đưa đoàn qua nguy hiểm.",
+    "Quyết định cứu Hà hoặc bỏ mặc người phụ nữ sống sót đơn độc tại khu chợ hoang.",
   "quest.rescue.objective":
-    "Cứu Hà hoặc chấp nhận một kết quả khác cho người ở chợ.",
-  "ending.keepers.title": "Những người giữ ánh sáng.",
+    "Cứu lấy nhân chứng hoặc giữ trọn khẩu phần cho hành trình.",
+  "ending.keepers.title": "Những Người Canh Giữ Ánh Sáng",
   "ending.keepers.text":
-    "Bạn mang cả gương, đèn và người đã cứu tới Bắc Sơn. Một thỏa thuận hoặc lòng thương giữ phần người trong đoàn. Hầm trú có thêm hai kỳ vật và một cơ hội hiểu thế giới mới.",
-  "ending.blood-road.title": "Con đường qua tro tàn.",
+    "Cánh cổng thép Bắc Sơn từ từ mở rộng đón đoàn xe kiệt quệ nhưng kiêu hãnh. Cả Mắt Gương và Đèn Không Tắt đều được đưa vào hầm an toàn. Hơn hết, lòng nhân đạo và sự kiên định đã giữ trọn vẹn phần NGƯỜI cho cả đoàn giữa thời tận thế.",
+  "ending.blood-road.title": "Huyết Lộ Qua Miền Tro Tàn",
   "ending.blood-road.text":
-    "Bạn mang Mắt gương tới nơi trú, nhưng không ai của Tro Tàn sống để thấy bình minh. Kỳ vật đã thuộc về đoàn. Cái giá cũng vậy.",
-  "ending.shared-dawn.title": "Bình minh có thêm một người.",
+    "Mắt Gương đã nằm gọn trong khoang hầm trú ẩn, nhưng con đường dẫn tới đây nhuộm đỏ máu của những kẻ ngáng đường. Đoàn xe sống sót để thấy bình minh, nhưng bóng ma của những kẻ đã chết dưới họng súng của Minh sẽ mãi mãi không chịu buông tha.",
+  "ending.shared-dawn.title": "Bình Minh Thêm Một Nụ Cười",
   "ending.shared-dawn.text":
-    "Hà bước xuống xe ở Bắc Sơn. Bạn giữ được Mắt gương và còn để lại người sống sau cuộc đối đầu. Những quyết định ở chợ và trạm thu phí đã thay đổi câu chuyện.",
-  "ending.last-light.title": "Mắt gương trước bình minh.",
+    "Hà bước xuống bậc cửa xe buýt, hít một hơi thật sâu làn gió trong lành của đỉnh Bắc Sơn. Đoàn xe không chỉ bảo vệ được kỳ vật, mà còn đưa được những sinh mạng quý giá qua đêm đen tàn khốc của nhân loại.",
+  "ending.last-light.title": "Tia Sáng Cuối Cùng Trước Bình Minh",
   "ending.last-light.text":
-    "Mắt gương theo đoàn vào hầm trú. Những người đã không lên được chiếc xe vẫn nằm lại bên ngoài. Bắc Sơn có kỳ vật, nhưng chỉ đoàn biết nó đã tới đây bằng cách nào.",
-  "ending.borrowed-dawn.title": "Bình minh từ một thỏa thuận.",
+    "Mắt Gương được chuyển giao an toàn cho trung tâm nghiên cứu hầm trú. Nhưng chiếc xe buýt giờ đây vắng bóng nhiều gương mặt thân quen đã nằm lại dọc đường. Chiến thắng này phải trả bằng một cái giá quá đắt.",
+  "ending.borrowed-dawn.title": "Bình Minh Từ Một Thỏa Ước",
   "ending.borrowed-dawn.text":
-    "Đoàn tới nơi trú sau một giải pháp hòa bình. Mắt gương không thuộc về bạn. Quyền sở hữu đã đổi lấy lối đi, hoặc thuộc về người tới trước. Những người trên xe vẫn còn cơ hội bắt đầu lại.",
-  "ending.empty-handed.title": "Còn người là còn đường.",
+    "Không cần đổ máu vô ích, đoàn xe đã đến nơi trú ẩn an toàn nhờ sự khôn ngoan và lòng thấu hiểu. Mắt Gương đã ở lại với đứa trẻ tội nghiệp của đoàn Tro Tàn, nhưng những người trên xe đều sống sót để nhìn thấy ánh rạng đông.",
+  "ending.empty-handed.title": "Còn Người Là Còn Tất Cả",
   "ending.empty-handed.text":
-    "Bạn tới Bắc Sơn mà không giữ Mắt gương. Cuộc tranh đoạt đã ở lại phía sau. Thất bại giành kỳ vật không khóa hành trình của những người còn sống.",
+    "Đoàn xe bước qua cánh cổng Bắc Sơn với hai bàn tay trắng, không mang theo bất kỳ kỳ vật siêu nhiên nào. Nhưng Minh mỉm cười nhìn đồng đội: giữa thời buổi điên loạn này, giữ được mạng sống của nhau đã là kỳ tích lớn nhất rồi.",
 };

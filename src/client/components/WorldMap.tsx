@@ -78,6 +78,10 @@ export function WorldMap({
               <stop offset="0" stopColor="#3f6653" stopOpacity=".28" />
               <stop offset="1" stopColor="#182523" stopOpacity="0" />
             </radialGradient>
+            <linearGradient id="headlight-beam" x1="0%" y1="50%" x2="100%" y2="50%">
+              <stop offset="0%" stopColor="#fff3b0" stopOpacity="0.65" />
+              <stop offset="100%" stopColor="#ffd875" stopOpacity="0" />
+            </linearGradient>
           </defs>
           {hasArt && (
             <image
@@ -157,41 +161,54 @@ export function WorldMap({
                   }
                 }}
               >
-                {here && (
-                  <circle
-                    cx={position[0]}
-                    cy={position[1]}
-                    r="24"
-                    className="pulse"
-                  />
-                )}
                 <circle cx={position[0]} cy={position[1]} r={here ? 10 : 7} />
-                {here && bus && !vehicleFailed && (
-                  <image
-                    className="convoy-map-sprite"
-                    href={bus.uri}
-                    x={position[0] - 23}
-                    y={position[1] - 48}
-                    width="46"
-                    height="32"
-                    onError={() => setVehicleFailed(true)}
-                  />
-                )}
                 <text x={position[0]} y={position[1] + 30}>
                   {location.name}
                 </text>
-                {here && (
-                  <text
-                    className="you-are-here"
-                    x={position[0]}
-                    y={position[1] - 54}
-                  >
-                    ĐOÀN XE
-                  </text>
-                )}
               </g>
             );
           })}
+          {/* Animated convoy vehicle with smooth translation between locations */}
+          {(() => {
+            const currentPos = positions[convoy.locationId] ?? [100, 285];
+            return (
+              <g
+                className="animated-convoy-vehicle"
+                style={{
+                  transform: `translate(${currentPos[0]}px, ${currentPos[1]}px)`,
+                  transition: "transform 0.9s cubic-bezier(0.25, 1, 0.5, 1)",
+                  pointerEvents: "none",
+                }}
+              >
+                {/* Vệt sáng đèn pha */}
+                <polygon
+                  points="12,-32 85,-55 85,-10"
+                  fill="url(#headlight-beam)"
+                  opacity="0.5"
+                />
+                <circle cx={0} cy={0} r={24} className="pulse" />
+                {bus && !vehicleFailed && (
+                  <image
+                    className="convoy-map-sprite"
+                    href={bus.uri}
+                    x={-23}
+                    y={-48}
+                    width={46}
+                    height={32}
+                    onError={() => setVehicleFailed(true)}
+                  />
+                )}
+                <text
+                  className="you-are-here"
+                  x={0}
+                  y={-54}
+                  textAnchor="middle"
+                >
+                  ĐOÀN XE
+                </text>
+              </g>
+            );
+          })()}
         </svg>
         <div className="map-legend">
           <span>● Vị trí đoàn</span>

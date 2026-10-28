@@ -102,11 +102,47 @@ export function CombatPanel({
         event.payload.type === "combat.victory" &&
         event.payload.enemyConvoyId === combat.enemyConvoyId,
     )?.payload;
+
+  const hasDamageRecently = recent.some(
+    (e) =>
+      (e.payload.type === "combat.action" &&
+        e.payload.action !== "heal" &&
+        e.payload.action !== "capture" &&
+        e.payload.amount > 0) ||
+      e.payload.type === "travel.hazard",
+  );
+
+  const currentLocation = state.convoys[state.player.convoyId]?.locationId;
+  const isAnomalyZone =
+    currentLocation === "location.hospital" ||
+    currentLocation === "location.ward";
+  const isBossRival = !encounter && definition.campaign?.rival;
+  const threatTier =
+    isBossRival || isAnomalyZone
+      ? {
+          label: isAnomalyZone ? "CẤP 3 · DỊ TƯỢNG QUỶ DỊ" : "CẤP 3 · ĐẠI CHIẾN SINH TỬ",
+          className: "tier-3",
+        }
+      : encounter?.id === "encounter.market-raiders"
+        ? { label: "CẤP 1 · CỌ XÁT CHỢ HOANG", className: "tier-1" }
+        : { label: "CẤP 2 · TRANH CHẤP VŨ TRANG", className: "tier-2" };
+
+  const lowHealthCritical = allies.some(
+    (a) => a.health < a.maxHealth * 0.28 && a.status === "active",
+  );
+
   return (
-    <section className="panel combat-panel improved-combat">
+    <section
+      key={`combat-${state.commandLog.length}`}
+      className={`panel combat-panel improved-combat ${hasDamageRecently ? "combat-screen-shake" : ""}`}
+    >
+      {(lowHealthCritical || isAnomalyZone) && <div className="pulse-vignette" />}
       <div className="panel-heading">
         <div>
-          <p className="eyebrow">ĐỤNG ĐỘ / {enemyName}</p>
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
+            <p className="eyebrow" style={{ margin: 0 }}>ĐỤNG ĐỘ / {enemyName}</p>
+            <span className={`threat-tier ${threatTier.className}`}>{threatTier.label}</span>
+          </div>
           <h2>
             {combat.phase === "aftermath"
               ? "★ CHIẾN THẮNG — LOOT ĐÃ VÀO KHO"
@@ -171,7 +207,7 @@ export function CombatPanel({
           {allies.map((actor) => (
             <button
               key={`${actor.id}-${state.commandLog.length}`}
-              className={`fighter ${current.id === actor.id ? "acting" : ""} ${selected?.target === "ally" && ally?.id === actor.id ? "selected" : ""} ${actor.status !== "active" ? "incapacitated" : ""}`}
+              className={`fighter ${current.id === actor.id ? "acting" : ""} ${selected?.target === "ally" && ally?.id === actor.id ? "selected" : ""} ${actor.status !== "active" ? "incapacitated" : ""} ${damageTo(actor.id) < 0 ? "hit-loss" : damageTo(actor.id) > 0 ? "hit-gain" : ""}`}
               onClick={() => setAllyTargetId(actor.id)}
               aria-label={`Chọn đồng đội ${actor.name}`}
             >
@@ -229,7 +265,7 @@ export function CombatPanel({
           {enemies.map((actor) => (
             <button
               key={`${actor.id}-${state.commandLog.length}`}
-              className={`fighter target ${enemy?.id === actor.id ? "selected" : ""} ${actor.status !== "active" ? "incapacitated" : ""}`}
+              className={`fighter target ${enemy?.id === actor.id ? "selected" : ""} ${actor.status !== "active" ? "incapacitated" : ""} ${damageTo(actor.id) < 0 ? "hit-loss" : damageTo(actor.id) > 0 ? "hit-gain" : ""}`}
               disabled={actor.status !== "active"}
               onClick={() => setEnemyTargetId(actor.id)}
               aria-label={`Chọn ${actor.name}`}

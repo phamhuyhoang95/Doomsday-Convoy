@@ -15,6 +15,7 @@ Nguồn bàn giao chi tiết: [HANDOFF](../ai/HANDOFF.md). Mục lục: [docs/RE
 | A2 web/catalog/client | Đã tích hợp local, 38 ID/29 web images ~8.90 MiB |
 | A2 final QA/Git delivery | Chưa chốt; QA đang dừng theo người dùng |
 | Kho docs/AGENTS | Đã tổ chức xong nội dung; lưu checkpoint để AI mới tiếp nhận |
+| R2 Nâng cấp toàn diện | Đang triển khai: Giai đoạn 1 (Narrative) & Giai đoạn 2 (Visual Juice/Audio) |
 
 ## Gate có bằng chứng trước khi dừng QA
 

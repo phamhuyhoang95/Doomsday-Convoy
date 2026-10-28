@@ -5,7 +5,7 @@ export const skills: CampaignContent["skills"] = [
   {
     id: "skill.strike",
     name: "Phá giáp",
-    description: "Đòn tập trung sát thương lớn.",
+    description: "Minh dộng búa nặng bẻ gãy thế phòng thủ, đập vỡ lớp giáp sắt rỉ sét và gây sát thương bộc phát cực mạnh.",
     target: "enemy",
     effect: "damage",
     power: 12,
@@ -17,7 +17,7 @@ export const skills: CampaignContent["skills"] = [
   {
     id: "skill.heal",
     name: "Cấp cứu",
-    description: "Hồi 24 HP, có thể vực đồng đội downed dậy; tốn 1 medicine.",
+    description: "Lan chèn gạc cầm máu, tiêm thuốc trợ tim khẩn cấp vực đồng đội gục ngã đứng dậy giữa làn đạn (tiêu 1 thuốc).",
     target: "ally",
     effect: "heal",
     power: 24,
@@ -29,7 +29,7 @@ export const skills: CampaignContent["skills"] = [
   {
     id: "skill.guard",
     name: "Hộ tống",
-    description: "Giảm sát thương đến lượt kế và hồi 8 HP.",
+    description: "Bảo vào thế chắn vững chãi, dựng tấm giáp tự chế che chắn cho cả đoàn và tự chấn chỉnh lại nhịp thở.",
     target: "self",
     effect: "guard",
     power: 8,
@@ -41,7 +41,7 @@ export const skills: CampaignContent["skills"] = [
   {
     id: "skill.sense",
     name: "Linh cảm",
-    description: "Khám phá quy tắc bệnh viện mà không đáp lời tiếng gọi.",
+    description: "Lan lắng nghe những rung động dị thường trong không khí, tìm ra manh mối sinh tồn mà không đáp lời tiếng gọi hư ảo.",
     target: "exploration",
     effect: "reveal",
     power: 0,

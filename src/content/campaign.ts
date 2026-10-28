@@ -24,10 +24,10 @@ cacheEvent?.choices.unshift(
 const playableTexts: Record<string, string> = {
   ...campaignTexts,
   "event.market-cache.text":
-    "Hai kẻ có vũ khí đang giữ kho khẩu phần. Đột kích sẽ mở trận chiến theo lượt ngay tại chợ: 46 và 40 HP. Thắng nhận 22 food, 20 water, 4 fuel, 2 thuốc, 5 phế liệu và 10 XP/người. Bạn cũng có thể lục kho ngoài bằng phế liệu hoặc bỏ đi.",
-  "choice.raid-cache": "Đột kích kho · CHIẾN ĐẤU · loot +22 food / +20 water",
+    "Ánh đèn pin quét qua góc kho lương thực: hai gã đàn ông vũ trang đang canh gác thùng hàng tiếp tế cuối cùng. Minh hạ thấp giọng: “Bọn chúng có súng tự chế và đang đói khát. Nếu đột kích, tiếng súng sẽ thu hút thêm rắc rối nhưng ta sẽ có đủ lương ăn nước uống cho cả chặng đường.”",
+  "choice.raid-cache": "Đột kích kho hàng · NỔ SÚNG TRANH ĐOẠT",
   "outcome.raid-cache":
-    "Hai bóng người chặn trước cửa kho. Chọn mục tiêu, dùng Phá giáp để hạ nhanh, Cấp cứu để giữ đồng đội sống; mỗi hành động đều tiêu khẩu phần.",
+    "Tiếng đạn xé toạc màn đêm khu chợ! Kẻ Rình và Sói Đơn rút vũ khí gào thét lao vào chắn cửa kho. Minh siết chặt cán búa, Lan lùi về sau thùng hàng chuẩn bị bông băng.",
 };
 
 const characters = [

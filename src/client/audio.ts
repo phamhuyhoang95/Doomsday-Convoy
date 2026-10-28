@@ -16,7 +16,10 @@ type Cue =
   | "victory"
   | "choice"
   | "config"
-  | "battle";
+  | "battle"
+  | "heavy_hit"
+  | "heartbeat"
+  | "eerie_bell";
 
 /** Procedural audio is a client effect. No audio clocks or nodes enter GameState. */
 class AudioDirector {
@@ -226,42 +229,79 @@ class AudioDirector {
       case "choice":
         this.tone(220, 0.18, 0, "triangle", 0.25);
         break;
+      case "heavy_hit":
+        this.tone(80, 0.35, 0, "sawtooth", 0.75);
+        this.tone(42, 0.45, 0.03, "triangle", 0.85);
+        this.tone(190, 0.15, 0.01, "square", 0.35);
+        break;
+      case "heartbeat":
+        this.tone(55, 0.18, 0, "sine", 0.65);
+        this.tone(45, 0.22, 0.14, "sine", 0.55);
+        break;
+      case "eerie_bell":
+        this.tone(440, 0.85, 0, "sine", 0.35);
+        this.tone(880, 0.7, 0.02, "sine", 0.25);
+        this.tone(1320, 0.5, 0.04, "sine", 0.15);
+        break;
     }
   }
   play(report: ActionReport, events: readonly DomainEvent[]) {
     const payloads = events.map((event) => event.payload);
+    const isHeavyHit =
+      payloads.some(
+        (p) =>
+          (p.type === "combat.action" &&
+            p.action !== "heal" &&
+            p.amount >= 20) ||
+          p.type === "travel.hazard",
+      ) || report.vehicle < -5;
+    const isAnomalyEvent = payloads.some(
+      (p) =>
+        p.type === "event.resolved" &&
+        (p.eventId.includes("hospital") ||
+          p.eventId.includes("bell") ||
+          p.eventId.includes("echo")),
+    );
+
     const cue: Cue = report.victory
       ? "victory"
-      : payloads.some((p) => p.type === "combat.started")
-        ? "battle"
-        : payloads.some(
-              (p) =>
-                p.type === "combat.action" &&
-                (p.action === "attack" || p.action === "skill"),
-            )
-          ? "attack"
-          : payloads.some((p) => p.type === "skill.used")
-            ? payloads.some(
-                (p) => p.type === "combat.action" && p.action === "heal",
+      : isHeavyHit
+        ? "heavy_hit"
+        : payloads.some((p) => p.type === "combat.started")
+          ? "battle"
+          : isAnomalyEvent
+            ? "eerie_bell"
+            : payloads.some(
+                (p) =>
+                  p.type === "combat.action" &&
+                  (p.action === "attack" || p.action === "skill"),
               )
-              ? "heal"
-              : "skill"
-            : payloads.some((p) => p.type === "expedition.scouted")
-              ? "scout"
-              : payloads.some((p) => p.type === "vehicle.repaired")
-                ? "repair"
-                : payloads.some((p) => p.type === "expedition.rested")
-                  ? "rest"
-                  : payloads.some((p) => p.type === "actor.configured")
-                    ? "config"
-                    : payloads.some((p) => p.type === "convoy.moved")
-                      ? "travel"
-                      : Object.values(report.gains).some((n) => n > 0)
-                        ? "reward"
-                        : "choice";
+              ? "attack"
+              : payloads.some((p) => p.type === "skill.used")
+                ? payloads.some(
+                    (p) => p.type === "combat.action" && p.action === "heal",
+                  )
+                  ? "heal"
+                  : "skill"
+                : payloads.some((p) => p.type === "expedition.scouted")
+                  ? "scout"
+                  : payloads.some((p) => p.type === "vehicle.repaired")
+                    ? "repair"
+                    : payloads.some((p) => p.type === "expedition.rested")
+                      ? "rest"
+                      : payloads.some((p) => p.type === "actor.configured")
+                        ? "config"
+                        : payloads.some((p) => p.type === "convoy.moved")
+                          ? "travel"
+                          : Object.values(report.gains).some((n) => n > 0)
+                            ? "reward"
+                            : "choice";
     void this.unlock().then(() => {
       this.cue(cue);
-      if (report.danger && cue !== "attack") this.cue("hurt");
+      if (report.danger) {
+        if (cue !== "heavy_hit" && cue !== "attack") this.cue("hurt");
+        this.cue("heartbeat");
+      }
     });
   }
   close() {

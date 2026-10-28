@@ -76,10 +76,11 @@
   fill: #e1ba75;
   stroke: #e1ba75;
 }
-.map-node.current .pulse {
-  fill: #d6b97710;
-  stroke: #d6b97744;
-  stroke-width: 1;
+.map-node.current .pulse,
+.animated-convoy-vehicle .pulse {
+  fill: #d6b97715;
+  stroke: #d6b97766;
+  stroke-width: 1.5;
 }
 .map-node.closed circle {
   stroke: #9d6050;

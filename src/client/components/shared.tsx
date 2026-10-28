@@ -47,6 +47,7 @@ export function Meter({
   label: string;
   danger?: boolean;
 }) {
+  const percent = Math.max(0, Math.min(100, (value / max) * 100));
   return (
     <div
       className={`meter ${danger ? "danger" : ""}`}
@@ -59,11 +60,8 @@ export function Meter({
         </span>
       </div>
       <div className="meter-track">
-        <span
-          style={{
-            width: `${Math.max(0, Math.min(100, (value / max) * 100))}%`,
-          }}
-        />
+        <span className="meter-ghost" style={{ width: `${percent}%` }} />
+        <span className="meter-fill" style={{ width: `${percent}%` }} />
       </div>
     </div>
   );
