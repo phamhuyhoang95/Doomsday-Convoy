@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "packId": "last-convoy.asset-pack.a1",
+  "status": "art-direction-samples",
+  "generator": "built-in image_gen",
+  "runtimeIntegrated": false,
+  "promptFile": "prompts.json",
+  "referenceUsage": "User images are visual style references only; no screenshot text/UI/logo/watermark copied.",
+  "assets": [
+    {
+      "assetId": "asset.world.overview",
+      "registryStatus": "proposed",
+      "kind": "location",
+      "role": "world-map-background",
+      "file": "world-map-a1.png",
+      "width": 1774,
+      "height": 887,
+      "alpha": false,
+      "sha256": "a3e1d1dd3965ccf3bbf1052ad1a1596a0523e4392f2abbc7222a24b8b1fc00f6",
+      "notes": "Nền minh họa 8 cụm địa điểm. Cần căn lại vị trí marker theo art khi tích hợp; không dùng đường vẽ làm nguồn truth cho graph."
+    },
+    {
+      "assetId": "asset.location.garage",
+      "registryStatus": "existing",
+      "kind": "location",
+      "role": "location-background",
+      "file": "garage-departure-a1.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "sha256": "6315ee424cd00fdbdec950a20422bcc93504cb83413062bb8fa6a3cbb8cb9449",
+      "notes": "Một xe khách hoạt động và ba người sống sót; không có chữ/UI được vẽ vào ảnh."
+    },
+    {
+      "assetId": "asset.character.minh",
+      "registryStatus": "existing",
+      "kind": "portrait",
+      "role": "character-portrait",
+      "file": "minh-portrait-a1.png",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "sha256": "c691c026171772412a8e0075471c9ad23aa1f71cfaf049c78cc241ba83fe2a9b",
+      "notes": "Ảnh dọc Minh. Cần crop UI theo vùng mặt khi tích hợp vào portrait nhỏ."
+    },
+    {
+      "assetId": "asset.vehicle.bus",
+      "registryStatus": "existing",
+      "kind": "vehicle",
+      "role": "map-vehicle-overlay",
+      "file": "convoy-bus-a1.png",
+      "width": 1536,
+      "height": 1024,
+      "alpha": true,
+      "sha256": "4830c6dc083bf4a9feb29a73a03195f2987993101fdc0eefcf5b6e3797baf69b",
+      "alphaVerification": {
+        "mode": "RGBA",
+        "min": 0,
+        "max": 254,
+        "fullyTransparentPixels": 608414,
+        "corners": [
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "notes": "PNG giữ nguyên alpha từ tool. Một góc tĩnh, đầu xe hướng dưới-trái; chưa phải bộ sprite nhiều hướng hoặc animation."
+    }
+  ]
+}

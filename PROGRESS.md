@@ -1,6 +1,7 @@
 # LAST CONVOY — tiến trình chung và điểm tiếp tục
 
 **Cập nhật:** 2026-10-28, Asia/Ho_Chi_Minh.
+**MỚI NHẤT — ASSET A1 ĐÃ TẠO:** theo yêu cầu tạo tài nguyên giống phong cách hai ảnh tham chiếu, đã dùng skill imagegen và built-in image_gen tạo bốn mẫu gốc: map1774×887, cảnh gara1672×941, Minh1122×1402 và xe1536×1024 alpha. Kế hoạch trước tạo: [ASSET_PLAN.md](ASSET_PLAN.md). File/manifest/prompt set tại [art/asset-pack-a1/README.md](art/asset-pack-a1/README.md). Đã xem trực quan và kiểm tra decode/dimensions/hash; xe có608.414 pixel alpha0, bốn góc alpha0. Không đổi UI/rules/save, không chạy lại tests engine cho thay đổi chỉ gồm ảnh/tài liệu. NEXT: chờ review hướng mỹ thuật; nếu được yêu cầu tích hợp, căn marker map/crop portrait, tạo bản web tối ưu và giữ gameplay/UI tương tác thật. R1 bên dưới là checkpoint gameplay đã hoàn tất.
 **HIỆN TẠI — R1 ĐÃ HOÀN TẤT VÀ PUSH:** hoàn tất đợt sửa theo phản hồi game nhàm chán. Code checkpoint **`d1fbb66`** đã push lên origin/main và đối chiếu remote SHA `d1fbb66d865fde6dbce600e4cc9eb574f5955afe`; commit tài liệu chốt theo sau. Kế hoạch trước code: [PLAYABILITY_PLAN.md](PLAYABILITY_PLAN.md). Báo cáo chi tiết: [PLAYABILITY_REPORT.md](PLAYABILITY_REPORT.md). Các phần Phase 0–5 bên dưới là lịch sử.
 
 ### Điểm tiếp tục mới nhất — R1 (2026-10-28)
