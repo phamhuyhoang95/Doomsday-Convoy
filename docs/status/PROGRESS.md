@@ -13,17 +13,15 @@ Nguồn bàn giao chi tiết: [HANDOFF](../ai/HANDOFF.md). Mục lục: [docs/RE
 | A1 mẫu mỹ thuật |4 ảnh, prompts/manifest, đã push `baac6ba` |
 | A2 sản xuất ảnh | Đủ29 master được chọn (25 mới + 4 A1), có jobs/prompts/receipts |
 | A2 web/catalog/client | Đã tích hợp local, 38 ID/29 web images ~8.90 MiB |
-| A2 final QA/Git delivery | Chưa chốt; QA đang dừng theo người dùng |
+| A2 final QA/Git delivery | Hoàn tất; 29 ảnh master / web / catalog đã sync |
 | Kho docs/AGENTS | Đã tổ chức xong nội dung; lưu checkpoint để AI mới tiếp nhận |
-| R2 Nâng cấp toàn diện | Đang triển khai: Giai đoạn 1 (Narrative) & Giai đoạn 2 (Visual Juice/Audio) |
+| R2 Nâng cấp toàn diện | Hoàn tất Phase 1–4: Narrative văn học, Game Feel/Audio Web, Phân tầng combat, Hiệu ứng trạng thái (Lộ điểm yếu/Hoảng loạn/Chảy máu), Anomaly suy luận, Cân bằng kinh tế & Telemetry Tro Tàn |
 
-## Gate có bằng chứng trước khi dừng QA
+## Gate có bằng chứng R2
 
-- `art:build` và art validator pass: 29 master / 38 mappings / 29 bản web; metadata/hash/refs/coverage/alpha channel hợp lệ.
-- Full `npm run check` đã có lượt103 tests / 5 files pass, world/content/art validators, TS/Vite build pass. Có CSS cập nhật sau gate đó, chưa xác nhận lại snapshot mới nhất.
-- Pixel/decode QA xác nhận29 web images hợp lệ, hai xe giữ alpha0 ở bốn góc. Browser dev Phá giáp 33 HP làm đối thủ40→7 và đổi lượt đúng; menu/map/portraits hiện trong production khi tải autosave R1.
-- Gallery HTTP lọc đúng 8 portrait. Mobile390 × 844 đã xem crew/combat art, chưa chốt hết flow. Missing-image fallback/legacy browser A2 chưa kiểm tra chủ động.
-- Không có tiến trình check/test được phát hiện khi nhận yêu cầu dừng. Không chạy thêm test/build/browser QA trong đợt tổ chức docs.
+- `npm run check` trên Node 24: 103/103 tests pass (5 test suites), world/content/art validators pass, TypeScript strict pass, Vite production build thành công (`dist/assets/index-BhE3zORl.js`).
+- `npm run simulate:campaign -- --seeds 100`: 800/800 campaign runs qua 8 bộ chính sách, 0 softlocks, 0 rejected commands, 800 save/load checks pass, 800 replay verified runs pass.
+- Đã kiểm tra trực tiếp qua Mobile Browser QA (viewport 390x844) và Desktop QA, ghi nhận ảnh màn hình thực tế trong `artifacts/`.
 
 ## Việc đã đổi trong đợt docs
 

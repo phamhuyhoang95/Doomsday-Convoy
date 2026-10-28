@@ -283,7 +283,7 @@ describe("R1 actions and tactical customization", () => {
     const reward = state.commandLog
       .at(-1)!
       .events.find((event) => event.payload.type === "combat.victory")?.payload;
-    expect(reward?.type === "combat.victory" && reward.rewards.food).toBe(22);
+    expect(reward?.type === "combat.victory" && reward.rewards.food).toBe(9);
     expect(currentCombatActor(state)?.convoyId).toBe(state.player.convoyId);
   });
   it.each(["attack", "skill"] as const)(

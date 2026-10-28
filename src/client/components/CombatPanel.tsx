@@ -231,6 +231,23 @@ export function CombatPanel({
                 label="HP"
                 danger={actor.health < actor.maxHealth / 3}
               />
+              <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "4px" }}>
+                {combat.vulnerableActorIds?.includes(actor.id) && (
+                  <span className="badge danger" style={{ fontSize: "0.55rem", padding: "1px 4px" }}>
+                    LỘ YẾU ĐIỂM +40%
+                  </span>
+                )}
+                {combat.panickedActorIds?.includes(actor.id) && (
+                  <span className="badge" style={{ fontSize: "0.55rem", padding: "1px 4px", color: "#f7ca79" }}>
+                    HOẢNG LOẠN
+                  </span>
+                )}
+                {combat.bleedingActorIds?.includes(actor.id) && (
+                  <span className="badge danger" style={{ fontSize: "0.55rem", padding: "1px 4px" }}>
+                    CHẢY MÁU -4
+                  </span>
+                )}
+              </div>
               <span className="energy-pips">
                 {Array.from(
                   { length: actor.attributes?.maxEnergy ?? 6 },
@@ -290,6 +307,23 @@ export function CombatPanel({
                 label="HP"
                 danger
               />
+              <div style={{ display: "flex", gap: "4px", flexWrap: "wrap", marginTop: "4px" }}>
+                {combat.vulnerableActorIds?.includes(actor.id) && (
+                  <span className="badge danger" style={{ fontSize: "0.55rem", padding: "1px 4px" }}>
+                    LỘ YẾU ĐIỂM +40%
+                  </span>
+                )}
+                {combat.panickedActorIds?.includes(actor.id) && (
+                  <span className="badge" style={{ fontSize: "0.55rem", padding: "1px 4px", color: "#f7ca79" }}>
+                    HOẢNG LOẠN
+                  </span>
+                )}
+                {combat.bleedingActorIds?.includes(actor.id) && (
+                  <span className="badge danger" style={{ fontSize: "0.55rem", padding: "1px 4px" }}>
+                    CHẢY MÁU -4
+                  </span>
+                )}
+              </div>
               {enemy?.id === actor.id && actor.status === "active" && (
                 <small className="target-selected">◎ ĐANG NHẮM</small>
               )}

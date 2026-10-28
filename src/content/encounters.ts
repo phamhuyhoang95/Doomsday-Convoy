@@ -8,7 +8,7 @@ export const marketEncounter: NonNullable<
   convoyId: "convoy.scavengers",
   characterIds: ["character.hunger", "character.watcher"],
   locationId: "location.market",
-  resources: { food: 22, water: 20, fuel: 4, medicine: 2, scrap: 5 },
+  resources: { food: 9, water: 8, fuel: 2, medicine: 1, scrap: 3 },
   vehicle: {
     id: "vehicle.wreck",
     name: "Xe bán tải bỏ hoang",

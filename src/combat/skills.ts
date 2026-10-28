@@ -96,6 +96,15 @@ export function useSkill(
         emit,
         "skill",
       );
+      if (state.combat) {
+        state.combat.vulnerableActorIds ??= [];
+        if (!state.combat.vulnerableActorIds.includes(target.id)) {
+          state.combat.vulnerableActorIds.push(target.id);
+          state.combat.log.push(
+            `${target.name} bị LỘ ĐIỂM YẾU (Nhận thêm 40% sát thương)!`,
+          );
+        }
+      }
       break;
     case "heal":
       if (!target) throw new CommandError("INVALID_TARGET", "Missing ally");
@@ -103,6 +112,12 @@ export function useSkill(
       target.health = Math.min(target.maxHealth, target.health + skill.power);
       if (target.health > 0 && target.status === "downed")
         target.status = "active";
+      if (state.combat) {
+        state.combat.panickedActorIds =
+          state.combat.panickedActorIds?.filter((id) => id !== target.id) ?? [];
+        state.combat.bleedingActorIds =
+          state.combat.bleedingActorIds?.filter((id) => id !== target.id) ?? [];
+      }
       emit({
         type: "combat.action",
         actorId: actor.id,

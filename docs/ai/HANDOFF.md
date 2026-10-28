@@ -1,13 +1,30 @@
 # Bàn giao hiện tại
 
-**Ngày:** 2026-10-28, Asia/Saigon. **Trạng thái:** Bắt đầu triển khai đợt nâng cấp lớn R2 theo yêu cầu trực tiếp của người dùng.
+**Ngày:** 2026-10-29, Asia/Saigon. **Trạng thái:** Hoàn tất trọn vẹn toàn bộ 4 giai đoạn của gói nâng cấp R2 (Narrative, Visual Juice/Audio, Combat Status/Synergy, Anomaly/Telemetry/Economy). Đã pass toàn bộ gate `npm run check` và 800 campaign simulation. Sẵn sàng cho Phase v0.2 (Con đường Siêu phàm / Occult Paths & Sanity).
 
 ## Yêu cầu mới nhất
 
-Người dùng: "bắt đầu đi" — Triển khai đợt nâng cấp toàn diện R2 theo kế hoạch [R2_UPGRADE_PLAN](../plans/R2_UPGRADE_PLAN.md).
-Trọng tâm: Nâng cấp trải nghiệm chơi, sửa từ ngữ bớt word-by-word, bổ sung Game Feel / Visual Juice, phân tầng áp lực Combat và nâng cấp âm thanh.
+Người dùng: "Sẵn sàng triển khai chưa" — Xác nhận triển khai đợt nâng cấp tiếp theo (v0.2: Con đường Siêu phàm, hệ thống Sanity/Tâm trí, Nhân vật mới, Mở rộng bản đồ).
 
-## Bối cảnh đã hoàn tất trước A2
+## Bối cảnh R2 đã hoàn tất và kiểm chứng
+
+- **Phase 1: Narrative & Voice**: Đại tu toàn bộ văn phong trong `src/content/texts.ts`, `skills.ts`, `world.ts`, `campaign.ts`, `operations.ts`. Loại bỏ hoàn toàn lối hành văn hướng dẫn thô kệch; văn phong grimdark sắc lạnh, nhân vật có giọng điệu riêng (Minh, Lan, Bảo, Hà, Quạ).
+- **Phase 2: Visual Juice & Audio**:
+  - CSS Screen shake (`.combat-screen-shake`), chớp đỏ khi trúng đòn (`.hit-loss`), chớp xanh khi hồi máu (`.hit-gain`).
+  - Thanh máu trễ (Ghost drain meter) tạo cảm giác sát thương có sức nặng.
+  - Phân tầng nguy cơ trận đánh: Tier 1 (Thăm dò), Tier 2 (Nguy hiểm), Tier 3 (Tử chiến) kèm hiệu ứng viền tối nhịp tim (`.pulse-vignette`).
+  - Xe di chuyển mượt mà trên bản đồ với đèn pha quét ban đêm bằng SVG interpolation.
+  - Bộ âm thanh hiệu ứng Web Audio API tự tổng hợp (`heavy_hit`, `heartbeat`, `eerie_bell`).
+- **Phase 3 & 4: Combat Status, Anomaly & Balance**:
+  - Hệ thống trạng thái Combat: `vulnerableActorIds` (+40% sát thương phải nhận), `panickedActorIds` (-30% lực tấn công), `bleedingActorIds` (-4 HP mỗi lượt đến).
+  - Phối hợp kỹ năng: Kỹ năng công kích kích hoạt Lộ điểm yếu; kỹ năng Trị thương hóa giải Hoảng loạn và Cầm máu.
+  - Quỷ dị suy luận (Deductive Anomaly): Gỡ bỏ việc ẩn lựa chọn an toàn qua `known("hospital.rule")`. Người chơi phải tự đọc gợi ý trong nhật ký để chọn đúng quy tắc.
+  - Telemetry Tro Tàn trực tiếp trên Map: Hiển thị vị trí và đếm ngược giờ hành động tiếp theo của đối thủ.
+  - Tái cân bằng kinh tế: Hạ thưởng đột kích chợ từ 22/20/4/2/5 xuống 9/8/2/1/3; đảm bảo các lựa chọn sinh tồn mang tính đánh đổi thực thụ.
+- **Bằng chứng kiểm chứng**:
+  - `npm run check`: 103/103 tests pass, validators pass, TypeScript strict pass, build pass.
+  - `npm run simulate:campaign -- --seeds 100`: 800/800 campaign runs qua 8 policies, 0 softlocks, 0 rejected commands, 800 save/load checks pass, 800 replay checks pass.
+  - Artifact Walkthrough: `artifacts/r2_*.png` và carousel [walkthrough_r2_record.md](../artifacts/walkthrough_r2_record.md) đã được ghi hình từ mobile viewport.
 
 - MVP Phase 0–5: game ba màn, engine deterministic, quest/combat/NPC/artifacts/save/replay thật.
 - R1: scout/rest/repair/XP/stances, early combat ở chợ, cost/result feedback, crew trên map, skill preview, Web Audio, legacy saves.

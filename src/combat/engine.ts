@@ -53,6 +53,9 @@ export function startCombat(
     ].map((actor) => actor.id),
     turnIndex: 0,
     defendedActorIds: [],
+    vulnerableActorIds: [],
+    panickedActorIds: [],
+    bleedingActorIds: [],
     log: [],
   };
   if (ambush)
@@ -133,6 +136,26 @@ function advanceTurn(
     combat.defendedActorIds = combat.defendedActorIds.filter(
       (id) => id !== actor.id,
     );
+    combat.vulnerableActorIds =
+      combat.vulnerableActorIds?.filter((id) => id !== actor.id) ?? [];
+    if (combat.bleedingActorIds?.includes(actor.id)) {
+      actor.health = Math.max(0, actor.health - 4);
+      if (actor.health === 0) actor.status = "downed";
+      combat.log.push(
+        `${actor.name} mất 4 HP vì vết thương rách toạc (Chảy máu)!`,
+      );
+      emit({
+        type: "combat.action",
+        actorId: actor.id,
+        action: "attack",
+        targetId: actor.id,
+        amount: 4,
+      });
+      if (actor.status !== "active") {
+        if (checkBattleEnd(state, definition, emit)) return;
+        continue;
+      }
+    }
     actor.energy = Math.min(
       actor.attributes?.maxEnergy ?? 6,
       (actor.energy ?? 0) + 1,

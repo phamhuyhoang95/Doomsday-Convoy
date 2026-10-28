@@ -10,6 +10,9 @@ export const combatStateSchema = z
     turnOrder: z.array(idSchema).min(1),
     turnIndex: z.number().int().nonnegative(),
     defendedActorIds: z.array(idSchema),
+    vulnerableActorIds: z.array(idSchema).optional().default([]),
+    panickedActorIds: z.array(idSchema).optional().default([]),
+    bleedingActorIds: z.array(idSchema).optional().default([]),
     log: z.array(z.string()),
   })
   .strict();

@@ -215,6 +215,52 @@ export function WorldMap({
           <span>— Đã đi qua</span>
           <span>┄ Tuyến chưa khám phá</span>
         </div>
+        {(() => {
+          const rivalId = definition.campaign?.rival?.id ?? "";
+          const rivalConvoy = state.convoys[rivalId];
+          const rivalNpc = state.world.npcs[rivalId];
+          const rivalLoc = definition.locations.find(
+            (l) => l.id === rivalConvoy?.locationId,
+          );
+          if (!rivalConvoy || !rivalNpc || rivalNpc.intent === "defeated")
+            return null;
+          const ticksToNext = Math.max(
+            0,
+            rivalNpc.nextActionTick - state.world.tick,
+          );
+          return (
+            <div
+              className="rival-telemetry-banner"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                padding: "8px 14px",
+                background: "rgba(180, 50, 40, 0.15)",
+                border: "1px solid rgba(220, 80, 70, 0.4)",
+                borderRadius: "3px",
+                margin: "10px 0",
+                fontSize: "0.75rem",
+                color: "#ffc2b8",
+              }}
+            >
+              <span>
+                <strong style={{ color: "#ff8274" }}>⚠ ĐOÀN XE TRO TÀN:</strong>{" "}
+                Đang tại <em>{rivalLoc?.name ?? "Khu vực bí mật"}</em> (
+                {rivalNpc.intent === "search"
+                  ? "Đang săn tìm Mắt Gương"
+                  : "Đang di chuyển chặn đầu"}
+                )
+              </span>
+              <span
+                className="badge danger"
+                style={{ fontSize: "0.65rem", padding: "2px 6px" }}
+              >
+                HÀNH ĐỘNG SAU: {ticksToNext}H
+              </span>
+            </div>
+          );
+        })()}
       </div>
       <div className="route-list">
         <h3>Chọn tuyến tiếp theo</h3>

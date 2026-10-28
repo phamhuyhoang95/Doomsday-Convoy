@@ -228,7 +228,7 @@ const mirror = event(
         },
         setFact("hospital.resolved"),
       ],
-      all(known("hospital.rule"), owns("artifact.mirror", "location.ward")),
+      owns("artifact.mirror", "location.ward"),
     ),
     choice(
       "force-mirror",

@@ -66,9 +66,14 @@ export function dealDamage(
     definition,
     roll.value,
   );
+  const isVulnerable =
+    state.combat?.vulnerableActorIds?.includes(target.id) ?? false;
   target.health -= damage;
   if (target.health === 0) target.status = "downed";
-  state.combat?.log.push(`${attacker.name} → ${target.name}: ${damage}`);
+  const critNote = isVulnerable ? " (LỘ ĐIỂM YẾU +40%)" : "";
+  state.combat?.log.push(
+    `${attacker.name} → ${target.name}: ${damage}${critNote}`,
+  );
   emit({
     type: "combat.action",
     actorId: attacker.id,
@@ -87,8 +92,18 @@ function damageForRoll(
   roll: number,
 ): number {
   const guarded = state.combat?.defendedActorIds.includes(target.id) ?? false;
-  const raw =
-    (attacker.attributes?.attack ?? 10) +
+  const isVulnerable =
+    state.combat?.vulnerableActorIds?.includes(target.id) ?? false;
+  const isPanicked =
+    state.combat?.panickedActorIds?.includes(attacker.id) ?? false;
+
+  const baseAttack = attacker.attributes?.attack ?? 10;
+  const effectiveAttack = isPanicked
+    ? Math.max(1, Math.floor(baseAttack * 0.7))
+    : baseAttack;
+
+  let raw =
+    effectiveAttack +
     power +
     roll +
     artifactBonus(state, attacker, definition, "attackBonus") +
@@ -96,6 +111,11 @@ function damageForRoll(
     (target.attributes?.defense ?? 2) -
     stanceBonus(target, definition, "defense") -
     artifactBonus(state, target, definition, "defenseBonus");
+
+  if (isVulnerable && raw > 0) {
+    raw = Math.floor(raw * 1.4);
+  }
+
   return Math.min(
     target.health,
     Math.max(1, guarded ? Math.floor(raw / 2) : raw),
