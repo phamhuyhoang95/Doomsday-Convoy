@@ -2,7 +2,13 @@
 
 Game chiến thuật đoàn xe sinh tồn với core TypeScript headless và client React/Vite. Đã triển khai Phase 0–5: một chiến dịch ba màn có di chuyển, event, điều tra, kỹ năng, kỳ vật, NPC đối thủ, chiến đấu theo lượt, bắt giữ, nhiều kết cục và save/load.
 
-**R1 — cải thiện trải nghiệm:** thêm trận kho hàng ở chợ, trinh sát có cache/intel, nghỉ hồi sức, sửa xe, XP/huấn luyện/thế đánh, skill preview, bảng hậu quả và âm thanh Web Audio. [Kế hoạch](PLAYABILITY_PLAN.md), [báo cáo thực tế](PLAYABILITY_REPORT.md).
+## AI mới tiếp nhận dự án
+
+Đọc [AGENTS.md](AGENTS.md) → [START_HERE](docs/ai/START_HERE.md) → [HANDOFF](docs/ai/HANDOFF.md) → [PROGRESS](docs/status/PROGRESS.md). Toàn bộ tài liệu chính thức có trong [docs/README.md](docs/README.md).
+
+**Hiện tại:** người dùng yêu cầu dừng test/QA để hoàn thiện AGENTS và kho docs trước. A2 đã có 29 master / 38 mappings và tích hợp client, nhưng chưa chốt final QA. Đọc HANDOFF trước khi chạy test/build/validator/browser QA; không tạo lại ảnh hoặc xây lại engine.
+
+**R1 — cải thiện trải nghiệm:** thêm trận kho hàng ở chợ, trinh sát có cache/intel, nghỉ hồi sức, sửa xe, XP/huấn luyện/thế đánh, skill preview, bảng hậu quả và âm thanh Web Audio. [Kế hoạch](docs/plans/PLAYABILITY_PLAN.md), [báo cáo thực tế](docs/reports/PLAYABILITY_REPORT.md).
 
 ## Chơi trên trình duyệt
 
@@ -38,7 +44,7 @@ npm run build
 npm run preview
 ```
 
-`check` chạy world/content validators, Vitest, TypeScript strict và production build. Policies campaign: peaceful/combat/trade/surrender/fallback/ruthless. Batch thêm starvation và guaranteed lethal hazard để kiểm thử thất bại hợp lệ. CLI trả exit khác 0 nếu có softlock/rejected command. Simulation lớn có thể mất vài phút vì xác minh replay/save của từng lượt.
+`check` chạy world/content/art validators, Vitest, TypeScript strict và production build. Policies campaign: peaceful/combat/trade/surrender/fallback/ruthless. Batch thêm starvation và guaranteed lethal hazard để kiểm thử thất bại hợp lệ. CLI trả exit khác 0 nếu có softlock/rejected command. Simulation lớn có thể mất vài phút vì xác minh replay/save của từng lượt.
 
 `preview` phục vụ build production tại http://127.0.0.1:4173. Save ở port 5173 và 4173 tách biệt theo origin của trình duyệt.
 
@@ -54,13 +60,14 @@ npm run preview
 - `src/client/`: render state, read models và dispatch commands; không tự resolve kết quả gameplay.
 - `src/persistence/`, `src/simulation/`, `scripts/`, `tests/`: save migration, bots, CLI và verification.
 
-Không cần hình hoặc âm thanh để chạy engine. Client dùng CSS/SVG/typographic placeholders và xử lý asset thiếu/lỗi. Web Audio tạo drone/gió và cues hành động/combat/phần thưởng sau click đầu; có mute/volume được lưu. Chưa có bản nhạc/voice thu âm. Debug tab hiện trong dev; production có thể bật bằng `?debug=1`. Dev mobile harness: http://127.0.0.1:5173/qa/mobile.html.
+Không cần hình hoặc âm thanh để chạy engine. Client đã có art A2 và fallback CSS/SVG khi ảnh thiếu/lỗi; tình trạng QA trong HANDOFF. [Asset pipeline](docs/assets/ASSET_PIPELINE.md), [gallery](http://127.0.0.1:4173/art/a2/gallery.html). Web Audio tạo drone/gió và cues hành động/combat/phần thưởng sau click đầu; có mute/volume được lưu. Chưa có bản nhạc/voice thu âm. Debug tab hiện trong dev; production có thể bật bằng `?debug=1`. Dev mobile harness: http://127.0.0.1:5173/qa/mobile.html.
 
 ## Tài liệu và bằng chứng
 
-- [PROGRESS.md](PROGRESS.md): tiến trình chung, checkpoints, kết quả thực và điểm tiếp tục khi hết context.
-- [PHASE_PLANS.md](PHASE_PLANS.md): plan chi tiết trước từng phase.
-- [QA_REPORT.md](QA_REPORT.md): 14 nhóm test, simulation, browser QA và giới hạn.
-- [ARCHITECTURE.md](ARCHITECTURE.md), [CONTENT_GUIDE.md](CONTENT_GUIDE.md), [GAME_BIBLE.md](GAME_BIBLE.md), [MVP_SCOPE.md](MVP_SCOPE.md).
+- [docs/README.md](docs/README.md): mục lục tài liệu chính thức.
+- [HANDOFF](docs/ai/HANDOFF.md), [PROGRESS](docs/status/PROGRESS.md): yêu cầu mới nhất, checkpoints và bước tiếp.
+- [PHASE_PLANS](docs/plans/PHASE_PLANS.md), [A2 plan](docs/plans/ASSET_PRODUCTION_PLAN.md): kế hoạch trước triển khai.
+- [QA_REPORT](docs/reports/QA_REPORT.md), [PLAYABILITY_REPORT](docs/reports/PLAYABILITY_REPORT.md): bằng chứng theo checkpoint.
+- [ARCHITECTURE](docs/engineering/ARCHITECTURE.md), [CONTENT_GUIDE](docs/engineering/CONTENT_GUIDE.md), [GAME_BIBLE](docs/game/GAME_BIBLE.md), [MVP_SCOPE](docs/game/MVP_SCOPE.md).
 
 MVP không có online multiplayer, persistent server, marketplace hoặc AI runtime. Mục tiêu chiến dịch 30–60 phút cần human playtest và cân bằng thêm; chưa xác nhận thời lượng này bằng bot. Các báo cáo seed chứng minh những tuyến đã kiểm thử, không bảo đảm mọi chuỗi hành động có thể hoàn thành.
