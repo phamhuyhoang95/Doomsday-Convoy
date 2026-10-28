@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { campaignDefinition } from "../content/campaign";
 import type { GameCommand } from "../core/commands";
 import { processCommand } from "../core/processor";
@@ -59,6 +59,70 @@ export function useGame() {
         setMessage("Đã bắt đầu nhưng chưa ghi được autosave.");
       }
     });
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const params = new URLSearchParams(window.location.search);
+    const qa = params.get("qa");
+    if (!qa) return;
+    safely(() => {
+      let current = createGame(42, campaignDefinition);
+      if (qa === "gara") {
+        setState(current);
+        return;
+      }
+      if (qa === "market") {
+        const r1 = processCommand(
+          current,
+          { id: "cmd.1", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.prepare" } },
+          { principalId: current.player.id },
+          campaignDefinition,
+        );
+        if (r1.ok) current = r1.state;
+        const r2 = processCommand(
+          current,
+          { id: "cmd.2", issuerId: current.player.id, payload: { type: "travel", routeId: "route.garage-market" } },
+          { principalId: current.player.id },
+          campaignDefinition,
+        );
+        if (r2.ok) current = r2.state;
+        setState(current);
+        return;
+      }
+      if (qa === "combat") {
+        const r1 = processCommand(
+          current,
+          { id: "cmd.1", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.prepare" } },
+          { principalId: current.player.id },
+          campaignDefinition,
+        );
+        if (r1.ok) current = r1.state;
+        const r2 = processCommand(
+          current,
+          { id: "cmd.2", issuerId: current.player.id, payload: { type: "travel", routeId: "route.garage-market" } },
+          { principalId: current.player.id },
+          campaignDefinition,
+        );
+        if (r2.ok) current = r2.state;
+        const r3 = processCommand(
+          current,
+          { id: "cmd.3", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.rescue-ha" } },
+          { principalId: current.player.id },
+          campaignDefinition,
+        );
+        if (r3.ok) current = r3.state;
+        const r4 = processCommand(
+          current,
+          { id: "cmd.4", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.raid-cache" } },
+          { principalId: current.player.id },
+          campaignDefinition,
+        );
+        if (r4.ok) current = r4.state;
+        setState(current);
+        return;
+      }
+    });
+  }, []);
   const dispatch = (payload: GameCommand["payload"]): void => {
     if (!state) return;
     void audio.unlock();
