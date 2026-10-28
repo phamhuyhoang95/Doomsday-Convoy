@@ -1,0 +1,9 @@
+{
+  "key": "location.overpass",
+  "revision": 2,
+  "master": "masters/location.overpass-v2.png",
+  "generatedSource": "/Users/tdt/.codex/generated_images/01a17e05-2e1e-7612-9980-b87bd4a1bdb0/exec-3e43fa70-9b36-42e8-b9e4-fab01fc54793.png",
+  "editSource": "/Users/tdt/Desktop/GameOL/art/production-a2/masters/location.overpass.png",
+  "prompt": "Precise cleanup of this game background. Remove the faint pseudo-signature / gibberish watermark-like scribble at the bottom-right corner. Reconstruct only the tiny affected patch using the surrounding natural rubble/ground texture. Also ensure all four corners contain no lettering, logo, artist signature or watermark. Preserve the entire scene, architecture, lighting, palette, camera, composition, aspect ratio and every other detail exactly. Do not crop, add objects, blur the image or alter the environment. No new text.",
+  "status": "generated-awaiting-technical-validation"
+}

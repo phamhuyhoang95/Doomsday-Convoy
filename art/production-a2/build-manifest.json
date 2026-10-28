@@ -1,0 +1,297 @@
+{
+  "schemaVersion": 1,
+  "tool": "built-in image_gen",
+  "derivativeTool": "macOS sips: resize/encode only",
+  "masters": [
+    {
+      "id": "asset.world.overview",
+      "master": "../asset-pack-a1/world-map-a1.png",
+      "width": 1774,
+      "height": 887,
+      "alpha": false,
+      "bytes": 3192642,
+      "sha256": "a3e1d1dd3965ccf3bbf1052ad1a1596a0523e4392f2abbc7222a24b8b1fc00f6",
+      "web": "/art/a2/world.overview.jpg"
+    },
+    {
+      "id": "asset.location.garage",
+      "master": "../asset-pack-a1/garage-departure-a1.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2980949,
+      "sha256": "6315ee424cd00fdbdec950a20422bcc93504cb83413062bb8fa6a3cbb8cb9449",
+      "web": "/art/a2/location.garage.jpg"
+    },
+    {
+      "id": "asset.character.minh",
+      "master": "../asset-pack-a1/minh-portrait-a1.png",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "bytes": 2718445,
+      "sha256": "c691c026171772412a8e0075471c9ad23aa1f71cfaf049c78cc241ba83fe2a9b",
+      "web": "/art/a2/character.minh.jpg"
+    },
+    {
+      "id": "asset.vehicle.bus",
+      "master": "../asset-pack-a1/convoy-bus-a1.png",
+      "width": 1536,
+      "height": 1024,
+      "alpha": true,
+      "bytes": 2851121,
+      "sha256": "4830c6dc083bf4a9feb29a73a03195f2987993101fdc0eefcf5b6e3797baf69b",
+      "web": "/art/a2/vehicle.bus.png"
+    },
+    {
+      "id": "asset.location.market",
+      "master": "masters/location.market.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2576070,
+      "sha256": "d013bb75ea21a056e795e1e661602734ade36a32404ab632e1e96d71582c117b",
+      "web": "/art/a2/location.market.jpg"
+    },
+    {
+      "id": "asset.location.overpass",
+      "master": "masters/location.overpass-v2.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2381226,
+      "sha256": "f45d8cabbc64a50f4727a1c4ca296240bf7141ed490dae3f4e55cefbe06d6aff",
+      "web": "/art/a2/location.overpass.jpg"
+    },
+    {
+      "id": "asset.location.service",
+      "master": "masters/location.service-v2.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2577642,
+      "sha256": "9637c4ec1a18841264546dacf9c7abc5cd52a58358f2a1c4d450fe99727af14d",
+      "web": "/art/a2/location.service.jpg"
+    },
+    {
+      "id": "asset.location.hospital",
+      "master": "masters/location.hospital.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2670085,
+      "sha256": "7cacea7b042ec7df60d1d6efb3852540cf41c0ad06a302a258eebf6234e0fa27",
+      "web": "/art/a2/location.hospital.jpg"
+    },
+    {
+      "id": "asset.location.ward",
+      "master": "masters/location.ward.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2325228,
+      "sha256": "d8f32dc162a099d76f86aa76c44328a70ecf9fbfe40b338f7a4962551a30b637",
+      "web": "/art/a2/location.ward.jpg"
+    },
+    {
+      "id": "asset.location.checkpoint",
+      "master": "masters/location.checkpoint.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2773763,
+      "sha256": "36c6a4259cbd7aae9e954971a958005637b01c365dc952a43239415b3ba4e983",
+      "web": "/art/a2/location.checkpoint.jpg"
+    },
+    {
+      "id": "asset.location.refuge",
+      "master": "masters/location.refuge.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2607782,
+      "sha256": "d57203798602c5917dd76c988a17bfaf92e9bd82e2d85013643592e35332a975",
+      "web": "/art/a2/location.refuge.jpg"
+    },
+    {
+      "id": "asset.character.lan",
+      "master": "masters/character.lan.png",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "bytes": 2719108,
+      "sha256": "34853574f883152b85555ce9ee54d7eb3f6e13a1736f20b1aac849a22a595e2d",
+      "web": "/art/a2/character.lan.jpg"
+    },
+    {
+      "id": "asset.character.bao",
+      "master": "masters/character.bao.png",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "bytes": 2714375,
+      "sha256": "2ebf265631546bffe19e23f0fd66ca51a2dfc0c6a0b40dc65f28eab4ca837989",
+      "web": "/art/a2/character.bao.jpg"
+    },
+    {
+      "id": "asset.character.ha",
+      "master": "masters/character.ha.png",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "bytes": 2746127,
+      "sha256": "0fa3f1db4dc1dd156cd71bfd18d6a93a1a3ae02ab5253f773e3f3aec5587ad43",
+      "web": "/art/a2/character.ha.jpg"
+    },
+    {
+      "id": "asset.character.raven",
+      "master": "masters/character.raven.png",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "bytes": 2778574,
+      "sha256": "ef18194da36fc38cd586e8aaf534d0ce105f0911137194c39dd3168112b2a921",
+      "web": "/art/a2/character.raven.jpg"
+    },
+    {
+      "id": "asset.character.ash",
+      "master": "masters/character.ash.png",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "bytes": 2956467,
+      "sha256": "269305a5b75e974595654a3431f8c72664dcaaf4138deb3c93d756cfc44614c5",
+      "web": "/art/a2/character.ash.jpg"
+    },
+    {
+      "id": "asset.character.hunger",
+      "master": "masters/character.hunger.png",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "bytes": 2602052,
+      "sha256": "fc12c4d84afbe3b4768966e69bc6671dff618aea53f283a17bdf470c0b5f8f0f",
+      "web": "/art/a2/character.hunger.jpg"
+    },
+    {
+      "id": "asset.character.watcher",
+      "master": "masters/character.watcher.png",
+      "width": 1122,
+      "height": 1402,
+      "alpha": false,
+      "bytes": 2516800,
+      "sha256": "ed9f87880f125df66164c03b4f7480157df84732e5d8b1fcf5c1ebbda3775f4e",
+      "web": "/art/a2/character.watcher.jpg"
+    },
+    {
+      "id": "asset.skill.strike",
+      "master": "masters/skill.strike.png",
+      "width": 1254,
+      "height": 1254,
+      "alpha": false,
+      "bytes": 2962987,
+      "sha256": "dd233966f17013860151a74e97488339188a8dbee20a84c272e4ad8ab1ceccbd",
+      "web": "/art/a2/skill.strike.jpg"
+    },
+    {
+      "id": "asset.skill.heal",
+      "master": "masters/skill.heal.png",
+      "width": 1254,
+      "height": 1254,
+      "alpha": false,
+      "bytes": 3024687,
+      "sha256": "720fd62caa64600785d4fecf51f96604f7a58c5a98078bfaf2a38ff5bc492e3e",
+      "web": "/art/a2/skill.heal.jpg"
+    },
+    {
+      "id": "asset.skill.guard",
+      "master": "masters/skill.guard.png",
+      "width": 1254,
+      "height": 1254,
+      "alpha": false,
+      "bytes": 2877898,
+      "sha256": "0fd65887c981829e305bb0507e6c1027b3a818d989031d44b56dea4524dadfc8",
+      "web": "/art/a2/skill.guard.jpg"
+    },
+    {
+      "id": "asset.skill.sense",
+      "master": "masters/skill.sense.png",
+      "width": 1254,
+      "height": 1254,
+      "alpha": false,
+      "bytes": 2895310,
+      "sha256": "7033efad480ce101d707c06e39651cae49177f08b68f6ae6febd410401b83784",
+      "web": "/art/a2/skill.sense.jpg"
+    },
+    {
+      "id": "asset.artifact.mirror",
+      "master": "masters/artifact.mirror.png",
+      "width": 1254,
+      "height": 1254,
+      "alpha": false,
+      "bytes": 2627896,
+      "sha256": "fc9f07dcd6a17b4c29afaadee3f639d4d4e8794740a4a735adb60ed57ee33e66",
+      "web": "/art/a2/artifact.mirror.jpg"
+    },
+    {
+      "id": "asset.artifact.lantern",
+      "master": "masters/artifact.lantern.png",
+      "width": 1254,
+      "height": 1254,
+      "alpha": false,
+      "bytes": 2499448,
+      "sha256": "e721722f3f681700b87f8f85768c9d41fca2cd08153e4776fd91b1a1e15c7732",
+      "web": "/art/a2/artifact.lantern.jpg"
+    },
+    {
+      "id": "asset.anomaly.bell",
+      "master": "masters/anomaly.bell.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2284502,
+      "sha256": "4ca8972626e7d080ee714c9d44beffb7e5763206ab2068725057dc47b1050770",
+      "web": "/art/a2/anomaly.bell.jpg"
+    },
+    {
+      "id": "asset.vehicle.rival",
+      "master": "masters/vehicle.rival.png",
+      "width": 1536,
+      "height": 1024,
+      "alpha": true,
+      "bytes": 2507676,
+      "sha256": "8f496feaee347be4976ccf324c9994105056693e7390acf830fbd531613d2a65",
+      "web": "/art/a2/vehicle.rival.png"
+    },
+    {
+      "id": "asset.event.market-survivor",
+      "master": "masters/event.market-survivor.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2477070,
+      "sha256": "902ac93fcd71d3ce0e2c2a5836032e5b100529f8b73063aa46a1d17b857f19a2",
+      "web": "/art/a2/event.market-survivor.jpg"
+    },
+    {
+      "id": "asset.event.hospital-records",
+      "master": "masters/event.hospital-records-v2.png",
+      "width": 1673,
+      "height": 940,
+      "alpha": false,
+      "bytes": 2067126,
+      "sha256": "97a117ec1147aa34e22376c608da2d5e4b4babe8ec6586c47001f0077ae264c6",
+      "web": "/art/a2/event.hospital-records.jpg"
+    },
+    {
+      "id": "asset.event.checkpoint-parley",
+      "master": "masters/event.checkpoint-parley.png",
+      "width": 1672,
+      "height": 941,
+      "alpha": false,
+      "bytes": 2731314,
+      "sha256": "c773e8df18837a07faa39c139c9bb923fb47e30b39bece6b5f3d6ab1048678b8",
+      "web": "/art/a2/event.checkpoint-parley.jpg"
+    }
+  ]
+}

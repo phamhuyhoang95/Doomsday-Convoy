@@ -19,7 +19,9 @@
     "simulate:campaign": "tsx scripts/simulate-campaign.ts",
     "validate:world": "tsx scripts/validate-world.ts",
     "validate:content": "tsx scripts/validate-content.ts",
-    "check": "npm run validate:world && npm run validate:content && npm run test && npm run build"
+    "art:build": "tsx scripts/art-pipeline.ts",
+    "validate:art": "tsx scripts/art-pipeline.ts --validate",
+    "check": "npm run validate:world && npm run validate:content && npm run validate:art && npm run test && npm run build"
   },
   "dependencies": {
     "react": "19.3.1",

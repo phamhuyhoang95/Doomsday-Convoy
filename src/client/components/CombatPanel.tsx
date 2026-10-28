@@ -119,6 +119,20 @@ export function CombatPanel({
             : "XỬ LÝ HẬU CHIẾN"}
         </span>
       </div>
+      <div className="combat-environment">
+        <AssetArt
+          id={`asset.${state.convoys[state.player.convoyId]?.locationId}`}
+          kind="location"
+          label={enemyName}
+        />
+        <div>
+          <AssetArt
+            id={encounter ? "asset.vehicle.bus" : "asset.vehicle.rival"}
+            kind="vehicle"
+            label={encounter ? "Đoàn xe của bạn" : enemyName}
+          />
+        </div>
+      </div>
       <div className="turn-order" aria-label="Thứ tự lượt">
         {combat.turnOrder.map((id) => (
           <span
@@ -308,6 +322,12 @@ export function CombatPanel({
                     title={v.reason || skill.description}
                     onClick={() => setSkillId(id)}
                   >
+                    <AssetArt
+                      id={skill.assetId ?? `asset.${skill.id}`}
+                      kind="skill"
+                      label={skill.name}
+                      decorative
+                    />
                     <strong>{skill.name}</strong>
                     <small>
                       {v.impact} · {skill.energyCost} NL

@@ -1,0 +1,7 @@
+{
+  "key": "location.overpass",
+  "master": "masters/location.overpass.png",
+  "generatedSource": "/Users/tdt/.codex/generated_images/01a17e05-2e1e-7612-9980-b87bd4a1bdb0/exec-330d44b6-aab5-4509-8bee-d0da6f79f2d0.png",
+  "tool": "built-in image_gen",
+  "status": "generated-awaiting-technical-validation"
+}

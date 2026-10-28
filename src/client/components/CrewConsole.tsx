@@ -189,7 +189,7 @@ export function CrewConsole({
                 >
                   <div>
                     <AssetArt
-                      id={skill.assetId}
+                      id={skill.assetId ?? `asset.${skill.id}`}
                       kind="skill"
                       label={skill.name}
                     />

@@ -1,0 +1,9 @@
+{
+  "key": "event.hospital-records",
+  "revision": 2,
+  "master": "masters/event.hospital-records-v2.png",
+  "generatedSource": "/Users/tdt/.codex/generated_images/01a17e05-2e1e-7612-9980-b87bd4a1bdb0/exec-419446c2-4492-494a-9f79-f1def20f2e85.png",
+  "editSource": "/Users/tdt/Desktop/GameOL/art/production-a2/masters/event.hospital-records.png",
+  "prompt": "Precisely remove the tiny pale logo-like decorative mark in the extreme bottom-right corner of this illustration. Reconstruct that small patch with the surrounding dark desk and floor texture. Preserve the entire folder, photograph, bottle, room, bell, lighting, colors, camera, proportions and all other details exactly. Do not crop, do not add writing, do not change faces. Final artwork has no watermark, signature, logo, corner emblem or text anywhere.",
+  "status": "generated-awaiting-technical-validation"
+}

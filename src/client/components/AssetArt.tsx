@@ -2,30 +2,44 @@ import { useState } from "react";
 import { resolveAsset } from "../../assets/registry";
 import type { AssetKind } from "../../assets/registry";
 import { useDefinition } from "../definition";
+import { presentationAsset } from "../art/registry";
 
 export function AssetArt({
   id,
   kind,
   label,
   className = "",
+  decorative = false,
 }: {
   id?: string | undefined;
   kind: AssetKind;
   label: string;
   className?: string;
+  decorative?: boolean;
 }) {
   const definition = useDefinition();
   const [failedUri, setFailedUri] = useState<string | null>(null);
   const asset = resolveAsset(definition.campaign?.assets ?? [], id, kind);
-  if (asset.uri && asset.uri !== failedUri && kind !== "sound")
-    return (
+  const picture = presentationAsset(id, kind);
+  const uri = picture?.uri ?? asset.uri;
+  if (uri && uri !== failedUri && kind !== "sound") {
+    const image = (
       <img
-        className={`asset-art asset-${kind} ${className}`}
-        src={asset.uri}
-        alt={label}
-        onError={() => setFailedUri(asset.uri ?? null)}
+        className={`asset-art asset-${kind} ${kind === "portrait" ? "portrait-source" : className}`}
+        src={uri}
+        alt={decorative ? "" : label}
+        loading="lazy"
+        decoding="async"
+        data-asset-id={id ?? asset.id}
+        onError={() => setFailedUri(uri)}
       />
     );
+    return kind === "portrait" ? (
+      <span className={`portrait-frame ${className}`}>{image}</span>
+    ) : (
+      image
+    );
+  }
   if (kind === "event" || kind === "location" || kind === "anomaly")
     return (
       <div

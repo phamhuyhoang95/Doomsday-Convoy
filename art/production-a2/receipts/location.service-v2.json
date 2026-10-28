@@ -1,0 +1,9 @@
+{
+  "key": "location.service",
+  "revision": 2,
+  "master": "masters/location.service-v2.png",
+  "generatedSource": "/Users/tdt/.codex/generated_images/01a17e05-2e1e-7612-9980-b87bd4a1bdb0/exec-ce77a45b-0f1d-4157-80b7-d80df82dd5ab.png",
+  "editSource": "/Users/tdt/Desktop/GameOL/art/production-a2/masters/location.service.png",
+  "prompt": "Precise cleanup of this game background. Remove the faint pseudo-signature / gibberish watermark-like scribble at the bottom-left corner. Reconstruct only the tiny affected patch using the surrounding natural rubble/ground texture. Also ensure all four corners contain no lettering, logo, artist signature or watermark. Preserve the entire scene, architecture, lighting, palette, camera, composition, aspect ratio and every other detail exactly. Do not crop, add objects, blur the image or alter the environment. No new text.",
+  "status": "generated-awaiting-technical-validation"
+}

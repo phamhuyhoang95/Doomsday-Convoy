@@ -1,0 +1,240 @@
+.menu-illustration {
+  border-radius: 5px;
+  filter: none;
+  height: clamp(440px, 62vh, 720px);
+  box-shadow: 0 20px 90px #0007;
+}
+.menu-illustration img.menu-key-art {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 42% center;
+}
+.menu-illustration::after {
+  background: linear-gradient(0deg, #0a1512bb, transparent 30%);
+}
+.menu-illustration > p {
+  z-index: 1;
+}
+.event-panel img.asset-event,
+.event-panel img.asset-location {
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-bottom: 1px solid #6a6249;
+}
+img.asset-portrait {
+  object-position: center 24%;
+}
+.portrait-frame {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.portrait-frame img.portrait-source {
+  position: absolute;
+  display: block;
+  max-width: none;
+  width: 180%;
+  height: 180%;
+  left: -40%;
+  top: -25%;
+  object-fit: cover;
+}
+.crew-tile .portrait-frame {
+  width: 54px;
+  min-width: 54px;
+  height: 68px;
+}
+.crew-energy { white-space: normal; line-height: 1.6; }
+.skill-card img.asset-skill {
+  width: 42px;
+  height: 42px;
+  border: 1px solid #6a6249;
+  border-radius: 3px;
+}
+.combat-skill-picker img.asset-skill {
+  width: 38px;
+  height: 38px;
+  border-radius: 3px;
+  float: left;
+}
+.combat-skill-picker .skill-button {
+  position: relative;
+  padding-left: 62px;
+  min-height: 76px;
+}
+.combat-skill-picker .skill-button > img {
+  position: absolute;
+  left: 12px;
+  top: 15px;
+}
+img.relic-icon {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+  border: 1px solid #6a6249;
+  border-radius: 4px;
+}
+img.vehicle-symbol {
+  width: 120px;
+  height: 100px;
+  object-fit: contain;
+  background: transparent;
+}
+.combat-environment {
+  position: relative;
+  height: 180px;
+  overflow: hidden;
+  border-bottom: 1px solid #5d5a45;
+}
+.combat-environment > img.asset-location {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 60%;
+  filter: brightness(0.72);
+}
+.combat-environment > div {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, #111c13aa, transparent 65%);
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  padding-right: 8%;
+}
+.combat-environment img.asset-vehicle {
+  width: 190px;
+  height: 145px;
+  object-fit: contain;
+  filter: drop-shadow(0 8px 8px #0009);
+}
+.improved-combat .fighter .portrait-frame {
+  width: 58px;
+  min-width: 58px;
+  height: 74px;
+  object-fit: cover;
+}
+.painted-map svg {
+  padding: 0;
+}
+.painted-map .map-route line {
+  stroke: #e4d4b4;
+  stroke-width: 2;
+  opacity: 0.75;
+  filter: drop-shadow(0 2px 2px #000);
+}
+.painted-map .map-route.selected line {
+  stroke: #ffcc6b;
+  stroke-width: 4;
+  opacity: 1;
+}
+.painted-map .map-route.traversed line {
+  stroke: #ffc66e;
+  stroke-width: 3;
+  opacity: 0.95;
+}
+.painted-map .map-node text {
+  fill: #f4e8d0;
+  font-size: 14px;
+  font-weight: 600;
+  stroke: #101816;
+  stroke-width: 5;
+}
+.painted-map .map-node circle {
+  stroke: #e9d9b9;
+  stroke-width: 2.5;
+  fill: #18251d;
+}
+.painted-map .map-node.current circle {
+  fill: #e8b365;
+  stroke: #ffe0a0;
+}
+.painted-map .map-node.current .pulse {
+  fill: #e8b36522;
+  stroke: #f7c98188;
+}
+.convoy-map-sprite {
+  pointer-events: none;
+  filter: drop-shadow(0 3px 3px #000);
+}
+.painted-map .map-node .you-are-here {
+  font-size: 10px;
+  fill: #ffdc92;
+}
+.painted-map .map-route text {
+  fill: #f7d992;
+  font-size: 12px;
+}
+.map-legend {
+  position: relative;
+  background: #101b15;
+}
+.game-main .action-report {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  max-width: none;
+  max-height: 300px;
+  margin-bottom: 20px;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+@media (max-width: 1100px) {
+  .main-grid.production-art {
+    grid-template-columns: 1fr;
+  }
+  .event-panel {
+    display: grid;
+    grid-template-columns: minmax(240px, 0.7fr) minmax(0, 1fr);
+  }
+  .event-panel img.asset-event,
+  .event-panel img.asset-location {
+    height: 100%;
+    min-height: 280px;
+    aspect-ratio: auto;
+    object-position: center;
+    border-bottom: 0;
+  }
+}
+@media (max-width: 650px) {
+  .menu-illustration {
+    height: 330px;
+  }
+  .crew-tile .portrait-frame {
+    display: block;
+    width: 36px;
+    min-width: 36px;
+    height: 48px;
+  }
+  .crew-tile {
+    gap: 7px;
+  }
+  .event-panel {
+    display: block;
+  }
+  .event-panel img.asset-event,
+  .event-panel img.asset-location {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+  .world-map {
+    overflow-x: auto;
+  }
+  .world-map svg {
+    min-width: 680px;
+  }
+  .map-legend {
+    min-width: 680px;
+  }
+  .combat-environment {
+    height: 145px;
+  }
+  .combat-environment img.asset-vehicle {
+    width: 145px;
+    height: 110px;
+  }
+}

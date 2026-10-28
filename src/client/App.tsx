@@ -14,6 +14,7 @@ import { CrewConsole } from "./components/CrewConsole";
 import { ActionDeck } from "./components/ActionDeck";
 import { ActionReportPanel } from "./components/ActionReport";
 import { operationPreview } from "../expedition/read-model";
+import { AssetArt } from "./components/AssetArt";
 
 function Brand() {
   return (
@@ -123,17 +124,12 @@ function MainMenu({
           aria-label="Một đoàn xe giữa thành phố bỏ hoang"
           role="img"
         >
-          <div className="menu-sun" />
-          <div className="towers back" />
-          <div className="towers front" />
-          <div className="menu-highway" />
-          <div className="hero-bus">
-            <div className="bus-windows" />
-            <span>07</span>
-            <i />
-            <i />
-          </div>
-          <div className="headlight" />
+          <AssetArt
+            id="asset.location.garage"
+            kind="location"
+            label="Đoàn xe rời gara cuối phố"
+            className="menu-key-art"
+          />
           <p>
             VĨ ĐỘ 21° N<br />
             TÍN HIỆU CUỐI: BẮC SƠN
@@ -499,6 +495,13 @@ function GameView({ game }: { game: ReturnType<typeof useGame> }) {
               )}
             </div>
             <CrewConsole state={state} dispatch={game.dispatch} compact />
+            {game.report && (
+              <ActionReportPanel
+                key={game.report.id}
+                report={game.report}
+                close={game.dismissReport}
+              />
+            )}
           </>
         )}
         {tab === "map" ? (
@@ -508,7 +511,7 @@ function GameView({ game }: { game: ReturnType<typeof useGame> }) {
             ) : state.combat ? (
               <CombatPanel state={state} dispatch={game.dispatch} />
             ) : (
-              <div className="main-grid">
+              <div className="main-grid production-art">
                 <WorldMap state={state} dispatch={game.dispatch} />
                 <EventPanel state={state} dispatch={game.dispatch} />
               </div>
@@ -538,13 +541,6 @@ function GameView({ game }: { game: ReturnType<typeof useGame> }) {
         )}
       </main>
       {tab === "map" && <ActionDeck state={state} dispatch={game.dispatch} />}
-      {game.report && (
-        <ActionReportPanel
-          key={game.report.id}
-          report={game.report}
-          close={game.dismissReport}
-        />
-      )}
       <footer className="game-footer">
         <span>LAST CONVOY / R1</span>
         <span>MỘT CHUYẾN XE. MỌI QUYẾT ĐỊNH ĐỀU CÓ HẬU QUẢ.</span>

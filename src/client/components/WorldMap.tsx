@@ -5,16 +5,17 @@ import { canAfford } from "../../core/resources";
 import type { GameState } from "../../core/state-schema";
 import { planTravel } from "../../world/travel";
 import { Costs } from "./shared";
+import { presentationAsset } from "../art/registry";
 
 const positions: Record<string, [number, number]> = {
-  "location.garage": [95, 310],
-  "location.market": [265, 165],
+  "location.garage": [100, 285],
+  "location.market": [250, 160],
   "location.overpass": [260, 395],
-  "location.service": [430, 350],
-  "location.hospital": [550, 165],
-  "location.ward": [710, 95],
-  "location.checkpoint": [740, 340],
-  "location.refuge": [910, 225],
+  "location.service": [465, 335],
+  "location.hospital": [555, 180],
+  "location.ward": [775, 100],
+  "location.checkpoint": [805, 360],
+  "location.refuge": [935, 230],
 };
 
 export function WorldMap({
@@ -25,6 +26,11 @@ export function WorldMap({
   dispatch: (payload: GameCommand["payload"]) => void;
 }) {
   const [selected, setSelected] = useState<string | null>(null);
+  const [mapFailed, setMapFailed] = useState(false);
+  const [vehicleFailed, setVehicleFailed] = useState(false);
+  const background = presentationAsset("asset.world.overview", "location");
+  const bus = presentationAsset("asset.vehicle.bus", "vehicle");
+  const hasArt = !!background && !mapFailed;
   const definition = useDefinition();
   const convoy = state.convoys[state.player.convoyId];
   if (!convoy) return null;
@@ -42,10 +48,15 @@ export function WorldMap({
         </div>
         <span className="badge">8 ĐỊA ĐIỂM</span>
       </div>
-      <div className="world-map">
+      <div
+        className={`world-map ${hasArt ? "painted-map" : ""}`}
+        role="region"
+        aria-label="Bản đồ tương tác; có thể kéo ngang trên màn hình nhỏ"
+        tabIndex={0}
+      >
         <svg
-          viewBox="0 0 1000 490"
-          role="img"
+          viewBox="0 0 1000 500"
+          role="group"
           aria-label="Bản đồ hành trình từ thành phố đến hầm trú Bắc Sơn"
         >
           <defs>
@@ -68,22 +79,35 @@ export function WorldMap({
               <stop offset="1" stopColor="#182523" stopOpacity="0" />
             </radialGradient>
           </defs>
-          <rect width="1000" height="490" fill="url(#grid)" />
-          <ellipse cx="560" cy="230" rx="440" ry="220" fill="url(#fog)" />
-          <path className="river" d="M420 -20 Q320 100 430 200 T460 500" />
-          <path
-            className="contour"
-            d="M20 95 Q220 20 290 70 T600 30 M580 450 Q700 390 1020 465 M760 10 Q830 70 1000 25"
-          />
-          <text className="map-region" x="90" y="65">
-            THÀNH PHỐ TẮT ĐÈN
-          </text>
-          <text className="map-region" x="560" y="40">
-            THÁNH AN
-          </text>
-          <text className="map-region" x="770" y="465">
-            VÀNH ĐAI PHÍA BẮC
-          </text>
+          {hasArt && (
+            <image
+              href={background.uri}
+              width="1000"
+              height="500"
+              preserveAspectRatio="xMidYMid meet"
+              onError={() => setMapFailed(true)}
+            />
+          )}
+          {!hasArt && (
+            <g>
+              <rect width="1000" height="500" fill="url(#grid)" />
+              <ellipse cx="560" cy="230" rx="440" ry="220" fill="url(#fog)" />
+              <path className="river" d="M420 -20 Q320 100 430 200 T460 500" />
+              <path
+                className="contour"
+                d="M20 95 Q220 20 290 70 T600 30 M580 450 Q700 390 1020 465 M760 10 Q830 70 1000 25"
+              />
+              <text className="map-region" x="90" y="65">
+                THÀNH PHỐ TẮT ĐÈN
+              </text>
+              <text className="map-region" x="560" y="40">
+                THÁNH AN
+              </text>
+              <text className="map-region" x="770" y="465">
+                VÀNH ĐAI PHÍA BẮC
+              </text>
+            </g>
+          )}
           {definition.routes.map((route) => {
             const from = positions[route.from];
             const to = positions[route.to];
@@ -142,6 +166,17 @@ export function WorldMap({
                   />
                 )}
                 <circle cx={position[0]} cy={position[1]} r={here ? 10 : 7} />
+                {here && bus && !vehicleFailed && (
+                  <image
+                    className="convoy-map-sprite"
+                    href={bus.uri}
+                    x={position[0] - 23}
+                    y={position[1] - 48}
+                    width="46"
+                    height="32"
+                    onError={() => setVehicleFailed(true)}
+                  />
+                )}
                 <text x={position[0]} y={position[1] + 30}>
                   {location.name}
                 </text>
@@ -149,7 +184,7 @@ export function WorldMap({
                   <text
                     className="you-are-here"
                     x={position[0]}
-                    y={position[1] - 32}
+                    y={position[1] - 54}
                   >
                     ĐOÀN XE
                   </text>

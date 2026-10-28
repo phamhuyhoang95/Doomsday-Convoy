@@ -1,0 +1,231 @@
+{
+  "tool": "built-in image_gen",
+  "generationCalls": [
+    {
+      "key": "location.market",
+      "assetId": "asset.location.market",
+      "kind": "location",
+      "label": "Chợ sơ tán",
+      "master": "masters/location.market.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: location\nPrimary request: A collapsed Vietnamese evacuation market at blue hour. Sagging tarpaulin canopies, overturned produce stalls, scattered empty baskets and shuttered warehouses. One amber lantern burns behind a partly open corrugated gate; crates imply hidden supplies. A clear narrow lane recedes into teal fog. No people prominently visible.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only."
+    },
+    {
+      "key": "location.overpass",
+      "assetId": "asset.location.overpass",
+      "kind": "location",
+      "label": "Cầu vượt đổ",
+      "master": "masters/location.overpass.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: location\nPrimary request: A broken elevated concrete motorway over a chasm of crimson mist. Rebar and hanging slabs, a queue of long-dead cars, bent reflector posts marking a precarious surviving maintenance path. Jagged apartment towers in cold fog behind. The snapped road is the unmistakable focal point; one distant amber road flare.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only."
+    },
+    {
+      "key": "location.service",
+      "assetId": "asset.location.service",
+      "kind": "location",
+      "label": "Trạm dịch vụ",
+      "master": "masters/location.service.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: location\nPrimary request: A deserted rural-edge Vietnamese fuel and repair station. Rusted canopy, two old pumps with unreadable blank faces, battered workshop and stacked tires, supply shed with a faint amber glow. A cracked side road disappears into pine silhouettes and teal mist. A single tiny antique lamp glows in a workshop window. Quiet possible sanctuary, still ominous.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only."
+    },
+    {
+      "key": "location.hospital",
+      "assetId": "asset.location.hospital",
+      "kind": "location",
+      "label": "Sân bệnh viện",
+      "master": "masters/location.hospital.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: location\nPrimary request: Courtyard of abandoned Thánh An municipal hospital: decaying concrete wings with covered balconies, broken ambulance, rain pools and weeds, dark emergency entrance illuminated by one impossible dim teal-green lamp. A small bell is visible above an old mortuary annex. Far upper windows glow faint crimson while the building has no power. Claustrophobic symmetrical architectural silhouette.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only."
+    },
+    {
+      "key": "location.ward",
+      "assetId": "asset.location.ward",
+      "kind": "location",
+      "label": "Khu điều trị cũ",
+      "master": "masters/location.ward.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: location\nPrimary request: Inside an old abandoned hospital treatment ward. Corroded empty beds, peeling teal paint, loose sheets, a half-covered tarnished oval mirror on a bedside cabinet and long receding doorway. A narrow amber lamp under a bed, red haze at the far end, distorted shadow reflected in the mirror with no matching person in the room. No readable files or signage. Richly detailed but the mirror/doorway remains focal.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only.\nStrict final check: absolutely no signature, artist mark or tiny text anywhere, including every corner."
+    },
+    {
+      "key": "location.checkpoint",
+      "assetId": "asset.location.checkpoint",
+      "kind": "location",
+      "label": "Trạm thu phí",
+      "master": "masters/location.checkpoint.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: location\nPrimary request: A fortified highway toll checkpoint on the northern outskirts at dusk. Crumbling tollbooths, concrete barriers, wire mesh, sandbags, an elevated lookout and warm floodlights cutting across teal fog. A heavy rusty convoy truck waits behind the barrier, distant silhouettes are indistinct. A broad road leads north into darkness. Crimson horizon behind ruined towers. A tense defensible chokepoint.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only.\nStrict final check: absolutely no signature, artist mark or tiny text anywhere, including every corner."
+    },
+    {
+      "key": "location.refuge",
+      "assetId": "asset.location.refuge",
+      "kind": "location",
+      "label": "Hầm trú Bắc Sơn",
+      "master": "masters/location.refuge.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: location\nPrimary request: A reinforced steel refuge door in a concrete tunnel entrance embedded in misty northern Vietnamese mountains. Improvised receiver antenna and sandbags, warm amber light spilling through an open side hatch, a small safe courtyard with blankets and supply barrels. Pale dawn touches pine trees above; distant crimson sky recedes behind the city far away. Hopeful but hard-earned, scarred materials remain consistent.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only.\nStrict final check: absolutely no signature, artist mark or tiny text anywhere, including every corner."
+    },
+    {
+      "key": "character.lan",
+      "assetId": "asset.character.lan",
+      "kind": "portrait",
+      "label": "Lan",
+      "master": "masters/character.lan.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: portrait\nPrimary request: Lan, Vietnamese female field medic aged about 35. Tired alert eyes, dark hair tied in a practical bun, worn dark teal medical jacket over layered clothes, scuffed canvas shoulder medical pouch, subtle healed cheek scratch. Compassionate, capable expression; no glamour makeup, no sexualized outfit.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Vertical 4:5, single character chest-up, full top of head comfortably inside frame, face occupying upper central area and clearly readable at thumbnail size. Restrained pose, weathered practical clothes, no aimed weapons. Amber sidelight left and petrol-teal fill right. Quiet out-of-focus charcoal ruin background, crisp expressive eyes, painterly face and fabric. Not a contact sheet, no extra people.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "character.bao",
+      "assetId": "asset.character.bao",
+      "kind": "portrait",
+      "label": "Bảo",
+      "master": "masters/character.bao.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: portrait\nPrimary request: Bảo, Vietnamese male mechanic about 52, stocky broad shoulders, short salt-and-pepper hair, square weathered face, greasy hands mostly below frame. Faded brown-olive work jacket, patched leather apron straps, a small spanner tucked into chest webbing and protective work goggles around his neck. Quiet wary half-frown, distinctive older face.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Vertical 4:5, single character chest-up, full top of head comfortably inside frame, face occupying upper central area and clearly readable at thumbnail size. Restrained pose, weathered practical clothes, no aimed weapons. Amber sidelight left and petrol-teal fill right. Quiet out-of-focus charcoal ruin background, crisp expressive eyes, painterly face and fabric. Not a contact sheet, no extra people.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "character.ha",
+      "assetId": "asset.character.ha",
+      "kind": "portrait",
+      "label": "Hà",
+      "master": "masters/character.ha.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: portrait\nPrimary request: Hà, Vietnamese female radio technician about 28. Short uneven bob of dark hair, slim build, determined eyes with visible exhaustion, dusty gray-green canvas jacket and faded rust-red scarf. Compact analog radio with coiled cable on her shoulder strap, one lightly bandaged upper arm. Resourceful rather than glamorous; distinct face from the medic.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Vertical 4:5, single character chest-up, full top of head comfortably inside frame, face occupying upper central area and clearly readable at thumbnail size. Restrained pose, weathered practical clothes, no aimed weapons. Amber sidelight left and petrol-teal fill right. Quiet out-of-focus charcoal ruin background, crisp expressive eyes, painterly face and fabric. Not a contact sheet, no extra people.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "character.raven",
+      "assetId": "asset.character.raven",
+      "kind": "portrait",
+      "label": "Quạ",
+      "master": "masters/character.raven.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: portrait\nPrimary request: Quạ, Vietnamese male leader of rival convoy Tro Tàn, about 45. Lean severe face, close-cropped dark hair with gray at temples, neat rough stubble, deeply worried eyes. Weathered charcoal coat, rust-red scarf and improvised shoulder armor, a tiny worn family-photo pouch on his harness without any visible text/image. Calculating, protective father, human rather than cartoon villain.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Vertical 4:5, single character chest-up, full top of head comfortably inside frame, face occupying upper central area and clearly readable at thumbnail size. Restrained pose, weathered practical clothes, no aimed weapons. Amber sidelight left and petrol-teal fill right. Quiet out-of-focus charcoal ruin background, crisp expressive eyes, painterly face and fabric. Not a contact sheet, no extra people.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "character.ash",
+      "assetId": "asset.character.ash",
+      "kind": "portrait",
+      "label": "Tàn",
+      "master": "masters/character.ash.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: portrait\nPrimary request: Tàn, Vietnamese male convoy bodyguard in late thirties. Broad heavily built frame, shaved head, broken nose and a healed scar on the left cheek. Heavy battered work coat, improvised steel chest plates and canvas ammunition pouches, muted ash-gray and rusty brown. Stern guarded expression, distinct from Quạ. No gun aimed toward viewer, no gore.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Vertical 4:5, single character chest-up, full top of head comfortably inside frame, face occupying upper central area and clearly readable at thumbnail size. Restrained pose, weathered practical clothes, no aimed weapons. Amber sidelight left and petrol-teal fill right. Quiet out-of-focus charcoal ruin background, crisp expressive eyes, painterly face and fabric. Not a contact sheet, no extra people.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "character.hunger",
+      "assetId": "asset.character.hunger",
+      "kind": "portrait",
+      "label": "Kẻ Đói",
+      "master": "masters/character.hunger.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: portrait\nPrimary request: A desperate Vietnamese male warehouse raider about 40, gaunt lined face, hollow cheeks, messy coarse hair and scruffy beard. Ragged brown coat, scavenged leather straps, dented work gloves and patched hood resting behind the head. Fearful aggressive stare, dirt and fatigue, visibly human and hungry, not a zombie or supernatural creature.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Vertical 4:5, single character chest-up, full top of head comfortably inside frame, face occupying upper central area and clearly readable at thumbnail size. Restrained pose, weathered practical clothes, no aimed weapons. Amber sidelight left and petrol-teal fill right. Quiet out-of-focus charcoal ruin background, crisp expressive eyes, painterly face and fabric. Not a contact sheet, no extra people.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "character.watcher",
+      "assetId": "asset.character.watcher",
+      "kind": "portrait",
+      "label": "Kẻ Rình",
+      "master": "masters/character.watcher.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: portrait\nPrimary request: A watchful Vietnamese male warehouse lookout about 30, wiry build, narrow face, short dark hair under a faded low-brim work cap. One small lens or compact binoculars attached to chest straps, dark charcoal rain poncho, worn teal layers. Sharp suspicious sideways gaze. Face fully visible, no mask, distinct from the gaunt raider.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Vertical 4:5, single character chest-up, full top of head comfortably inside frame, face occupying upper central area and clearly readable at thumbnail size. Restrained pose, weathered practical clothes, no aimed weapons. Amber sidelight left and petrol-teal fill right. Quiet out-of-focus charcoal ruin background, crisp expressive eyes, painterly face and fabric. Not a contact sheet, no extra people.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "skill.strike",
+      "assetId": "asset.skill.strike",
+      "kind": "skill",
+      "label": "Phá giáp",
+      "master": "masters/skill.strike.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: skill\nPrimary request: A heavy improvised steel blade striking and splitting one battered iron armor plate, one sharp diagonal impact, a few amber sparks and flying metal chips. Focus on a single decisive rupture. No hand/anatomy, blood or gore.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Square 1:1 game icon. One large bold central motif, strong silhouette and warm/cool material contrast readable at 40px. Dark charcoal textured background, subtle painterly vignette, subject fills 75% of frame with safe margins. No text, numbers, lettering, UI border, miniature montage or extraneous small objects.\nStrict final check: no signature, artist mark, glyphs, letters or tiny text anywhere."
+    },
+    {
+      "key": "skill.heal",
+      "assetId": "asset.skill.heal",
+      "kind": "skill",
+      "label": "Cấp cứu",
+      "master": "masters/skill.heal.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: skill\nPrimary request: One worn medical field bandage wrapped around a compact antique first-aid tin with a simple small ivory cross motif, a warm amber glint suggesting recovery. Practical cloth and aged metal, clearly communicates emergency healing. No letters, pills scattered in montage or hands.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Square 1:1 game icon. One large bold central motif, strong silhouette and warm/cool material contrast readable at 40px. Dark charcoal textured background, subtle painterly vignette, subject fills 75% of frame with safe margins. No text, numbers, lettering, UI border, miniature montage or extraneous small objects.\nStrict final check: no signature, artist mark, glyphs, letters or tiny text anywhere."
+    },
+    {
+      "key": "skill.guard",
+      "assetId": "asset.skill.guard",
+      "kind": "skill",
+      "label": "Hộ tống",
+      "master": "masters/skill.guard.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: skill\nPrimary request: One battered improvised rectangular steel shield, angled protectively in front of three small abstract amber lights that imply protected companions. A subtle cool teal rim and a few scratches. Clear dominant shield silhouette, no heraldic letters or oversized magic effects.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Square 1:1 game icon. One large bold central motif, strong silhouette and warm/cool material contrast readable at 40px. Dark charcoal textured background, subtle painterly vignette, subject fills 75% of frame with safe margins. No text, numbers, lettering, UI border, miniature montage or extraneous small objects.\nStrict final check: no signature, artist mark, glyphs, letters or tiny text anywhere."
+    },
+    {
+      "key": "skill.sense",
+      "assetId": "asset.skill.sense",
+      "kind": "skill",
+      "label": "Linh cảm",
+      "master": "masters/skill.sense.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: skill\nPrimary request: One luminous watchful amber eye shape reflected in a small cracked dark mirror, surrounded by a restrained halo of faint teal concentric ripples. Suggest perception of a hidden supernatural rule. Elegant ominous silhouette, no readable runes, words, faces or gore.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Square 1:1 game icon. One large bold central motif, strong silhouette and warm/cool material contrast readable at 40px. Dark charcoal textured background, subtle painterly vignette, subject fills 75% of frame with safe margins. No text, numbers, lettering, UI border, miniature montage or extraneous small objects.\nStrict final check: no signature, artist mark, glyphs, letters or tiny text anywhere."
+    },
+    {
+      "key": "artifact.mirror",
+      "assetId": "asset.artifact.mirror",
+      "kind": "artifact",
+      "label": "Mắt gương",
+      "master": "masters/artifact.mirror.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: artifact\nPrimary request: A single small tarnished oval hand mirror with cracked smoky glass and corroded bronze frame. One unsettling amber eye is reflected in the glass with no face. Frayed dark cloth wraps the handle, a faint crimson glint at a crack. Intricate tactile relic, the silhouette instantly reads as a mirror.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Square 1:1 game icon. One large bold central motif, strong silhouette and warm/cool material contrast readable at 40px. Dark charcoal textured background, subtle painterly vignette, subject fills 75% of frame with safe margins. No text, numbers, lettering, UI border, miniature montage or extraneous small objects.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "artifact.lantern",
+      "assetId": "asset.artifact.lantern",
+      "kind": "artifact",
+      "label": "Đèn không tắt",
+      "master": "masters/artifact.lantern.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: artifact\nPrimary request: A single antique rusted kerosene hurricane lantern, cracked glass and a steady impossible amber flame. A faint teal halo holds back deep charcoal shadow. Old wire handle, soot and corroded metal, strong practical recognizable silhouette. No extra objects or text.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Square 1:1 game icon. One large bold central motif, strong silhouette and warm/cool material contrast readable at 40px. Dark charcoal textured background, subtle painterly vignette, subject fills 75% of frame with safe margins. No text, numbers, lettering, UI border, miniature montage or extraneous small objects.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "anomaly.bell",
+      "assetId": "asset.anomaly.bell",
+      "kind": "anomaly",
+      "label": "Người gọi tên",
+      "master": "masters/anomaly.bell.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: anomaly\nPrimary request: An abandoned hospital corridor in deep teal darkness. A small old bronze bell hangs in the immediate foreground, perfectly still. At the distant mortuary doorway stands an impossibly tall indistinct human-shaped absence, face unreadable, bent shadow pointing in the wrong direction. Dim amber emergency lamp and faint crimson light seep from beneath the door. Rule-based supernatural horror, unsettling silence, no gore, no screaming face or cheap jump-scare.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "vehicle.rival",
+      "assetId": "asset.vehicle.rival",
+      "kind": "vehicle",
+      "label": "Xe tải Tro Tàn",
+      "master": "masters/vehicle.rival.png",
+      "transparent": true,
+      "prompt": "Use case: stylized-concept\nAsset type: vehicle\nPrimary request: One heavy battered diesel cargo truck for rival convoy Tro Tàn. Improvised rusted armor panels, dark gray-green cab, canvas-covered rear bed, roof supplies and two amber headlamps; no markings or lettering. High three-quarter isometric view, front lower-left, rear upper-right, whole truck centered with generous transparent margins. Match the armored bus sample's hand-painted materials. No road, ground plane, scenery, people, rectangular shadow, background or checkerboard. Genuine transparent RGBA output.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape-ish 3:2 isolated single vehicle asset. Preserve full roof, mirrors and wheels.\nStrict final check: no signature, artist mark or tiny text in any corner."
+    },
+    {
+      "key": "event.market-survivor",
+      "assetId": "asset.event.market-survivor",
+      "kind": "event",
+      "label": "Tiếng gõ sau cửa sắt",
+      "master": "masters/event.market-survivor.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: event\nPrimary request: A collapsed market stall with a half-jammed metal shutter and a young female survivor visible in shadow behind it. A small handheld radio lies beside her lightly bandaged arm; torn tarps and fallen metal beams imply she is trapped. An amber lantern illuminates the radio and reaching hand while the background lane fades to cold teal. No actual rescue outcome yet, no gore, no heroic group, distant face small and indistinct.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only.\nStrict final check: no signature, artist mark, readable documents or tiny text in any corner."
+    },
+    {
+      "key": "event.hospital-records",
+      "assetId": "asset.event.hospital-records",
+      "kind": "event",
+      "label": "Hồ sơ bệnh nhân 07",
+      "master": "masters/event.hospital-records.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: event\nPrimary request: Close environmental still life on a dusty hospital records desk: a thick old folder spread open with blank weathered paper and an indistinct small family photograph, a rusty key, one sealed medicine vial and an unlit old desk lamp. Cool teal window light and one amber candle reveal paper texture. Through a doorway a distant bell shadow suggests supernatural danger. Absolutely no readable writing, digits or labels on any paper or bottle.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only.\nStrict final check: no signature, artist mark, readable documents or tiny text in any corner."
+    },
+    {
+      "key": "event.checkpoint-parley",
+      "assetId": "asset.event.checkpoint-parley",
+      "kind": "event",
+      "label": "Tro Tàn chặn đường",
+      "master": "masters/event.checkpoint-parley.png",
+      "transparent": false,
+      "prompt": "Use case: stylized-concept\nAsset type: event\nPrimary request: A tense neutral standoff at a ruined toll checkpoint: an armored cargo truck blocks the road under warm floodlights, two rival survivors stand beside the barrier with weapons lowered. View from near the front corner of the player's battered bus, no readable insignia. Rival leader lean with charcoal coat and rust-red scarf, bodyguard broad with shaved head and improvised armor; faces small in the scene. Teal mist and crimson distant skyline. The scene must allow negotiation, combat or withdrawal; do not depict victory, surrender, blood or deaths.\nStyle and continuity: Original LAST CONVOY artwork. Gritty dark supernatural post-apocalypse, richly textured painterly semi-realism, premium illustrated survival-strategy game aesthetic. Worn Vietnamese concrete architecture, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal/petrol-teal shadows, bone-gray midtones, amber practical lamps and restrained crimson supernatural light. Cinematic chiaroscuro, tactile material wear, somber mature mood. Cohesive with the existing amber-lit armored bus, weathered Vietnamese commander Minh and high-oblique ruined-city map. Original designs only; no text, letters, numbers, logos, watermarks, UI, panels or borders. Avoid clean glossy sci-fi, cute cartoon, anime, plastic surfaces and colorful mobile-game style.\nComposition and constraints: Landscape 16:9. Clear focal silhouette and environmental depth, readable even in a small location card. Keep outer 10% and upper-right quieter for crop/interface. No human faces in close-up, no gore. Produce one finished scene only.\nStrict final check: no signature, artist mark, readable documents or tiny text in any corner."
+    }
+  ],
+  "repairPrompts": "The complete three cleanup prompts are stored in receipts/*-v2.json, together with the exact local edit-source and selected output paths."
+}

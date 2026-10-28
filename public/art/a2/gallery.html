@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>LAST CONVOY · Bộ tài nguyên A2</title>
+    <style>
+      body {
+        margin: 0;
+        background: #101715;
+        color: #e4ddc9;
+        font:
+          15px system-ui,
+          sans-serif;
+      }
+      header {
+        padding: 32px 5vw;
+        border-bottom: 1px solid #485143;
+        background: #1a251f;
+      }
+      h1 {
+        font-size: 28px;
+        font-weight: 550;
+        margin: 0 0 10px;
+      }
+      header p {
+        color: #a8b29e;
+        line-height: 1.7;
+        max-width: 850px;
+      }
+      a {
+        color: #e3bd7b;
+      }
+      nav {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 24px;
+      }
+      button {
+        background: #243429;
+        border: 1px solid #607052;
+        color: #d8ddc6;
+        padding: 9px 16px;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      button[aria-pressed="true"] {
+        border-color: #e3bd7b;
+        color: #ffdda0;
+        background: #48432b;
+      }
+      main {
+        padding: 28px 5vw;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+        gap: 20px;
+      }
+      article {
+        background: #19251e;
+        border: 1px solid #3d4d3d;
+        border-radius: 4px;
+        overflow: hidden;
+      }
+      article[hidden] {
+        display: none;
+      }
+      article a {
+        display: block;
+        background: #0d1410;
+      }
+      img {
+        width: 100%;
+        aspect-ratio: 16/9;
+        object-fit: contain;
+        display: block;
+      }
+      article[data-kind="portrait"] img {
+        aspect-ratio: 4/5;
+      }
+      article[data-kind="skill"] img,
+      article[data-kind="artifact"] img {
+        aspect-ratio: 1;
+      }
+      article div {
+        padding: 15px;
+      }
+      h2 {
+        font-size: 17px;
+        margin: 0 0 8px;
+      }
+      small {
+        color: #99aa93;
+        word-break: break-all;
+        line-height: 1.8;
+      }
+      footer {
+        padding: 24px 5vw;
+        color: #93a28c;
+      }
+      #status {
+        font:
+          13px ui-monospace,
+          monospace;
+        color: #c8b68d;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>LAST CONVOY · Bộ tài nguyên A2</h1>
+      <p>
+        29 ảnh gốc, dùng cho 38 ID hình trong chiến dịch. Nhấp ảnh để mở bản
+        web. Các tình huống chung địa điểm dùng lại nền; bản master và prompt
+        nằm trong repository.
+      </p>
+      <a href="http://127.0.0.1:4173/">← Chơi game</a>
+      <p id="status">Đang tải catalog…</p>
+      <nav aria-label="Lọc tài nguyên"></nav>
+    </header>
+    <main></main>
+    <footer>
+      Gritty supernatural apocalypse · Màu than / xanh dầu / ánh vàng / đỏ quỷ
+      dị
+    </footer>
+    <!-- ART_CATALOG_START -->
+<script id="art-catalog" type="application/json">{"assets":[{"id":"asset.world.overview","kind":"location","label":"Bản đồ Bắc Sơn","uri":"/art/a2/world.overview.jpg","width":1800,"height":900,"sha256":"e70fad5f0a4ddc14c6ec04cf15ec491a0ead374eb854ec7a9ea8b41b4b957277"},{"id":"asset.location.garage","kind":"location","label":"Gara cuối phố","uri":"/art/a2/location.garage.jpg","width":1600,"height":900,"sha256":"4120045079d83ca01642d0c05091e4a75713938a17e3f06cb5b4187f383c727f"},{"id":"asset.character.minh","kind":"portrait","label":"Minh","uri":"/art/a2/character.minh.jpg","width":512,"height":640,"sha256":"d4433a6ec8cfb889ddf08c5ace472c096150e434a2c577b2cb19365ab22275bc"},{"id":"asset.vehicle.bus","kind":"vehicle","label":"Xe khách số 07","uri":"/art/a2/vehicle.bus.png","width":768,"height":512,"sha256":"97f0af7e979d205cd2afa4c7c7582586bb2e54cb9814e2b789ddc7b53f9a9c46"},{"id":"asset.location.market","kind":"location","label":"Chợ sơ tán","uri":"/art/a2/location.market.jpg","width":1600,"height":900,"sha256":"f5d14c4971972defc8629d2b935afd0ef06cebf359c4ffbf74543e8e30e6b0fd"},{"id":"asset.location.overpass","kind":"location","label":"Cầu vượt đổ","uri":"/art/a2/location.overpass.jpg","width":1600,"height":900,"sha256":"5c4b0bf8e3c1209d156341625c16fa48a43c0d01b6ba63b28ef8e48bd7398331"},{"id":"asset.location.service","kind":"location","label":"Trạm dịch vụ","uri":"/art/a2/location.service.jpg","width":1600,"height":900,"sha256":"0ceff209a999c8db5c5b83fb4d53e625354d712050d578426ee8e29feaa2d824"},{"id":"asset.location.hospital","kind":"location","label":"Sân bệnh viện","uri":"/art/a2/location.hospital.jpg","width":1600,"height":900,"sha256":"2d83c6a32db9ef89cbb211f5bd6420a646e35c74ad6bf3e877625dd71e224288"},{"id":"asset.location.ward","kind":"location","label":"Khu điều trị cũ","uri":"/art/a2/location.ward.jpg","width":1600,"height":900,"sha256":"67bf4c2597d40db4a9e871773296d0710c286376ddaf3f2c2ccfbeaeb2a14c40"},{"id":"asset.location.checkpoint","kind":"location","label":"Trạm thu phí","uri":"/art/a2/location.checkpoint.jpg","width":1600,"height":900,"sha256":"43ab363517d61d51f491f986e0065f2fa02e5f49b2ee9128b44dadbfbefb5f32"},{"id":"asset.location.refuge","kind":"location","label":"Hầm trú Bắc Sơn","uri":"/art/a2/location.refuge.jpg","width":1600,"height":900,"sha256":"8c9e3d067e59cdf283c8ffa4a3df1412ae2ed13efc58921e399b80a7b315e8ea"},{"id":"asset.character.lan","kind":"portrait","label":"Lan","uri":"/art/a2/character.lan.jpg","width":512,"height":640,"sha256":"72748de19af721f99226ea35333647ab812d6ac4b93606c32c6c34cbcdd26e24"},{"id":"asset.character.bao","kind":"portrait","label":"Bảo","uri":"/art/a2/character.bao.jpg","width":512,"height":640,"sha256":"f1b7a2f82139397e958d634891627db95150cd20c3c7afb4e87512a51fb19006"},{"id":"asset.character.ha","kind":"portrait","label":"Hà","uri":"/art/a2/character.ha.jpg","width":512,"height":640,"sha256":"5443836ec6ceb3e6132fd514ce3561ef3f983af372269d05e93edc6056c05fbe"},{"id":"asset.character.raven","kind":"portrait","label":"Quạ","uri":"/art/a2/character.raven.jpg","width":512,"height":640,"sha256":"6f6f7956ce6f08264a939661d5cb5350222e2703c67276dfb2f4e51d6e40abe8"},{"id":"asset.character.ash","kind":"portrait","label":"Tàn","uri":"/art/a2/character.ash.jpg","width":512,"height":640,"sha256":"f4eb605d9011ccc14bd751c010157e31ffaa7e7dce77e43197dd48eed23c0257"},{"id":"asset.character.hunger","kind":"portrait","label":"Kẻ Đói","uri":"/art/a2/character.hunger.jpg","width":512,"height":640,"sha256":"0290b269e1496c6ce557af8a535e6d59e52508d0621aa6a064b5fcb0749b92d1"},{"id":"asset.character.watcher","kind":"portrait","label":"Kẻ Rình","uri":"/art/a2/character.watcher.jpg","width":512,"height":640,"sha256":"dc8a68c370d285961541146fa48ab44b43468d49f8312884c455bb9fbf5abe99"},{"id":"asset.skill.strike","kind":"skill","label":"Phá giáp","uri":"/art/a2/skill.strike.jpg","width":320,"height":320,"sha256":"19555bb393517a2e512a897214f65af0a57ab25c904bd987a8e39b4aca01632a"},{"id":"asset.skill.heal","kind":"skill","label":"Cấp cứu","uri":"/art/a2/skill.heal.jpg","width":320,"height":320,"sha256":"883eb7bcf7112156cd4ef82988b34ec41a7c88aaa342a637a9d264fca7cd3126"},{"id":"asset.skill.guard","kind":"skill","label":"Hộ tống","uri":"/art/a2/skill.guard.jpg","width":320,"height":320,"sha256":"e83138ecd60ba3afd41c8df50719afc93443d6ce0f643e2591a03ff7135cba8c"},{"id":"asset.skill.sense","kind":"skill","label":"Linh cảm","uri":"/art/a2/skill.sense.jpg","width":320,"height":320,"sha256":"ce70c0b6a53eca5321e73f57a2e7f31230588e65ecc8db61fc2b51529a20738a"},{"id":"asset.artifact.mirror","kind":"artifact","label":"Mắt gương","uri":"/art/a2/artifact.mirror.jpg","width":320,"height":320,"sha256":"d02d33fb5252f2d4e4603d662640c0372f6edcefb2823a1664c1fadf931aa924"},{"id":"asset.artifact.lantern","kind":"artifact","label":"Đèn không tắt","uri":"/art/a2/artifact.lantern.jpg","width":320,"height":320,"sha256":"f8b94f02a99f3dc4b1ae987b0bacd9f183c53351b14dd167b08ec3d04f935115"},{"id":"asset.anomaly.bell","kind":"anomaly","label":"Người gọi tên","uri":"/art/a2/anomaly.bell.jpg","width":1600,"height":900,"sha256":"c88723cf9505692be8335c94c9a75b40322f94eda8268dffe774dae99f3de7d4"},{"id":"asset.vehicle.rival","kind":"vehicle","label":"Xe tải Tro Tàn","uri":"/art/a2/vehicle.rival.png","width":768,"height":512,"sha256":"e7d7630bdb8da8089961f29cdb66225414d5d4c332b0347aae14873e034fce3f"},{"id":"asset.event.market-survivor","kind":"event","label":"Tiếng gõ sau cửa sắt","uri":"/art/a2/event.market-survivor.jpg","width":1600,"height":900,"sha256":"9c7d8877d5dd1dfa222aaf917995766e0bfb832bbb21c2607058b24fce09f2ca"},{"id":"asset.event.hospital-records","kind":"event","label":"Hồ sơ bệnh nhân 07","uri":"/art/a2/event.hospital-records.jpg","width":1600,"height":899,"sha256":"f7fa1c3f8d7555de6de6d8decf699cf0716f205fa63767b6b15403252f8382a7"},{"id":"asset.event.checkpoint-parley","kind":"event","label":"Tro Tàn chặn đường","uri":"/art/a2/event.checkpoint-parley.jpg","width":1600,"height":900,"sha256":"e7c5beeb2f53f043ec2cb5aa50164b8c825f6ac78c679bc63d374ce52c207e65"},{"id":"asset.event.departure","kind":"event","label":"Trước khi rời thành phố","uri":"/art/a2/location.garage.jpg","width":1600,"height":900,"sha256":"4120045079d83ca01642d0c05091e4a75713938a17e3f06cb5b4187f383c727f"},{"id":"asset.event.market-cache","kind":"event","label":"Kho hàng cuối chợ","uri":"/art/a2/location.market.jpg","width":1600,"height":900,"sha256":"f5d14c4971972defc8629d2b935afd0ef06cebf359c4ffbf74543e8e30e6b0fd"},{"id":"asset.event.overpass-echo","kind":"event","label":"Giọng nói bên dưới cầu","uri":"/art/a2/location.overpass.jpg","width":1600,"height":900,"sha256":"5c4b0bf8e3c1209d156341625c16fa48a43c0d01b6ba63b28ef8e48bd7398331"},{"id":"asset.event.service-depot","kind":"event","label":"Ngọn đèn không cần dầu","uri":"/art/a2/location.service.jpg","width":1600,"height":900,"sha256":"0ceff209a999c8db5c5b83fb4d53e625354d712050d578426ee8e29feaa2d824"},{"id":"asset.event.service-stranger","kind":"event","label":"Người lạ bên máy phát","uri":"/art/a2/location.service.jpg","width":1600,"height":900,"sha256":"0ceff209a999c8db5c5b83fb4d53e625354d712050d578426ee8e29feaa2d824"},{"id":"asset.event.hospital-bell","kind":"event","label":"Tiếng chuông trong nhà xác","uri":"/art/a2/anomaly.bell.jpg","width":1600,"height":900,"sha256":"c88723cf9505692be8335c94c9a75b40322f94eda8268dffe774dae99f3de7d4"},{"id":"asset.event.ward-patient","kind":"event","label":"Người bệnh còn thở","uri":"/art/a2/location.ward.jpg","width":1600,"height":900,"sha256":"67bf4c2597d40db4a9e871773296d0710c286376ddaf3f2c2ccfbeaeb2a14c40"},{"id":"asset.event.ward-mirror","kind":"event","label":"Mắt gương","uri":"/art/a2/location.ward.jpg","width":1600,"height":900,"sha256":"67bf4c2597d40db4a9e871773296d0710c286376ddaf3f2c2ccfbeaeb2a14c40"},{"id":"asset.event.checkpoint-aftermath","kind":"event","label":"Những người còn ở lại","uri":"/art/a2/location.checkpoint.jpg","width":1600,"height":900,"sha256":"43ab363517d61d51f491f986e0065f2fa02e5f49b2ee9128b44dadbfbefb5f32"}]}</script>
+<!-- ART_CATALOG_END -->
+    <script>
+      const labels = {
+        all: "Tất cả",
+        location: "Địa điểm & map",
+        event: "Sự kiện",
+        portrait: "Nhân vật",
+        skill: "Kỹ năng",
+        artifact: "Kỳ vật",
+        anomaly: "Quỷ dị",
+        vehicle: "Xe",
+      };
+      try {
+        const { assets } = JSON.parse(
+          document.getElementById("art-catalog").textContent,
+        );
+        const main = document.querySelector("main");
+        for (const a of assets) {
+          const card = document.createElement("article");
+          card.dataset.kind = a.kind;
+          const link = document.createElement("a");
+          link.href = "./" + a.uri.split("/").pop();
+          link.target = "_blank";
+          link.rel = "noopener";
+          const img = document.createElement("img");
+          img.src = link.href;
+          img.alt = a.label;
+          img.loading = "lazy";
+          link.append(img);
+          const box = document.createElement("div");
+          const title = document.createElement("h2");
+          title.textContent = a.label;
+          const detail = document.createElement("small");
+          detail.textContent = `${a.id} · ${a.width} × ${a.height}`;
+          box.append(title, detail);
+          card.append(link, box);
+          main.append(card);
+        }
+        document.querySelector("#status").textContent =
+          `${assets.length} ID · ${new Set(assets.map((a) => a.uri)).size} ảnh web`;
+        for (const [kind, label] of Object.entries(labels)) {
+          const b = document.createElement("button");
+          b.textContent = label;
+          b.setAttribute("aria-pressed", String(kind === "all"));
+          b.onclick = () => {
+            for (const item of document.querySelectorAll("article"))
+              item.hidden = kind !== "all" && item.dataset.kind !== kind;
+            for (const button of document.querySelectorAll("nav button"))
+              button.setAttribute("aria-pressed", String(button === b));
+          };
+          document.querySelector("nav").append(b);
+        }
+      } catch (error) {
+        document.querySelector("#status").textContent = String(error);
+      }
+    </script>
+  </body>
+</html>
