@@ -6,7 +6,7 @@
 - Browser: 1280×720, 1920×1080, 390×844; skill/heal/swap/save-load/skip/thắng/bắt giữ/về scene, module/thoát nhiệm vụ, atlas fallback. Audio playback kỹ thuật đạt; chưa duyệt cảm nhận mix/loop hoặc hiệu năng thiết bị thật.
 - Source chính `src/combat/tactical-*`, `src/content/argon.ts`, `src/client/argon/`, App/use-game/audio. Media/prompt/master/manifest nằm `art/argon-o1/`, bản web `public/`. Preset QA chỉ dev, command thật; server demo 5180 là origin riêng.
 - **Chưa hoàn tất toàn bộ đại tu.** Crew/inventory/journal/ScenarioScene còn tái dùng component/CSS; O2 thay sâu, O3/O4 progression/content còn chưa làm. Không báo đã đủ mọi yêu cầu Argon.
-- Git: phần đã đánh giá được đưa vào checkpoint triển khai; đối chiếu git log/status và origin để xác định SHA/trạng thái đồng bộ. `docs 2/` và ZIP đầu vào giữ nguyên, không đưa vào commit tự động.
+- Git: implementation commit `22572a5` đã push `origin/main` và xác minh SHA remote. Bản cập nhật bàn giao này ở commit docs tiếp theo. Tracked tree sạch sau checkpoint; `docs 2/` và ZIP đầu vào giữ nguyên, không đưa vào commit tự động.
 - Bước đầu phiên tiếp: đọc báo cáo/plan, git status/diff, tiếp tục feedback visual/audio O1 → O2; không quay về plan UI-only. QA hiện được phép cho phần đang triển khai; không coi ghi chú dừng QA lịch sử bên dưới là lệnh hiện tại.
 
 ## Nhật ký trước checkpoint triển khai (lịch sử)

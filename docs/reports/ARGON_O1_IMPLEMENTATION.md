@@ -1,5 +1,7 @@
 # Argon O0/O1 — checkpoint triển khai đầu tiên
 
+Git implementation: `22572a5`, đã push `origin/main` và xác minh remote. Đầu vào `docs 2/`/ZIP giữ nguyên ngoài commit.
+
 Ngày: 2026-10-29. Baseline Git: `6955279` (R4.1). Bundle mới: `0.2.0-campaign.1-argon`; engine `0.1.0`, state/save v3 giữ nguyên. Người dùng đã yêu cầu “bắt đầu triển khai đi”, bao gồm kiểm chứng phần thay đổi. Đây là bản chơi được đầu tiên của đại tu; chưa phải hoàn tất toàn bộ yêu cầu Argon.
 
 ## Chức năng thật
