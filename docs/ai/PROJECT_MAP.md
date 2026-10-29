@@ -6,7 +6,7 @@ LAST CONVOY: chiến thuật theo lượt + sinh tồn + quỷ dị có quy tắ
 
 TypeScript strict, Zod, Vitest, React, Vite, tsx. Không có server multiplayer, AI sinh content runtime hoặc persistent backend. Node 24 là runtime gate; package.json là nguồn chính xác cho versions/scripts.
 
-**Checkpoint mới:** Journey/Argon bundles và hooks mới xem [báo cáo](../reports/JOURNEY_FEEL_AND_AUTO.md); new game dùng `0.2.0-campaign.2-journey`, giữ O1/R1/legacy. Các mô tả R1 dưới đây ghi theo nền gốc.
+**Checkpoint mới:** New game dùng `0.3.0-campaign.1-resonance`, có chương/lore/pathway/Flow; giữ Journey/O1/R1/legacy. Xem [báo cáo Resonance](../reports/RESONANCE_IMPLEMENTATION.md). Các mô tả R1 dưới đây ghi theo nền gốc.
 
 ## Source tree
 
@@ -18,6 +18,7 @@ TypeScript strict, Zod, Vitest, React, Vite, tsx. Không có server multiplayer,
 | `src/world/` | Graph, route costs/risk, NPC goal/clock |
 | `src/narrative/` | Condition/effect allowlists, event director, Story Contracts, facts/knowledge |
 | `src/combat/` | Turn order, enemy AI, attack/skills/guard/heal, capture/loot/ownership |
+| `src/occult/` | Pathway schema, preview và nghi thức thăng bậc; luật/chi phí trong content |
 | `src/expedition/` | Recon cache/intel, nghỉ/sửa xe, XP/upgrades/stances |
 | `src/content/campaign.ts` | Bundle campaign hiện tại; references đến content modules |
 | `src/content/world.ts` | Foundation graph 8 locations / 11 routes, characters cơ bản |

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { pathwayStateSchema } from "../occult/schema";
 import { actorProgressionSchema } from "../expedition/schema";
 import { commandSchema } from "./commands";
 import { domainEventSchema, failureReasonSchema } from "./events";
@@ -27,6 +28,7 @@ const counterSchema = z
 const actorSchema = z
   .object({
     progression: actorProgressionSchema.optional(),
+    pathway: pathwayStateSchema.optional(),
     id: idSchema,
     name: z.string().min(1),
     role: z.string().min(1),

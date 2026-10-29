@@ -25,6 +25,10 @@ export function effectDescriptions(
   return effects.flatMap((effect): string[] => {
     const c = definition.campaign;
     switch (effect.op) {
+      case "experience":
+        return [`+${effect.amount} XP/người`];
+      case "occult-remnants":
+        return [`+${effect.amount} di vật cộng hưởng`];
       case "resource":
         return [
           `+${effect.amount} ${{ food: "lương thực", water: "nước", fuel: "nhiên liệu", medicine: "thuốc", scrap: "phế liệu" }[effect.resource]}`,

@@ -183,6 +183,32 @@ export function assertGameState(
             actor.energy <= actor.attributes.maxEnergy,
           "invalid actor energy",
         );
+      if (actor.pathway) {
+        const path = definition.campaign?.resonance?.pathways.find(
+          (p) => p.id === actor.pathway?.pathwayId,
+        );
+        ensure(
+          path && actor.convoyId === state.player.convoyId && actor.progression,
+          "invalid pathway owner",
+        );
+        const acquired = path.tiers.filter(
+          (t) => t.tier >= actor.pathway!.tier,
+        );
+        ensure(
+          acquired.some((t) => t.tier === actor.pathway!.tier),
+          "unknown pathway tier",
+        );
+        ensure(
+          actor.pathway.spentXp ===
+            acquired.reduce((n, t) => n + t.xpCost, 0) &&
+            actor.pathway.spentXp <= actor.progression.xp,
+          "invalid ascension XP balance",
+        );
+        ensure(
+          acquired.every((t) => actor.skillIds?.includes(t.skillId)),
+          "missing pathway skill",
+        );
+      }
       actor.skillIds?.forEach((skillId) =>
         ensure(
           definition.campaign?.skills.some((skill) => skill.id === skillId),
@@ -233,6 +259,11 @@ export function assertGameState(
       "campaign ID mismatch",
     );
     const definitions = definition.campaign;
+    ensure(
+      Boolean(definitions.resonance) ===
+        (state.campaign?.occultRemnants !== undefined),
+      "occult inventory mode mismatch",
+    );
     ensure(
       Object.values(state.inventory.artifactInstances).length ===
         definitions.artifacts.length,
@@ -299,16 +330,44 @@ export function assertGameState(
     );
     if (state.combat) {
       const tactics = state.combat.tactics;
-      ensure(Boolean(tactics) === Boolean(definitions.tactics), "combat rules mismatch");
+      ensure(
+        Boolean(tactics) === Boolean(definitions.tactics),
+        "combat rules mismatch",
+      );
       if (tactics) {
-        ensure(sameIds(Object.keys(tactics.positions), state.combat.turnOrder), "tactical positions mismatch");
-        for (const convoyId of [state.player.convoyId, state.combat.enemyConvoyId]) {
-          const slots = state.combat.turnOrder.filter(id => state.actors[id]?.convoyId === convoyId).map(id => tactics.positions[id]);
-          ensure(new Set(slots).size === slots.length, "overlapping tactical positions");
+        ensure(
+          sameIds(Object.keys(tactics.positions), state.combat.turnOrder),
+          "tactical positions mismatch",
+        );
+        for (const convoyId of [
+          state.player.convoyId,
+          state.combat.enemyConvoyId,
+        ]) {
+          const slots = state.combat.turnOrder
+            .filter((id) => state.actors[id]?.convoyId === convoyId)
+            .map((id) => tactics.positions[id]);
+          ensure(
+            new Set(slots).size === slots.length,
+            "overlapping tactical positions",
+          );
         }
-        ensure(tactics.statuses.every(s => state.combat?.turnOrder.includes(s.actorId) && state.combat.turnOrder.includes(s.sourceId)), "unknown status actor");
-        ensure(new Set(tactics.statuses.map(s => `${s.actorId}:${s.kind}`)).size === tactics.statuses.length, "duplicate tactical status");
-        ensure(tactics.vehicleUsedRound <= state.combat.round, "vehicle support from future round");
+        ensure(
+          tactics.statuses.every(
+            (s) =>
+              state.combat?.turnOrder.includes(s.actorId) &&
+              state.combat.turnOrder.includes(s.sourceId),
+          ),
+          "unknown status actor",
+        );
+        ensure(
+          new Set(tactics.statuses.map((s) => `${s.actorId}:${s.kind}`))
+            .size === tactics.statuses.length,
+          "duplicate tactical status",
+        );
+        ensure(
+          tactics.vehicleUsedRound <= state.combat.round,
+          "vehicle support from future round",
+        );
       }
       ensure(
         Object.hasOwn(state.convoys, state.combat.enemyConvoyId) &&

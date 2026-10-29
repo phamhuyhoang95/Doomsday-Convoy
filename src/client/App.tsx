@@ -4,6 +4,8 @@ import { useGame } from "./use-game";
 import { usePresentation } from "./argon/use-presentation";
 import { useTravel } from "./argon/use-travel";
 import { TravelCinematic } from "./argon/TravelCinematic";
+import { OpeningCinematic } from "./argon/OpeningCinematic";
+import { openingAvailable } from "./argon/opening-media";
 import { CombatStage } from "./argon/CombatStage";
 import { SceneScreen } from "./argon/SceneScreen";
 import { StrategicMap } from "./argon/StrategicMap";
@@ -12,12 +14,15 @@ import { resourceLabels, Costs } from "./components/shared";
 import { CrewConsole } from "./components/CrewConsole";
 import { Inventory } from "./components/Convoy";
 import { Journal } from "./components/Journal";
+import { LoreScreen } from "./argon/LoreScreen";
+import { PathwaysScreen } from "./argon/PathwaysScreen";
 import { ScenarioScene } from "./components/ScenarioScene";
 import { AssetArt } from "./components/AssetArt";
 
 export default function App() {
   const game = useGame();
   const [page, setPage] = useState("scene");
+  const [opening, setOpening] = useState(false);
   const [briefing, setBriefing] = useState(false);
   const [seed, setSeed] = useState("42");
   const [seedError, setSeedError] = useState("");
@@ -62,7 +67,7 @@ export default function App() {
     <DefinitionContext.Provider value={game.definition}>
       <div
         className={`argon-shell ${state ? "in-game" : "at-menu"}`}
-        inert={Boolean(travel.shot)}
+        inert={Boolean(travel.shot) || opening}
       >
         <header className="argon-header">
           <button
@@ -105,8 +110,16 @@ export default function App() {
                 onClick={() => navigate("journal")}
                 disabled={Boolean(state.combat) || scenario}
               >
-                SỔ TAY
+                {game.definition.campaign?.resonance ? "HỒ SƠ" : "SỔ TAY"}
               </button>
+              {game.definition.campaign?.resonance && (
+                <button
+                  onClick={() => navigate("pathways")}
+                  disabled={Boolean(state.combat) || scenario}
+                >
+                  SIÊU PHÀM
+                </button>
+              )}
             </nav>
           )}
           <div className="header-controls">
@@ -232,6 +245,7 @@ export default function App() {
                   setPage("scene");
                   setBriefing(false);
                   game.start(n);
+                  setOpening(openingAvailable);
                 }}
               >
                 <label htmlFor="seed">MÃ HÀNH TRÌNH</label>
@@ -247,8 +261,21 @@ export default function App() {
                 {seedError && <p role="alert">{seedError}</p>}
               </form>
               <div className="menu-loads">
+                {openingAvailable && (
+                  <button
+                    onClick={() => {
+                      void game.audio.unlock();
+                      setOpening(true);
+                    }}
+                  >
+                    Xem mở đầu ▷
+                  </button>
+                )}
                 <button onClick={() => loadJourney("autosave")}>
                   Tiếp tục hành trình
+                </button>
+                <button onClick={() => loadJourney("journey")}>
+                  Tải Journey cũ
                 </button>
                 <button onClick={() => loadJourney("o1")}>Tải Argon O1</button>
                 <button onClick={() => loadJourney("r1")}>
@@ -312,6 +339,10 @@ export default function App() {
               onCancel={() => setBriefing(false)}
             />
           </main>
+        ) : page === "pathways" ? (
+          <PathwaysScreen state={state} dispatch={game.dispatch} />
+        ) : page === "journal" && game.definition.campaign?.resonance ? (
+          <LoreScreen state={state} />
         ) : page === "map" ? (
           <StrategicMap state={state} dispatch={game.dispatch} />
         ) : page === "crew" || page === "inventory" || page === "journal" ? (
@@ -361,6 +392,16 @@ export default function App() {
           </div>
         )}
       </div>
+      {opening && (
+        <OpeningCinematic
+          finish={() => setOpening(false)}
+          volume={
+            game.audio.enabled
+              ? game.audio.volume * game.audio.ambienceVolume
+              : 0
+          }
+        />
+      )}
       {travel.shot && (
         <TravelCinematic
           key={travel.shot.key}

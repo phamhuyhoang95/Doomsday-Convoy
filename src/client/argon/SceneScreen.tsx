@@ -8,6 +8,7 @@ import { operationPreview } from "../../expedition/read-model";
 import { useDefinition } from "../definition";
 import { AssetArt } from "../components/AssetArt";
 import { Costs } from "../components/shared";
+import { chapterProgress } from "../../read-models/campaign";
 import { presentationAsset } from "../art/registry";
 import { Atmosphere } from "./Atmosphere";
 
@@ -39,6 +40,7 @@ export function SceneScreen({
     (presentationAsset(eventAssetId, "event") ||
       definition.campaign?.assets.find((a) => a.id === eventAssetId)?.uri),
   );
+  const chapter = chapterProgress(state, definition).find((c) => c.current);
   const text = (key: string) => definition.campaign?.texts[key] ?? key;
   const known = state.knowledge.factIds
     .map((id) => definition.campaign?.facts.find((f) => f.id === id))
@@ -59,10 +61,14 @@ export function SceneScreen({
       <div className="scene-shade" />
       <div className="scene-location">
         <span className="kicker">
-          {definition.regions.find((r) => r.id === location.regionId)?.name}
+          {chapter?.title ??
+            definition.regions.find((r) => r.id === location.regionId)?.name}
         </span>
         <h1>{location.name}</h1>
-        <p>HÀNH TRÌNH #{state.initialSeed.toString().padStart(4, "0")}</p>
+        <p>
+          {chapter?.question ??
+            `HÀNH TRÌNH #${state.initialSeed.toString().padStart(4, "0")}`}
+        </p>
       </div>
       <aside className="crew-rail" aria-label="Những người trên xe">
         {convoy.actorIds.map((id) => {

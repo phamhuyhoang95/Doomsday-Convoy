@@ -71,35 +71,46 @@ function tacticalDamage(
   ability?: TacticalAbility,
   capToTarget = true,
 ): number {
-  const a = state.actors[actorId];
-  const b = state.actors[targetId];
+  const a = state.actors[actorId],
+    b = state.actors[targetId];
   if (!a || !b) return 0;
   const statuses = state.combat?.tactics?.statuses ?? [];
   const broken =
     statuses.find((s) => s.actorId === b.id && s.kind === "armor-broken")
       ?.potency ?? 0;
-  const guard = statuses.some((s) => s.actorId === b.id && s.kind === "guard");
-  const raw =
-    (a.attributes?.attack ?? 10) +
-    (ability?.power ?? 0) +
-    artifactBonus(state, a, definition, "attackBonus") +
-    stanceBonus(a, definition, "attack") -
-    Math.max(
-      0,
-      (b.attributes?.defense ?? 2) +
-        stanceBonus(b, definition, "defense") +
-        artifactBonus(state, b, definition, "defenseBonus") -
-        broken,
-    );
-  const combo =
-    ability?.exploitStatus &&
-    statuses.some(
-      (s) => s.actorId === b.id && s.kind === ability.exploitStatus,
-    );
+  const guard =
+    !ability?.stripGuard &&
+    statuses.some((s) => s.actorId === b.id && s.kind === "guard");
+  const defense = ability?.ignoreArmor
+    ? 0
+    : Math.max(
+        0,
+        (b.attributes?.defense ?? 2) +
+          stanceBonus(b, definition, "defense") +
+          artifactBonus(state, b, definition, "defenseBonus") -
+          broken,
+      );
+  const raw = ability?.fixedDamage
+    ? ability.power - defense
+    : (a.attributes?.attack ?? 10) +
+      (ability?.power ?? 0) +
+      artifactBonus(state, a, definition, "attackBonus") +
+      stanceBonus(a, definition, "attack") +
+      (statuses.find((s) => s.actorId === a.id && s.kind === "fury")?.potency ??
+        0) -
+      defense +
+      roll;
+  const exploit = [
+    ...(ability?.exploitStatus ? [ability.exploitStatus] : []),
+    ...(ability?.exploitStatuses ?? []),
+  ];
+  const combo = statuses.some(
+    (s) => s.actorId === b.id && exploit.includes(s.kind),
+  );
   const damage = Math.max(
     1,
     Math.floor(
-      Math.max(1, raw + roll) *
+      Math.max(1, raw) *
         (combo ? 1 + (ability?.bonusBps ?? 0) / 10000 : 1) *
         (guard ? 0.5 : 1),
     ),
@@ -114,10 +125,38 @@ export function tacticalDamageRange(
   definition: WorldDefinition,
   ability?: TacticalAbility,
 ): [number, number] {
-  return [
-    tacticalDamage(state, actorId, targetId, definition, 0, ability),
-    tacticalDamage(state, actorId, targetId, definition, 4, ability),
-  ];
+  const statuses = state.combat?.tactics?.statuses ?? [];
+  if (
+    statuses.some(
+      (s) =>
+        s.actorId === targetId &&
+        (s.kind === "inversion" ||
+          (s.kind === "evade" &&
+            (!ability?.targetGroup || ability.targetGroup === "single"))),
+    )
+  )
+    return [0, 0];
+  const barrier =
+    statuses.find((s) => s.actorId === targetId && s.kind === "barrier")
+      ?.potency ?? 0;
+  const health = state.actors[targetId]?.health ?? 0;
+  return [0, 4].map((roll) =>
+    Math.min(
+      health,
+      Math.max(
+        0,
+        tacticalDamage(
+          state,
+          actorId,
+          targetId,
+          definition,
+          roll,
+          ability,
+          false,
+        ) - barrier,
+      ),
+    ),
+  ) as [number, number];
 }
 
 export function abilityReason(
@@ -157,11 +196,23 @@ export function abilityReason(
     (tactics.actorTurns[actor.id] ?? 0)
   )
     return "Kỹ năng đang hồi theo lượt nhân vật.";
+  if ((ability.selfHealthCost ?? 0) >= actor.health)
+    return "Không đủ HP để trả giá mà vẫn đứng vững.";
+  if (
+    ability.requiresCorpse &&
+    !battle.turnOrder.some(
+      (id) =>
+        state.actors[id]?.convoyId === battle.enemyConvoyId &&
+        state.actors[id]?.status === "downed",
+    )
+  )
+    return "Cần một đối thủ đã gục, chưa bị bắt.";
   if (ability.target === "enemy")
     return attackReason(state, actor.id, targetId, ability.reach);
   if (ability.target === "vehicle")
     return ability.effect === "repair" &&
-      convoy.vehicle.condition === convoy.vehicle.maxCondition
+      convoy.vehicle.condition === convoy.vehicle.maxCondition &&
+      !ability.followupDamage
       ? "Xe đang nguyên vẹn."
       : "";
   const target =
@@ -174,6 +225,8 @@ export function abilityReason(
     target.status === "captured"
   )
     return "Chọn đồng đội tham gia trận.";
+  if (ability.effect === "shift" && target.id === actor.id)
+    return "Chọn một đồng đội khác để đổi chỗ.";
   if (ability.effect !== "heal" && target.status !== "active")
     return "Đồng đội cần được hồi phục trước.";
   if (
@@ -271,10 +324,31 @@ function hit(
   definition: WorldDefinition,
   emit: Emit,
   ability?: TacticalAbility,
+  sourceId = actor.id,
 ): void {
+  const tactics = state.combat!.tactics!;
+  if (ability?.stripGuard)
+    tactics.statuses = tactics.statuses.filter(
+      (s) => s.actorId !== target.id || s.kind !== "guard",
+    );
+  const evade = tactics.statuses.find(
+    (s) => s.actorId === target.id && s.kind === "evade",
+  );
+  if (evade && (!ability?.targetGroup || ability.targetGroup === "single")) {
+    tactics.statuses = tactics.statuses.filter((s) => s !== evade);
+    emit({
+      type: "battle.beat",
+      actorId: sourceId,
+      targetId: target.id,
+      effect: "guard",
+      amount: 0,
+      status: "evade",
+    });
+    return;
+  }
   const roll = nextInt(state.rng, 5);
   state.rng = roll.rng;
-  const amount = tacticalDamage(
+  let amount = tacticalDamage(
     state,
     actor.id,
     target.id,
@@ -283,25 +357,60 @@ function hit(
     ability,
     false,
   );
-  const combo =
-    ability?.exploitStatus &&
-    state.combat?.tactics?.statuses.some(
-      (s) => s.actorId === target.id && s.kind === ability.exploitStatus,
-    );
-  const reflected = state.combat?.tactics?.statuses.some(
+  const rawAmount = amount;
+  const exploit = [
+    ...(ability?.exploitStatus ? [ability.exploitStatus] : []),
+    ...(ability?.exploitStatuses ?? []),
+  ];
+  const combo = tactics.statuses.some(
+    (s) => s.actorId === target.id && exploit.includes(s.kind),
+  );
+  const ward = tactics.statuses.find(
     (s) => s.actorId === target.id && s.kind === "reflect",
   );
-  const recipient = reflected ? actor : target;
-  if (reflected && state.combat?.tactics)
-    state.combat.tactics.statuses = state.combat.tactics.statuses.filter(
-      (s) => !(s.actorId === target.id && s.kind === "reflect"),
+  const reflected = Boolean(ward && ward.potency >= 100);
+  const inversion = tactics.statuses.find(
+    (s) => s.actorId === target.id && s.kind === "inversion",
+  );
+  if (!reflected && inversion) {
+    const before = target.health;
+    target.health = Math.min(
+      target.maxHealth,
+      before + Math.min(inversion.potency, amount),
     );
+    emit({
+      type: "battle.beat",
+      actorId: sourceId,
+      targetId: target.id,
+      effect: "heal",
+      amount: target.health - before,
+      healthBefore: before,
+      healthAfter: target.health,
+      status: "inversion",
+    });
+    return;
+  }
+  if (!reflected) {
+    const barrier = tactics.statuses.find(
+      (s) => s.actorId === target.id && s.kind === "barrier",
+    );
+    if (barrier) {
+      const absorbed = Math.min(barrier.potency, amount);
+      barrier.potency -= absorbed;
+      amount -= absorbed;
+      tactics.statuses = tactics.statuses.filter(
+        (s) => s !== barrier || s.potency > 0,
+      );
+    }
+  }
+  const recipient = reflected ? actor : target;
+  if (ward) tactics.statuses = tactics.statuses.filter((s) => s !== ward);
   const before = recipient.health;
-  recipient.health = Math.max(0, recipient.health - amount);
+  recipient.health = Math.max(0, before - amount);
   if (recipient.health === 0) recipient.status = "downed";
   emit({
     type: "battle.beat",
-    actorId: reflected ? target.id : actor.id,
+    actorId: reflected ? target.id : sourceId,
     targetId: recipient.id,
     effect: reflected ? "reflect" : "damage",
     amount: before - recipient.health,
@@ -312,8 +421,74 @@ function hit(
   state.combat?.log.push(
     `${reflected ? target.name : actor.name} → ${recipient.name}: −${before - recipient.health} HP${combo ? " · PHỐI HỢP" : ""}`,
   );
-  if (!reflected && target.status === "active" && ability?.appliesStatus)
-    status(state, target.id, actor.id, ability.appliesStatus, emit);
+  if (ward && !reflected) {
+    const returned = Math.min(
+      actor.health,
+      Math.floor((rawAmount * ward.potency) / 100),
+    );
+    const old = actor.health;
+    actor.health -= returned;
+    if (!actor.health) actor.status = "downed";
+    emit({
+      type: "battle.beat",
+      actorId: target.id,
+      targetId: actor.id,
+      effect: "reflect",
+      amount: returned,
+      healthBefore: old,
+      healthAfter: actor.health,
+    });
+  }
+  if (!reflected && target.status === "active" && ability?.appliesStatus) {
+    let apply = true;
+    if (ability.statusChanceBps !== undefined) {
+      const draw = nextInt(state.rng, 10000);
+      state.rng = draw.rng;
+      apply = draw.value < ability.statusChanceBps;
+    }
+    if (apply) status(state, target.id, actor.id, ability.appliesStatus, emit);
+  }
+}
+function vehicleSupport(
+  state: GameState,
+  definition: WorldDefinition,
+  emit: Emit,
+): void {
+  const battle = state.combat;
+  const ward = battle?.tactics?.vehicleWard;
+  if (!battle || !ward) return;
+  if (battle.round > ward.expiresRound) {
+    delete battle.tactics!.vehicleWard;
+    return;
+  }
+  const actor = state.actors[ward.sourceId];
+  const target = battleTeam(state, battle.enemyConvoyId).find((a) =>
+    isFrontline(state, a.id),
+  );
+  if (actor && target)
+    hit(
+      state,
+      actor,
+      target,
+      definition,
+      emit,
+      {
+        id: ward.abilityId,
+        name: "Pháo đài",
+        description: "Yểm trợ",
+        source: "vehicle",
+        target: "enemy",
+        reach: "any",
+        effect: "damage",
+        power: ward.power,
+        energyCost: 0,
+        costs: emptyResources(),
+        cooldownTurns: 0,
+        fixedDamage: true,
+        ignoreArmor: true,
+      },
+      state.convoys[state.player.convoyId]!.vehicle.id,
+    );
 }
 
 function battleEnd(
@@ -412,10 +587,17 @@ function advance(
   const tactics = battle.tactics!;
   for (let i = 0; i < battle.turnOrder.length * 2; i++) {
     battle.turnIndex = (battle.turnIndex + 1) % battle.turnOrder.length;
-    if (battle.turnIndex === 0) battle.round++;
+    if (battle.turnIndex === 0) {
+      battle.round++;
+      vehicleSupport(state, definition, emit);
+      if (battleEnd(state, definition, emit)) return;
+    }
     const actor = currentCombatActor(state);
     if (!actor || actor.status !== "active") continue;
     tactics.actorTurns[actor.id] = (tactics.actorTurns[actor.id] ?? 0) + 1;
+    const stunned = tactics.statuses.some(
+      (s) => s.actorId === actor.id && s.kind === "stun",
+    );
     for (const s of tactics.statuses.filter((s) => s.actorId === actor.id)) {
       if (s.kind === "bleed") {
         const before = actor.health;
@@ -440,6 +622,17 @@ function advance(
     );
     if (battleEnd(state, definition, emit)) return;
     if (actor.status !== "active") continue;
+    if (stunned) {
+      emit({
+        type: "battle.beat",
+        actorId: actor.id,
+        targetId: actor.id,
+        effect: "status",
+        status: "stun",
+        amount: 0,
+      });
+      continue;
+    }
     actor.energy = Math.min(
       actor.attributes?.maxEnergy ?? 6,
       (actor.energy ?? 0) + 1,
@@ -460,6 +653,11 @@ function advance(
             Math.floor((actor.attributes?.attack ?? 10) / 2) + draw.value,
           ),
       );
+      if (
+        tactics.vehicleWard &&
+        tactics.vehicleWard.expiresRound >= battle.round
+      )
+        vehicle.condition = before;
       emit({
         type: "battle.beat",
         actorId: actor.id,
@@ -654,6 +852,34 @@ export function resolveTacticalCommand(
     if (reason) throw new CommandError("SKILL_UNAVAILABLE", reason);
     convoy.resources = subtractResources(convoy.resources, ability.costs);
     actor.energy = (actor.energy ?? 0) - ability.energyCost;
+    if (ability.selfHealthCost) {
+      const before = actor.health;
+      actor.health -= ability.selfHealthCost;
+      emit({
+        type: "battle.beat",
+        actorId: actor.id,
+        targetId: actor.id,
+        effect: "damage",
+        amount: ability.selfHealthCost,
+        healthBefore: before,
+        healthAfter: actor.health,
+      });
+    }
+    if (ability.requiresCorpse) {
+      const corpse = battle.turnOrder
+        .map((id) => state.actors[id]!)
+        .find(
+          (a) => a.convoyId === battle.enemyConvoyId && a.status === "downed",
+        )!;
+      corpse.status = "dead";
+      emit({
+        type: "combat.action",
+        actorId: actor.id,
+        targetId: corpse.id,
+        action: "consume-corpse",
+        amount: 0,
+      });
+    }
     tactics.cooldowns[actor.id] ??= {};
     tactics.cooldowns[actor.id]![ability.id] =
       (tactics.actorTurns[actor.id] ?? 0) + ability.cooldownTurns + 1;
@@ -662,10 +888,20 @@ export function resolveTacticalCommand(
       state.actors[
         ability.target === "self" ? actor.id : (payload.targetId ?? actor.id)
       ]!;
-    if (ability.effect === "damage")
-      hit(state, actor, target, definition, emit, ability);
-    else if (ability.effect === "heal") {
+    if (ability.effect === "damage") {
+      const targets =
+        ability.targetGroup && ability.targetGroup !== "single"
+          ? battleTeam(state, battle.enemyConvoyId).filter(
+              (a) => ability.targetGroup === "all" || isFrontline(state, a.id),
+            )
+          : [target];
+      for (const victim of targets)
+        hit(state, actor, victim, definition, emit, ability);
+    } else if (ability.effect === "heal") {
       const before = target.health;
+      const bleeding = tactics.statuses.some(
+        (s) => s.actorId === target.id && s.kind === "bleed",
+      );
       target.health = Math.min(target.maxHealth, target.health + ability.power);
       if (target.health > 0) target.status = "active";
       tactics.statuses = tactics.statuses.filter(
@@ -681,6 +917,33 @@ export function resolveTacticalCommand(
         healthAfter: target.health,
         abilityId: ability.id,
       });
+      if (ability.appliesStatus && (!ability.statusRequiresBleed || bleeding))
+        status(state, target.id, actor.id, ability.appliesStatus, emit);
+    } else if (ability.effect === "shift") {
+      const old = tactics.positions[actor.id]!;
+      tactics.positions[actor.id] = tactics.positions[target.id]!;
+      tactics.positions[target.id] = old;
+      actor.energy = Math.min(
+        actor.attributes?.maxEnergy ?? 6,
+        (actor.energy ?? 0) + ability.power,
+      );
+      emit({
+        type: "battle.beat",
+        actorId: actor.id,
+        targetId: actor.id,
+        effect: "move",
+        amount: tactics.positions[actor.id]!,
+      });
+      if (ability.appliesStatus)
+        status(state, actor.id, actor.id, ability.appliesStatus, emit);
+    } else if (ability.effect === "fortress") {
+      tactics.vehicleWard = {
+        sourceId: actor.id,
+        abilityId: ability.id,
+        expiresRound: battle.round + 2,
+        power: ability.power,
+      };
+      vehicleSupport(state, definition, emit);
     } else if (ability.effect === "repair") {
       const before = convoy.vehicle.condition;
       convoy.vehicle.condition = Math.min(
@@ -697,18 +960,39 @@ export function resolveTacticalCommand(
         healthAfter: convoy.vehicle.condition,
         abilityId: ability.id,
       });
-    } else
-      status(
-        state,
-        target.id,
-        actor.id,
-        ability.appliesStatus ?? {
-          kind: ability.effect === "reflect" ? "reflect" : "guard",
-          turns: 1,
-          potency: 50,
-        },
-        emit,
-      );
+    } else {
+      const targets =
+        ability.targetGroup === "all"
+          ? battleTeam(state, actor.convoyId)
+          : [target];
+      for (const member of targets)
+        status(
+          state,
+          member.id,
+          actor.id,
+          ability.appliesStatus ?? {
+            kind: ability.effect === "reflect" ? "reflect" : "guard",
+            turns: 1,
+            potency: 50,
+          },
+          emit,
+        );
+    }
+    for (const extra of ability.additionalStatuses ?? [])
+      status(state, target.id, actor.id, extra, emit);
+    if (ability.followupDamage)
+      for (const victim of battleTeam(state, battle.enemyConvoyId).filter((a) =>
+        isFrontline(state, a.id),
+      ))
+        hit(state, actor, victim, definition, emit, {
+          ...ability,
+          effect: "damage",
+          target: "enemy",
+          targetGroup: "front",
+          power: ability.followupDamage,
+          fixedDamage: true,
+          ignoreArmor: true,
+        });
     emit({
       type: "resources.consumed",
       convoyId: convoy.id,

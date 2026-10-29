@@ -78,6 +78,13 @@ export function inspectCampaignContent(
         ref(artifacts, item.artifactId, "condition");
         ref(owners, item.ownerId, "condition");
         break;
+      case "pathway":
+        ref(
+          new Set(content.resonance?.pathways.map((p) => p.id) ?? []),
+          item.pathwayId,
+          "condition.pathway",
+        );
+        break;
       case "always":
       case "resource":
         break;
@@ -263,14 +270,50 @@ export function inspectCampaignContent(
       message: "Ending contracts need an unconditional fallback",
     });
   const skills = new Set(content.skills.map((entry) => entry.id));
+  if (content.resonance) {
+    const unique = new Set(seen);
+    for (const path of content.resonance.pathways) {
+      if (unique.has(path.id))
+        issues.push({ path: path.id, message: "Duplicate pathway" });
+      unique.add(path.id);
+      if (new Set(path.tiers.map((t) => t.tier)).size !== 3)
+        issues.push({ path: path.id, message: "Duplicate tier" });
+      for (const tier of path.tiers) {
+        ref(skills, tier.skillId, path.id);
+        ref(facts, tier.knowledgeId, path.id);
+      }
+    }
+    for (const chapter of content.resonance.chapters) {
+      if (unique.has(chapter.id))
+        issues.push({ path: chapter.id, message: "Duplicate chapter" });
+      unique.add(chapter.id);
+      chapter.locationIds.forEach((id) => ref(locations, id, chapter.id));
+      for (const o of chapter.objectives)
+        ref(o.kind === "visit" ? locations : facts, o.referenceId, chapter.id);
+    }
+    for (const record of content.resonance.records) {
+      if (unique.has(record.id))
+        issues.push({ path: record.id, message: "Duplicate record" });
+      unique.add(record.id);
+      ref(facts, record.factId, record.id);
+    }
+  }
   if (content.tactics) {
     const abilityIds = new Set<string>();
     for (const ability of content.tactics.abilities) {
       ref(skills, ability.id, "tactics.abilities");
-      if (abilityIds.has(ability.id)) issues.push({ path: ability.id, message: "Duplicate tactical ability" });
+      if (abilityIds.has(ability.id))
+        issues.push({
+          path: ability.id,
+          message: "Duplicate tactical ability",
+        });
       abilityIds.add(ability.id);
       if (ability.source === "artifact") {
-        if (!ability.artifactId) issues.push({ path: ability.id, message: "Artifact ability requires artifactId" });
+        if (!ability.artifactId)
+          issues.push({
+            path: ability.id,
+            message: "Artifact ability requires artifactId",
+          });
         else ref(artifacts, ability.artifactId, ability.id);
       }
     }

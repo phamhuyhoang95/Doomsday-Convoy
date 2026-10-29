@@ -90,6 +90,7 @@ export function createGame(seed: number, input: WorldDefinition): GameState {
     campaign: definition.campaign
       ? {
           id: definition.campaign.id,
+          ...(definition.campaign.resonance ? { occultRemnants: 0 } : {}),
           eventCounts: {},
           pendingHooks: [],
           lastOutcomeKey: null,

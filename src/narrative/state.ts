@@ -28,6 +28,7 @@ export const artifactInstanceSchema = z
 export const campaignStateSchema = z
   .object({
     operations: expeditionStateSchema.optional(),
+    occultRemnants: z.number().int().nonnegative().max(1000000).optional(),
     id: idSchema,
     eventCounts: z.record(idSchema, z.number().int().nonnegative()),
     pendingHooks: z.array(idSchema),

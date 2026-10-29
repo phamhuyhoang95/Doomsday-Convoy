@@ -122,7 +122,10 @@ for (const entry of argonAbilities) {
       description: entry.description,
       target: entry.target === "vehicle" ? "self" : entry.target,
       effect:
-        entry.effect === "repair" || entry.effect === "reflect"
+        entry.effect === "repair" ||
+        entry.effect === "reflect" ||
+        entry.effect === "shift" ||
+        entry.effect === "fortress"
           ? "guard"
           : entry.effect,
       power: entry.power,

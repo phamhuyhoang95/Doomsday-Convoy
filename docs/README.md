@@ -15,6 +15,7 @@
 
 ## Thiết kế và kỹ thuật
 
+- [LORE_BIBLE](game/LORE_BIBLE.md): canon Hồi Chuông Số Không, cơ chế quỷ dị và hướng mở rộng.
 - [GAME_BIBLE](game/GAME_BIBLE.md): thế giới, vòng chơi và ngữ điệu.
 - [MVP_SCOPE](game/MVP_SCOPE.md): phạm vi và acceptance Phase0–5.
 - [ARCHITECTURE](engineering/ARCHITECTURE.md): commands/state, replay, world/narrative/combat/persistence.
@@ -24,6 +25,8 @@
 - [ARGON_MEDIA_PLAN](assets/ARGON_MEDIA_PLAN.md): phạm vi ảnh/pose, animation, SFX/ambience/nhạc, voice/clip tùy điều kiện; nguồn sản xuất, sequencer/audio mix và gate O1; đã có gói media đầu tiên, còn duyệt chất lượng.
 
 ## Kế hoạch trước triển khai
+
+- [LORE_CHAPTERS_PATHWAYS](plans/LORE_CHAPTERS_PATHWAYS.md): 3 chương, hồ sơ điều tra, 4 con đường và cinematic tham chiếu.
 
 - [JOURNEY_FEEL_AND_AUTO](plans/JOURNEY_FEEL_AND_AUTO.md): cinematic travel, auto combat và slice lựa chọn có hậu quả ở chặng sau.
 
@@ -36,6 +39,8 @@
 - [ASSET_PRODUCTION_PLAN](plans/ASSET_PRODUCTION_PLAN.md): A2 đang chốt.
 
 ## Báo cáo và lịch sử
+
+- [RESONANCE_IMPLEMENTATION](reports/RESONANCE_IMPLEMENTATION.md): chức năng lore/pathway/Flow, 146 tests pass, 48 runs và giới hạn playtest.
 
 - [JOURNEY_FEEL_AND_AUTO](reports/JOURNEY_FEEL_AND_AUTO.md): clip travel, auto, arc liên địa điểm, 129 tests/48 runs và giới hạn thực tế.
 
@@ -50,6 +55,8 @@
 - [PROGRESS_HISTORY](status/PROGRESS_HISTORY.md): bản lưu toàn bộ nhật ký cũ; không lấy các dòng NEXT ở đó làm việc tiếp theo.
 
 ## Dữ liệu đi kèm cần giữ
+
+- [Flow receipt](../art/flow-cinematics/receipt.json), [prompt tham chiếu](../art/flow-cinematics/reference-prompt.txt), [script encode](../scripts/prepare-flow-opening.py).
 
 - [Argon O1 manifest](../art/argon-o1/manifest.json), [prompts](../art/argon-o1/prompts.json), [audio preparation](../scripts/prepare-argon-audio.py).
 

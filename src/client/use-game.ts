@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { journeyDefinition } from "../content/journey";
+import { resonanceDefinition } from "../content/resonance";
+import { journeyDefinition as olderJourney } from "../content/journey";
 import { argonDefinition as o1Definition } from "../content/argon";
 import { campaignDefinition } from "../content/campaign";
 import type { GameCommand } from "../core/commands";
@@ -22,7 +23,7 @@ export interface GameTransition {
 
 /** QA setups use the same accepted commands as the game; never write localStorage. */
 function previewState(kind: string): GameState {
-  let current = createGame(42, journeyDefinition);
+  let current = createGame(42, resonanceDefinition);
   const take = (payload: GameCommand["payload"]) => {
     const result = processCommand(
       current,
@@ -32,7 +33,7 @@ function previewState(kind: string): GameState {
         payload,
       },
       { principalId: current.player.id },
-      journeyDefinition,
+      resonanceDefinition,
     );
     if (!result.ok) throw new Error(result.error.message);
     current = result.state;
@@ -46,8 +47,24 @@ function previewState(kind: string): GameState {
     });
   if (kind === "gara") return current;
   choose("prepare");
-  if (kind === "map") return current;
-  if (kind === "water" || kind === "consequence") choose("radio-scan");
+  choose(
+    kind === "water" || kind === "consequence" ? "radio-scan" : "radio-ignore",
+  );
+  choose("study-awakening");
+  if (kind === "map" || kind === "ascension" || kind === "codex")
+    return current;
+  if (kind === "combat")
+    for (const [actorId, pathwayId] of [
+      ["character.minh", "path.mirror-walker"],
+      ["character.lan", "path.flesh-stitcher"],
+      ["character.bao", "path.rust-artificer"],
+    ])
+      take({
+        type: "ascend-pathway",
+        convoyId: current.player.convoyId,
+        actorId: actorId!,
+        pathwayId: pathwayId!,
+      });
   take({
     type: "travel",
     convoyId: current.player.convoyId,
@@ -84,7 +101,7 @@ export function useGame() {
   const [session, setSession] = useState(0);
   const [state, setState] = useState<GameState | null>(null);
   const [definition, setDefinition] =
-    useState<WorldDefinition>(journeyDefinition);
+    useState<WorldDefinition>(resonanceDefinition);
   const [message, setMessage] = useState("");
   const [report, setReport] = useState<ActionReport | null>(null);
   const [transition, setTransition] = useState<GameTransition | null>(null);
@@ -92,13 +109,15 @@ export function useGame() {
   const store = (content = definition) =>
     new LocalSaveStore(window.localStorage, content);
   const slotName = (slot: string, content = definition) =>
-    content.contentVersion === journeyDefinition.contentVersion
-      ? `journey-${slot}`
-      : content.campaign?.tactics
-        ? `argon-${slot}`
-        : content.campaign?.operations
-          ? `r1-${slot}`
-          : slot;
+    content.contentVersion === resonanceDefinition.contentVersion
+      ? `resonance-${slot}`
+      : content.contentVersion === olderJourney.contentVersion
+        ? `journey-${slot}`
+        : content.campaign?.tactics
+          ? `argon-${slot}`
+          : content.campaign?.operations
+            ? `r1-${slot}`
+            : slot;
   const safely = (fn: () => void) => {
     try {
       fn();
@@ -111,16 +130,16 @@ export function useGame() {
   const start = (seed: number) =>
     safely(() => {
       void audio.unlock();
-      const next = createGame(seed, journeyDefinition);
+      const next = createGame(seed, resonanceDefinition);
       setSession((value) => value + 1);
-      setDefinition(journeyDefinition);
+      setDefinition(resonanceDefinition);
       setState(next);
       setReport(null);
       setTransition(null);
       setMessage("");
       audio.setScene("road");
       try {
-        store(journeyDefinition).save("journey-autosave", next);
+        store(resonanceDefinition).save("resonance-autosave", next);
       } catch {
         setMessage("Đã bắt đầu nhưng chưa ghi được autosave.");
       }
@@ -132,7 +151,7 @@ export function useGame() {
       safely(() => {
         const next = previewState(kind);
         setState(next);
-        setDefinition(journeyDefinition);
+        setDefinition(resonanceDefinition);
       });
   }, []);
   const dispatch = (payload: GameCommand["payload"]) => {
@@ -188,21 +207,26 @@ export function useGame() {
   const load = (slot = "manual") =>
     safely(() => {
       const loaded =
-        slot === "o1"
+        slot === "journey"
           ? {
-              state: store(o1Definition).load("argon-autosave"),
-              definition: o1Definition,
+              state: store(olderJourney).load("journey-autosave"),
+              definition: olderJourney,
             }
-          : slot === "legacy"
-            ? loadCompatibleSlot(window.localStorage, "legacy")
-            : slot === "r1"
-              ? loadCompatibleSlot(window.localStorage, "manual")
-              : {
-                  state: store(state ? definition : journeyDefinition).load(
-                    slotName(slot, state ? definition : journeyDefinition),
-                  ),
-                  definition: state ? definition : journeyDefinition,
-                };
+          : slot === "o1"
+            ? {
+                state: store(o1Definition).load("argon-autosave"),
+                definition: o1Definition,
+              }
+            : slot === "legacy"
+              ? loadCompatibleSlot(window.localStorage, "legacy")
+              : slot === "r1"
+                ? loadCompatibleSlot(window.localStorage, "manual")
+                : {
+                    state: store(state ? definition : resonanceDefinition).load(
+                      slotName(slot, state ? definition : resonanceDefinition),
+                    ),
+                    definition: state ? definition : resonanceDefinition,
+                  };
       void audio.unlock();
       setSession((value) => value + 1);
       setState(loaded.state);

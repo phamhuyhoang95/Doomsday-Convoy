@@ -120,6 +120,14 @@ export const commandSchema = z
     id: idSchema,
     issuerId: idSchema,
     payload: z.discriminatedUnion("type", [
+      z
+        .object({
+          type: z.literal("ascend-pathway"),
+          convoyId: idSchema,
+          actorId: idSchema,
+          pathwayId: idSchema,
+        })
+        .strict(),
       travelSchema,
       waitSchema,
       chooseSchema,
@@ -134,15 +142,17 @@ export const commandSchema = z
       scenarioActSchema,
       scenarioCrisisSchema,
       scenarioFinishSchema,
-      z.object({
-        type: z.literal("battle-action"),
-        convoyId: idSchema,
-        actorId: idSchema,
-        action: z.enum(["attack", "guard", "move", "ability"]),
-        targetId: idSchema.optional(),
-        abilityId: idSchema.optional(),
-        slot: z.number().int().min(0).max(3).optional(),
-      }).strict(),
+      z
+        .object({
+          type: z.literal("battle-action"),
+          convoyId: idSchema,
+          actorId: idSchema,
+          action: z.enum(["attack", "guard", "move", "ability"]),
+          targetId: idSchema.optional(),
+          abilityId: idSchema.optional(),
+          slot: z.number().int().min(0).max(3).optional(),
+        })
+        .strict(),
     ]),
   })
   .strict();

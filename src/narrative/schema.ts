@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { operationsDefinitionSchema } from "../expedition/schema";
+import { resonanceSchema } from "../occult/schema";
 import { tacticalRulesSchema } from "../combat/tactical-schema";
 import {
   amountSchema,
@@ -16,6 +17,7 @@ export type Condition =
   | { op: "not"; condition: Condition }
   | { op: "fact"; id: string; value: FactValue }
   | { op: "known"; id: string }
+  | { op: "pathway"; pathwayId: string; tierAtMost: number }
   | { op: "resource"; resource: (typeof RESOURCE_IDS)[number]; atLeast: number }
   | { op: "at"; locationId: string }
   | { op: "owns"; artifactId: string; ownerId: string }
@@ -46,6 +48,13 @@ export const conditionSchema: z.ZodType<Condition> = z.lazy(() =>
       .object({ op: z.literal("fact"), id: idSchema, value: factValue })
       .strict(),
     z.object({ op: z.literal("known"), id: idSchema }).strict(),
+    z
+      .object({
+        op: z.literal("pathway"),
+        pathwayId: idSchema,
+        tierAtMost: z.number().int().min(7).max(9),
+      })
+      .strict(),
     z
       .object({
         op: z.literal("resource"),
@@ -86,6 +95,8 @@ export const conditionSchema: z.ZodType<Condition> = z.lazy(() =>
 );
 
 export const effectSchema = z.discriminatedUnion("op", [
+  z.object({ op: z.literal("experience"), amount: amountSchema }).strict(),
+  z.object({ op: z.literal("occult-remnants"), amount: amountSchema }).strict(),
   z
     .object({
       op: z.literal("resource"),
@@ -269,6 +280,7 @@ export const assetDefinitionSchema = z
 export const campaignContentSchema = z
   .object({
     tactics: tacticalRulesSchema.optional(),
+    resonance: resonanceSchema.optional(),
     operations: operationsDefinitionSchema.optional(),
     encounters: z
       .array(

@@ -54,3 +54,7 @@ Validator tĩnh kiểm tra schema/operators/IDs/refs/weights/costs/free fallback
 ## Giới hạn vận hành
 
 Save giữ toàn log và replay khi serialize/load; phù hợp chiến dịch nhỏ, cần snapshot/checkpoint optimization khi log rất dài. LocalStorage có quota và cùng-origin, có xử lý lỗi ghi/đọc. Core chưa có networking, xác thực session, concurrent command ordering hoặc chống gian lận server. Thời lượng 30–60 phút cần human playtest.
+
+## Bundle Resonance — 2026-10-29
+
+`0.3.0-campaign.1-resonance` là mặc định client; giữ resolver/content/slots Journey/O1/R1/.4. `src/occult/` quản lý nghi thức qua command0giờ, XP tích lũy riêng spentXp và di vật chung. Chapter/objectives/codex là read model từ facts/knowledge/location visits, không có chapter script chạy trong React. Twelve abilities dùng operator tactical chung với optional fields additive; không sửa legacy-engine. Flow opening local và quyền phát/skip/fallback nằm ở client, không can thiệp log/RNG. Xem [báo cáo và gates](../reports/RESONANCE_IMPLEMENTATION.md).

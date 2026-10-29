@@ -1,0 +1,60 @@
+{
+  "status": "integrated-browser-play-skip-fallback-verified",
+  "service": "Google Flow",
+  "projectUrl": "https://flow.google.com/project/b228853a-4289-4cfa-af2d-4cd69c1a505d",
+  "referenceSceneUrl": "https://flow.google.com/project/b228853a-4289-4cfa-af2d-4cd69c1a505d/edit/1c6cec03-729c-45c1-b29e-585f7d3a95ed",
+  "modelShownByUI": "Omni 1.1 Flash",
+  "outputsApproved": 2,
+  "quotedCreditsPerOutput": 12,
+  "approvedCreditsTotal": 24,
+  "accountBalanceChangeVerified": false,
+  "rightsDialog": "User explicitly approved own game images; accepted once for the two references.",
+  "references": [
+    {
+      "path": "public/art/a2/vehicle.bus.png",
+      "sha256": "97f0af7e979d205cd2afa4c7c7582586bb2e54cb9814e2b789ddc7b53f9a9c46"
+    },
+    {
+      "path": "public/art/argon/market-stage.jpg",
+      "sha256": "90e3be406bbd3f0c1e4a8a73859dc7837222ad2ac5579aef034747a59bf5b98e"
+    }
+  ],
+  "promptFile": "art/flow-cinematics/reference-prompt.txt",
+  "notes": [
+    "First text-only output was a pipeline trial, not selected for integration.",
+    "Second output used both attached project images. No top-up, purchase or API billing enabled.",
+    "Browser export did not return a local file; user supplied downloaded 720p master after viewing Flow output.",
+    "Preview matches the project bus identity and market palette. Reflection-lag timing/audio still require local review."
+  ],
+  "files": [
+    {
+      "path": "art/flow-cinematics/zero-bell-reference.mp4",
+      "sha256": "36f68cf5256b0ebdcf4f87432048435cbf8132ff1e215ff0fa8a471935e37003",
+      "bytes": 6150628
+    },
+    {
+      "path": "public/video/resonance/zero-bell-opening.mp4",
+      "sha256": "1eabde988d6e7cd27de083e236b9bb08326bfb1485cc2f7262e0c55e1d2388c1",
+      "bytes": 2822750
+    },
+    {
+      "path": "public/video/resonance/zero-bell-opening.jpg",
+      "sha256": "3e41d139c86a2320190630746e80b6e5bb38ef1dcca5a5e3b28cf3de514812cf",
+      "bytes": 173676
+    }
+  ],
+  "probe": {
+    "duration": "8.042667",
+    "width": 1280,
+    "height": 720,
+    "hasAudio": true
+  },
+  "review": {
+    "busIdentityAndPalette": "matches references in inspected 1s/6s frames",
+    "motion": "visible bus/camera movement across frames; browser playback observed paused=false, readyState=4",
+    "audio": "AAC stereo stream retained; subjective audio mix not signed off",
+    "reflectionLag": "not reliably confirmed; do not claim the exact half-second beat succeeded",
+    "watermark": "Flow mark retained in source and derivative",
+    "browser": "127.0.0.1:5180, desktop and 390x844; start/replay/skip/auto-return/404 fallback verified; reduced-motion branch source reviewed only"
+  }
+}

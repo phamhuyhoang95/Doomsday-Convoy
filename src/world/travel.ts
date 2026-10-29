@@ -55,12 +55,29 @@ export function planTravel(
   const recon = state.campaign?.operations?.recon[convoy.locationId];
   const reduction =
     recon && recon.expiresAt > state.world.tick ? recon.riskReductionBps : 0;
+  const supernatural = Math.max(
+    0,
+    ...convoy.actorIds.flatMap((id) => {
+      const actor = state.actors[id];
+      if (actor?.status !== "active" || !actor.pathway) return [];
+      return (
+        definition.campaign?.resonance?.pathways.find(
+          (p) => p.id === actor.pathway?.pathwayId,
+        )?.tiers ?? []
+      )
+        .filter((t) => t.tier >= actor.pathway!.tier)
+        .map((t) => t.riskReductionBps ?? 0);
+    }),
+  );
   return {
     route,
     from: convoy.locationId,
     to,
     costs,
-    riskBps: Math.floor((route.risk.chanceBps * (10000 - reduction)) / 10000),
+    riskBps: Math.floor(
+      (route.risk.chanceBps * (10000 - reduction) * (10000 - supernatural)) /
+        100000000,
+    ),
   };
 }
 

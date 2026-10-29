@@ -51,3 +51,7 @@ Người dùng đã yêu cầu triển khai cả combat/UI/media mới. New game
 ## 10. Journey bundle và presentation automation
 
 Nội dung radio/nước/hậu quả mới ở `0.2.0-campaign.2-journey`; giữ O1 trong registry và slots riêng `journey-*`. Auto là policy gợi ý command, không tự mutate và không giải quyết hậu chiến. Travel transaction/autosave chốt trước cinematic có thể skip/fallback; phát phim không thu thêm tick/RNG. Lý do khóa UI không được tiết lộ fact chưa có trong player knowledge. Xem [báo cáo](../reports/JOURNEY_FEEL_AND_AUTO.md).
+
+## 11. Resonance — chương, hồ sơ và siêu phàm
+
+New game `0.3.0-campaign.1-resonance`, slots `resonance-*`; Journey/O1/R1/.4 giữ nguyên. Optional additive state/save v3: pathway/spentXp, occultRemnants, vehicleWard. XP tích lũy vẫn sinh training points, XP khả dụng cho nghi thức trừ bằng spentXp; không trừ progression.xp. Ascend 0 giờ, ngoài combat/scenario, knowledge gate + vật tư + di vật, chưa đổi/lai ngạch. Content/operator chung, không switch skill ID trong React. Phim local Flow chỉ presentation, autosave trước phát; prompt/master/receipt ở art/flow-cinematics. Xem [plan](../plans/LORE_CHAPTERS_PATHWAYS.md), [báo cáo](../reports/RESONANCE_IMPLEMENTATION.md).

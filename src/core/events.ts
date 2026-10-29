@@ -8,17 +8,50 @@ export const failureReasonSchema = z.enum([
 ]);
 export type FailureReason = z.infer<typeof failureReasonSchema>;
 const payloadSchema = z.discriminatedUnion("type", [
-  z.object({
-    type: z.literal("battle.beat"),
-    actorId: idSchema,
-    targetId: idSchema,
-    effect: z.enum(["damage", "heal", "guard", "status", "move", "repair", "reflect"]),
-    amount: z.number().int().nonnegative(),
-    healthBefore: z.number().int().nonnegative().optional(),
-    healthAfter: z.number().int().nonnegative().optional(),
-    abilityId: idSchema.optional(),
-    status: z.enum(["armor-broken", "bleed", "guard", "reflect"]).optional(),
-  }).strict(),
+  z
+    .object({
+      type: z.literal("actor.ascended"),
+      actorId: idSchema,
+      pathwayId: idSchema,
+      tier: z.union([z.literal(9), z.literal(8), z.literal(7)]),
+      skillId: idSchema,
+      xpSpent: z.number().int().positive(),
+      remnantsSpent: z.number().int().positive(),
+    })
+    .strict(),
+  z
+    .object({
+      type: z.literal("battle.beat"),
+      actorId: idSchema,
+      targetId: idSchema,
+      effect: z.enum([
+        "damage",
+        "heal",
+        "guard",
+        "status",
+        "move",
+        "repair",
+        "reflect",
+      ]),
+      amount: z.number().int().nonnegative(),
+      healthBefore: z.number().int().nonnegative().optional(),
+      healthAfter: z.number().int().nonnegative().optional(),
+      abilityId: idSchema.optional(),
+      status: z
+        .enum([
+          "armor-broken",
+          "bleed",
+          "guard",
+          "reflect",
+          "fury",
+          "barrier",
+          "stun",
+          "evade",
+          "inversion",
+        ])
+        .optional(),
+    })
+    .strict(),
   z
     .object({
       type: z.literal("expedition.scouted"),

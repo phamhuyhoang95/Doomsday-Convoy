@@ -6,7 +6,10 @@ import type { Effect } from "./schema";
 import { createActor } from "../core/actors";
 import { startCombat } from "../combat/engine";
 import { establishFact } from "../core/facts";
-import { initializeProgression } from "../expedition/progression";
+import {
+  awardExperience,
+  initializeProgression,
+} from "../expedition/progression";
 
 export type Emit = (payload: DomainEventPayload) => void;
 /** Called only on the command transaction's cloned state, never directly from content/UI. */
@@ -20,6 +23,18 @@ export function applyEffects(
   if (!convoy) throw new Error("Missing player convoy");
   for (const effect of effects) {
     switch (effect.op) {
+      case "experience":
+        awardExperience(state, effect.amount, definition, emit);
+        break;
+      case "occult-remnants":
+        if (!state.campaign || !definition.campaign?.resonance)
+          throw new CommandError(
+            "REQUIREMENTS_NOT_MET",
+            "Hành trình chưa có di vật cộng hưởng.",
+          );
+        state.campaign.occultRemnants =
+          (state.campaign.occultRemnants ?? 0) + effect.amount;
+        break;
       case "resource":
         if (convoy.resources[effect.resource] + effect.amount > 1_000_000)
           throw new CommandError("INVALID_COMMAND", "Resource cap exceeded");
@@ -115,7 +130,13 @@ export function applyEffects(
         break;
       }
       case "combat":
-        startCombat(state, effect.enemyConvoyId, effect.ambush, emit, definition);
+        startCombat(
+          state,
+          effect.enemyConvoyId,
+          effect.ambush,
+          emit,
+          definition,
+        );
         break;
       case "anomaly": {
         const anomaly = definition.campaign?.anomalies.find(

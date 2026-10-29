@@ -1,0 +1,242 @@
+import { emptyResources } from "../core/primitives";
+import type { TacticalAbility } from "../combat/tactical-schema";
+const skill = (
+  id: string,
+  name: string,
+  description: string,
+  data: Partial<TacticalAbility>,
+): TacticalAbility => ({
+  id,
+  name,
+  description,
+  source: "actor",
+  target: "enemy",
+  reach: "any",
+  effect: "damage",
+  power: 0,
+  energyCost: 2,
+  costs: emptyResources(),
+  cooldownTurns: 1,
+  ...data,
+});
+export const occultAbilities: TacticalAbility[] = [
+  skill(
+    "skill.red-suture",
+    "Chỉ Khâu Đỏ",
+    "Hồi 14 HP, vực dậy và cầm máu. Nếu cầm được bleed, thêm 4 công cho lượt kế tiếp của người nhận.",
+    {
+      effect: "heal",
+      target: "ally",
+      power: 14,
+      appliesStatus: { kind: "fury", turns: 2, potency: 4 },
+      statusRequiresBleed: true,
+    },
+  ),
+  skill(
+    "skill.flesh-graft",
+    "Giáp Huyết Nhục",
+    "Hiến 8 HP không gây gục. Hấp thụ 24 sát thương và phản 50% đòn kế, tới lượt sau.",
+    {
+      effect: "guard",
+      target: "self",
+      selfHealthCost: 8,
+      appliesStatus: { kind: "barrier", turns: 1, potency: 24 },
+      additionalStatuses: [{ kind: "reflect", turns: 1, potency: 50 }],
+      cooldownTurns: 2,
+    },
+  ),
+  skill(
+    "skill.corpse-puppeteer",
+    "Con Rối Bàn Mổ",
+    "Dùng một đối thủ đã gục chưa bị bắt làm con rối; gây 35 sát thương chuẩn lên toàn phe địch. Người bị dùng sẽ chết.",
+    {
+      power: 35,
+      fixedDamage: true,
+      ignoreArmor: true,
+      targetGroup: "all",
+      requiresCorpse: true,
+      energyCost: 4,
+      cooldownTurns: 3,
+    },
+  ),
+  skill(
+    "skill.nether-ear",
+    "Thính Giác Âm Giới",
+    "Nghe lệch nhịp để lộ điểm yếu: giảm 4 thủ trong 2 lượt mục tiêu.",
+    {
+      effect: "guard",
+      target: "enemy",
+      appliesStatus: { kind: "armor-broken", turns: 2, potency: 4 },
+      energyCost: 1,
+    },
+  ),
+  skill(
+    "skill.bell-echo",
+    "Dư Âm Thánh An",
+    "22 sát thương chuẩn; 60% gây choáng, bỏ qua một lượt của mục tiêu.",
+    {
+      power: 22,
+      fixedDamage: true,
+      ignoreArmor: true,
+      appliesStatus: { kind: "stun", turns: 1, potency: 1 },
+      statusChanceBps: 6000,
+      energyCost: 3,
+      cooldownTurns: 2,
+    },
+  ),
+  skill(
+    "skill.nameless-calling",
+    "Lời Gọi Không Tên",
+    "Ép một mục tiêu chịu 45 sát thương chuẩn.",
+    {
+      power: 45,
+      fixedDamage: true,
+      ignoreArmor: true,
+      energyCost: 4,
+      cooldownTurns: 3,
+    },
+  ),
+  skill(
+    "skill.rust-shrapnel",
+    "Mảnh Đạn Gỉ Sét",
+    "Tiêu 1 phế liệu: 20 sát thương, phá Guard và giảm 4 thủ trong 2 lượt.",
+    {
+      power: 20,
+      fixedDamage: true,
+      stripGuard: true,
+      costs: { ...emptyResources(), scrap: 1 },
+      appliesStatus: { kind: "armor-broken", turns: 2, potency: 4 },
+    },
+  ),
+  skill(
+    "skill.blood-engine",
+    "Động Cơ Khát Máu",
+    "Hiến 6 HP, sửa xe 15 độ bền và ủi tuyến đầu địch gây 28 sát thương chuẩn mỗi người. Tiêu 2 phế liệu.",
+    {
+      effect: "repair",
+      target: "vehicle",
+      power: 15,
+      selfHealthCost: 6,
+      followupDamage: 28,
+      costs: { ...emptyResources(), scrap: 2 },
+      energyCost: 3,
+      cooldownTurns: 2,
+    },
+  ),
+  skill(
+    "skill.living-fortress",
+    "Pháo Đài Sắt Sống",
+    "Bảo vệ xe trong vòng hiện tại và 2 vòng kế. Xe bắn 25 sát thương chuẩn khi kích hoạt và mỗi đầu vòng, vào một địch tuyến đầu.",
+    {
+      effect: "fortress",
+      target: "vehicle",
+      power: 25,
+      energyCost: 4,
+      costs: { ...emptyResources(), scrap: 3 },
+      cooldownTurns: 4,
+    },
+  ),
+  skill(
+    "skill.mirror-step",
+    "Bước Nhảy Phản Chiếu",
+    "Đổi chỗ với đồng đội đang đứng, hồi 3 năng lượng và né đòn đơn kế tiếp tới lượt sau. Tiêu một lượt.",
+    {
+      effect: "shift",
+      target: "ally",
+      power: 3,
+      energyCost: 0,
+      appliesStatus: { kind: "evade", turns: 1, potency: 100 },
+      cooldownTurns: 2,
+    },
+  ),
+  skill(
+    "skill.glass-sever",
+    "Lưỡi Dao Thủy Tinh",
+    "30 sát thương xuyên hàng; tăng thành 48 khi mục tiêu bị phá giáp hoặc choáng.",
+    {
+      power: 30,
+      fixedDamage: true,
+      ignoreArmor: true,
+      exploitStatuses: ["armor-broken", "stun"],
+      bonusBps: 6000,
+      energyCost: 3,
+      cooldownTurns: 2,
+    },
+  ),
+  skill(
+    "skill.inverted-realm",
+    "Thế Giới Ngược Chiều",
+    "Đảo sát thương nhận thành hồi phục, tối đa 35 HP mỗi đòn, cho toàn đội tới lượt kế của từng người.",
+    {
+      effect: "guard",
+      target: "self",
+      targetGroup: "all",
+      appliesStatus: { kind: "inversion", turns: 1, potency: 35 },
+      energyCost: 4,
+      cooldownTurns: 4,
+    },
+  ),
+];
+export const pathwayDefs = [
+  {
+    id: "path.flesh-stitcher",
+    name: "Kẻ Khâu Xác",
+    axiom: "Những gì từng liền nhau có thể được nối lại.",
+    description:
+      "Cứu thương, dùng mô sống làm giáp và điều khiển thi thể. Quyền năng không xóa cái giá của sinh mạng.",
+    skills: ["skill.red-suture", "skill.flesh-graft", "skill.corpse-puppeteer"],
+    names: ["Người giữ mạch", "Thợ ghép thịt", "Chủ bàn mổ"],
+  },
+  {
+    id: "path.bell-medium",
+    name: "Người Nghe Chuông",
+    axiom: "Nghe được nhịp gọi là tìm được nhịp đáp.",
+    description:
+      "Lộ điểm yếu, làm gián đoạn lượt và ép đối thủ nhận một lời gọi. Không cần xông lên tuyến đầu.",
+    skills: ["skill.nether-ear", "skill.bell-echo", "skill.nameless-calling"],
+    names: ["Tai vọng", "Người đánh nhịp", "Kẻ gọi không tên"],
+  },
+  {
+    id: "path.rust-artificer",
+    name: "Thợ Rèn Gỉ Sét",
+    axiom: "Một cỗ máy còn vận hành là một quy tắc còn đứng vững.",
+    description:
+      "Vũ khí phá giáp, nối máu vào động cơ, biến xe thành pháo đài. Phải giữ phế liệu cho ngày mai.",
+    skills: [
+      "skill.rust-shrapnel",
+      "skill.blood-engine",
+      "skill.living-fortress",
+    ],
+    names: ["Thợ nhặt gỉ", "Người nối máy", "Trái tim sắt sống"],
+  },
+  {
+    id: "path.mirror-walker",
+    name: "Kẻ Đi Trong Gương",
+    axiom: "Đối xứng là một cánh cửa có hai phía.",
+    description:
+      "Đổi vị trí, lách đòn và khai thác điểm yếu; ở bậc cao có thể đảo chiều sát thương.",
+    skills: ["skill.mirror-step", "skill.glass-sever", "skill.inverted-realm"],
+    names: ["Bóng lệch", "Lưỡi kính", "Người đảo chiều"],
+  },
+].map((p) => ({
+  id: p.id,
+  name: p.name,
+  axiom: p.axiom,
+  description: p.description,
+  tiers: ([9, 8, 7] as const).map((tier, i) => ({
+    tier,
+    name: p.names[i]!,
+    skillId: p.skills[i]!,
+    xpCost: [10, 25, 45][i]!,
+    remnantCost: [1, 1, 2][i]!,
+    ...(p.id === "path.bell-medium" ? { riskReductionBps: 7500 } : {}),
+    knowledgeId: ["lore.awakening", "lore.hospital-network", "lore.archive"][
+      i
+    ]!,
+    costs: {
+      ...emptyResources(),
+      medicine: i === 0 ? 1 : 0,
+      scrap: i === 0 ? 1 : i === 1 ? 2 : 3,
+    },
+  })),
+}));

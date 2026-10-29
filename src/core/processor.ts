@@ -23,6 +23,7 @@ import {
   restConvoy,
   repairVehicle,
 } from "../expedition/operations";
+import { ascendPathway } from "../occult/progression";
 import { configureActor } from "../expedition/progression";
 
 export type CommandResult =
@@ -96,18 +97,26 @@ export function processCommand(
         "Campaign command requires campaign mode.",
       );
     const configuring =
+      command.payload.type === "ascend-pathway" ||
       command.payload.type === "train-actor" ||
       command.payload.type === "set-stance" ||
       command.payload.type.startsWith("scenario-");
     const tacticalTurn = Boolean(definition.campaign?.tactics && state.combat);
-    const tacticalEntry = definition.campaign?.tactics && command.payload.type === "scenario-crisis" && command.payload.method === "combat";
-    const ticks = tacticalTurn ? 0 : tacticalEntry ? 1 : configuring
+    const tacticalEntry =
+      definition.campaign?.tactics &&
+      command.payload.type === "scenario-crisis" &&
+      command.payload.method === "combat";
+    const ticks = tacticalTurn
       ? 0
-      : plan
-        ? plan.route.travelTicks
-        : command.payload.type === "wait"
-          ? command.payload.ticks
-          : 1;
+      : tacticalEntry
+        ? 1
+        : configuring
+          ? 0
+          : plan
+            ? plan.route.travelTicks
+            : command.payload.type === "wait"
+              ? command.payload.ticks
+              : 1;
     const costs = plan
       ? plan.costs
       : supplyCosts(state, convoy, ticks, definition);
@@ -221,6 +230,14 @@ export function processCommand(
       else refreshNarrative(next, definition, emit);
     } else if (command.payload.type === "repair") {
       repairVehicle(next, definition, emit);
+    } else if (command.payload.type === "ascend-pathway") {
+      ascendPathway(
+        next,
+        command.payload.actorId,
+        command.payload.pathwayId,
+        definition,
+        emit,
+      );
     } else if (command.payload.type === "train-actor") {
       configureActor(
         next,
@@ -237,7 +254,10 @@ export function processCommand(
         definition,
         emit,
       );
-    } else if (command.payload.type === "combat" || command.payload.type === "battle-action") {
+    } else if (
+      command.payload.type === "combat" ||
+      command.payload.type === "battle-action"
+    ) {
       resolveCombatCommand(next, command.payload, definition, emit);
     } else if (command.payload.type === "use-skill") {
       if (next.combat)

@@ -71,24 +71,29 @@ export function summarizeTransition(
           (entry) => entry.id === payload.skillId,
         )
       : undefined;
+  const ascended = events.find(
+    (e) => e.payload.type === "actor.ascended",
+  )?.payload;
   const title =
-    payload.type === "travel"
-      ? `Đã tới ${definition.locations.find((entry) => entry.id === convoy.locationId)?.name}`
-      : payload.type === "investigate"
-        ? "Trinh sát hoàn tất"
-        : payload.type === "wait"
-          ? `Đã nghỉ ${payload.ticks} giờ`
-          : payload.type === "repair"
-            ? "Xe đã được sửa"
-            : payload.type === "train-actor"
-              ? `${actor?.name}: nâng ${definition.campaign?.operations?.upgrades.find((entry) => entry.id === payload.upgradeId)?.name}`
-              : payload.type === "set-stance"
-                ? `${actor?.name}: ${definition.campaign?.operations?.stances.find((entry) => entry.id === payload.stanceId)?.name}`
-                : payload.type === "use-skill"
-                  ? `${actor?.name} dùng ${skill?.name}`
-                  : payload.type === "combat"
-                    ? `${actor?.name} hành động`
-                    : "Lựa chọn đã có kết quả";
+    payload.type === "ascend-pathway"
+      ? `${actor?.name}: gắn kết bậc ${actor?.pathway?.tier}`
+      : payload.type === "travel"
+        ? `Đã tới ${definition.locations.find((entry) => entry.id === convoy.locationId)?.name}`
+        : payload.type === "investigate"
+          ? "Trinh sát hoàn tất"
+          : payload.type === "wait"
+            ? `Đã nghỉ ${payload.ticks} giờ`
+            : payload.type === "repair"
+              ? "Xe đã được sửa"
+              : payload.type === "train-actor"
+                ? `${actor?.name}: nâng ${definition.campaign?.operations?.upgrades.find((entry) => entry.id === payload.upgradeId)?.name}`
+                : payload.type === "set-stance"
+                  ? `${actor?.name}: ${definition.campaign?.operations?.stances.find((entry) => entry.id === payload.stanceId)?.name}`
+                  : payload.type === "use-skill"
+                    ? `${actor?.name} dùng ${skill?.name}`
+                    : payload.type === "combat"
+                      ? `${actor?.name} hành động`
+                      : "Lựa chọn đã có kết quả";
   const resolved = events.find(
     (event) => event.payload.type === "event.resolved",
   )?.payload;
@@ -99,21 +104,23 @@ export function summarizeTransition(
     (event) => event.payload.type === "expedition.rested",
   )?.payload;
   const narrative =
-    resolved?.type === "event.resolved"
-      ? (definition.campaign?.texts[resolved.outcomeKey] ?? "")
-      : scout?.type === "expedition.scouted"
-        ? `${definition.campaign?.operations?.recon.find((entry) => entry.locationId === scout.locationId)?.description} Giảm ${scout.riskReductionBps / 100}% rủi ro tuyến rời nơi này đến T${scout.expiresAt}.${scout.firstVisit ? " Cache đã nhận; không thể lấy lại." : " Cache đã lấy trước đó; lần này chỉ làm mới intel."}`
-        : rest?.type === "expedition.rested"
-          ? rest.healthRestored || rest.energyRestored
-            ? `Hồi ${rest.healthRestored} HP và ${rest.energyRestored} năng lượng cho đoàn. Đối thủ vẫn sử dụng thời gian này.`
-            : "Đoàn đã đầy sức khỏe và năng lượng: lần chờ này chỉ tiêu khẩu phần và cho đối thủ thời gian hành động."
-          : payload.type === "repair"
-            ? "Phế liệu được dùng để phục hồi tình trạng xe."
-            : payload.type === "train-actor"
-              ? "Đã tiêu 1 điểm huấn luyện. Chỉ số tăng vĩnh viễn trong hành trình; không trôi giờ."
-              : payload.type === "set-stance"
-                ? "Thế đánh áp dụng ngay cho damage/phòng thủ; không tiêu thời gian."
-                : "Mọi thay đổi bên dưới đã được áp dụng vào đoàn và thế giới.";
+    ascended?.type === "actor.ascended"
+      ? `Đã học ${definition.campaign?.skills.find((s) => s.id === ascended.skillId)?.name}. Nghi thức dùng ${ascended.xpSpent} XP khả dụng và ${ascended.remnantsSpent} di vật cộng hưởng; không trôi giờ.`
+      : resolved?.type === "event.resolved"
+        ? (definition.campaign?.texts[resolved.outcomeKey] ?? "")
+        : scout?.type === "expedition.scouted"
+          ? `${definition.campaign?.operations?.recon.find((entry) => entry.locationId === scout.locationId)?.description} Giảm ${scout.riskReductionBps / 100}% rủi ro tuyến rời nơi này đến T${scout.expiresAt}.${scout.firstVisit ? " Cache đã nhận; không thể lấy lại." : " Cache đã lấy trước đó; lần này chỉ làm mới intel."}`
+          : rest?.type === "expedition.rested"
+            ? rest.healthRestored || rest.energyRestored
+              ? `Hồi ${rest.healthRestored} HP và ${rest.energyRestored} năng lượng cho đoàn. Đối thủ vẫn sử dụng thời gian này.`
+              : "Đoàn đã đầy sức khỏe và năng lượng: lần chờ này chỉ tiêu khẩu phần và cho đối thủ thời gian hành động."
+            : payload.type === "repair"
+              ? "Phế liệu được dùng để phục hồi tình trạng xe."
+              : payload.type === "train-actor"
+                ? "Đã tiêu 1 điểm huấn luyện. Chỉ số tăng vĩnh viễn trong hành trình; không trôi giờ."
+                : payload.type === "set-stance"
+                  ? "Thế đánh áp dụng ngay cho damage/phòng thủ; không tiêu thời gian."
+                  : "Mọi thay đổi bên dưới đã được áp dụng vào đoàn và thế giới.";
   const crew = convoy.actorIds.map((id) => {
     const a = after.actors[id]!;
     const b = before.actors[id];

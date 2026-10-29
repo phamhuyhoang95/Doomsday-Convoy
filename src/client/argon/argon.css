@@ -2604,3 +2604,371 @@ button.primary {
     height: 110px;
   }
 }
+
+.occult-workspace,
+.lore-workspace {
+  max-width: 1380px;
+  margin: auto;
+  padding: 36px 4% 64px;
+  color: #dcd6c3;
+  background: radial-gradient(ellipse at top, #1a2929, #0b1114 70%);
+}
+.occult-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 28px;
+}
+.occult-heading h1 {
+  font-family: Georgia, serif;
+  font-size: clamp(28px, 4vw, 46px);
+  font-weight: 400;
+  margin: 12px 0;
+}
+.occult-heading p {
+  color: #a8b6b0;
+  max-width: 680px;
+  line-height: 1.6;
+}
+.remnant-counter {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.remnant-counter strong {
+  font-family: Georgia, serif;
+  font-size: 48px;
+  color: #d0ad64;
+}
+.remnant-counter small {
+  line-height: 1.8;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+}
+.pathway-crew {
+  display: flex;
+  gap: 12px;
+  margin: 18px 0 26px;
+  flex-wrap: wrap;
+}
+.pathway-crew button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: left;
+  padding: 10px;
+  min-width: 200px;
+  flex: 1;
+}
+.pathway-crew .portrait-frame {
+  width: 45px;
+  height: 60px;
+}
+.pathway-crew small {
+  display: block;
+  color: #a9b2a8;
+  font-size: 10px;
+  line-height: 1.5;
+  margin-top: 7px;
+}
+.pathway-crew .selected,
+.pathway-card.selected {
+  border-color: #cfaa61;
+  background: #b99a4e17;
+  box-shadow: inset 0 0 0 1px #c6a76544;
+}
+.pathway-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.pathway-card {
+  padding: 24px 18px;
+  text-align: left;
+  min-height: 200px;
+  background: linear-gradient(145deg, #182328, #101619);
+}
+.occult-sigil {
+  font-size: 42px;
+  color: #c5a66c;
+  display: block;
+  margin-bottom: 18px;
+}
+.pathway-card h2 {
+  font-size: 18px;
+  font-weight: 500;
+  color: #ded1aa;
+}
+.pathway-card p {
+  font-size: 12px;
+  line-height: 1.65;
+  color: #a7b0a9;
+}
+.pathway-card:disabled {
+  opacity: 0.4;
+}
+.pathway-detail {
+  padding: 24px;
+  margin-top: 22px;
+}
+.pathway-detail > header {
+  display: flex;
+  justify-content: space-between;
+  gap: 22px;
+  align-items: center;
+}
+.pathway-detail > header h2 {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: 400;
+}
+.pathway-detail > header p,
+.ritual-note {
+  color: #a5b0a9;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.pathway-detail > header > strong {
+  min-width: 160px;
+  font-size: 14px;
+  color: #cfb77e;
+}
+.pathway-detail > header small {
+  display: block;
+  color: #8f9e96;
+  font-size: 11px;
+  margin-top: 9px;
+}
+.pathway-tiers {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 22px;
+}
+.pathway-tiers article {
+  border: 1px solid #53605a66;
+  padding: 22px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pathway-tiers article.next {
+  border-color: #b29a5c;
+}
+.pathway-tiers article.acquired {
+  background: #6384791c;
+}
+.pathway-tiers article > small {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: #c1aa76;
+}
+.pathway-tiers h3 {
+  margin: 0;
+  font-size: 18px;
+  color: #e0d5b5;
+}
+.pathway-tiers p {
+  line-height: 1.8;
+  font-size: 12px;
+  flex: 1;
+}
+.ritual-cost {
+  color: #b2b7a7;
+  font-size: 11px;
+  line-height: 2;
+}
+.pathway-tiers button {
+  min-height: 44px;
+}
+.ritual-reason {
+  line-height: 1.7 !important;
+  color: #d1a990 !important;
+}
+.pathway-passive {
+  color: #9bc0b4;
+}
+.ritual-note {
+  margin-bottom: 0;
+}
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.chapter-grid article {
+  padding: 24px;
+}
+.chapter-grid article.current {
+  border-color: #c5a665;
+}
+.chapter-grid small,
+.lore-records small {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #bda46b;
+  line-height: 1.8;
+}
+.chapter-grid h2 {
+  font-size: 20px;
+  font-family: Georgia, serif;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.chapter-grid strong {
+  font-size: 13px;
+  color: #d4cbaf;
+}
+.chapter-grid p,
+.lore-records p {
+  font-size: 13px;
+  line-height: 1.9;
+  color: #b3bdb5;
+}
+.chapter-grid ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+  font-size: 11px;
+  line-height: 2.3;
+  color: #98a49c;
+}
+.chapter-grid li.done {
+  color: #d4b775;
+}
+.lore-records {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin: 28px 0;
+}
+.lore-records article {
+  padding: 26px;
+}
+.lore-records h2 {
+  font-family: Georgia, serif;
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+.locked-record {
+  opacity: 0.45;
+}
+.legacy-journal {
+  padding: 18px;
+}
+.legacy-journal summary {
+  cursor: pointer;
+  color: #cbb47b;
+  min-height: 30px;
+}
+.status-fury {
+  color: #efb470;
+}
+.status-barrier,
+.status-evade {
+  color: #b5d5d0;
+}
+.status-stun {
+  color: #d9bf8e;
+}
+.status-inversion {
+  color: #b4b9ef;
+}
+@media (max-width: 850px) {
+  .pathway-grid,
+  .chapter-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .pathway-tiers {
+    grid-template-columns: 1fr;
+  }
+  .pathway-detail > header {
+    display: block;
+  }
+  .pathway-detail > header > strong {
+    display: block;
+    margin-top: 18px;
+  }
+  .chapter-grid article:last-child {
+    grid-column: 1/-1;
+  }
+}
+@media (max-width: 600px) {
+  .occult-workspace,
+  .lore-workspace {
+    padding: 24px 16px 50px;
+  }
+  .occult-heading {
+    display: block;
+  }
+  .remnant-counter {
+    margin-top: 18px;
+  }
+  .pathway-grid {
+    gap: 8px;
+  }
+  .pathway-card {
+    padding: 16px 12px;
+    min-height: 190px;
+  }
+  .pathway-card h2 {
+    font-size: 15px;
+  }
+  .pathway-crew {
+    gap: 8px;
+  }
+  .pathway-crew button {
+    min-width: 45%;
+    padding: 8px;
+    gap: 8px;
+  }
+  .pathway-crew .portrait-frame {
+    width: 34px;
+    height: 48px;
+  }
+  .pathway-crew strong {
+    font-size: 12px;
+  }
+  .pathway-crew small {
+    font-size: 9px;
+  }
+  .pathway-detail {
+    padding: 16px;
+  }
+  .chapter-grid,
+  .lore-records {
+    grid-template-columns: 1fr;
+  }
+  .chapter-grid article:last-child {
+    grid-column: auto;
+  }
+  .lore-records article {
+    padding: 20px;
+  }
+}
+
+.opening-still {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.opening-cinematic .travel-caption {
+  max-width: 630px;
+}
+.opening-cinematic .travel-caption h1 {
+  font-size: clamp(2rem, 4.4vw, 5rem);
+  line-height: 1.12;
+}
+.opening-cinematic .travel-caption button {
+  margin-top: 16px;
+  padding: 12px 18px;
+  border: 1px solid var(--gold);
+  background: #101b1be6;
+  color: var(--ink);
+}
+
+.opening-cinematic {
+  animation: none;
+}

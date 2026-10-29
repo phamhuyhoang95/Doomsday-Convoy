@@ -33,6 +33,11 @@ const statusNames = {
   bleed: "CHẢY MÁU",
   guard: "CHE CHẮN",
   reflect: "PHẢN CHIẾU",
+  fury: "CÔNG HƯỞNG",
+  barrier: "KẾT GIÁP",
+  stun: "CHOÁNG",
+  evade: "TRÁNH ĐÒN",
+  inversion: "ĐẢO CHIỀU",
 };
 type Beat = Extract<DomainEvent["payload"], { type: "battle.beat" }>;
 export function CombatStage({

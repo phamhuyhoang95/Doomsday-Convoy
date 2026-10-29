@@ -7,6 +7,14 @@ export function evaluateCondition(
 ): boolean {
   const convoy = state.convoys[state.player.convoyId];
   switch (condition.op) {
+    case "pathway":
+      return Object.values(state.actors).some(
+        (a) =>
+          a.convoyId === state.player.convoyId &&
+          a.status === "active" &&
+          a.pathway?.pathwayId === condition.pathwayId &&
+          a.pathway.tier <= condition.tierAtMost,
+      );
     case "always":
       return true;
     case "all":

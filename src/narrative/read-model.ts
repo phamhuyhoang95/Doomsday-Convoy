@@ -76,6 +76,8 @@ export function conditionDescription(
       : (definition.campaign?.facts.find((fact) => fact.id === id)
           ?.description ?? id);
   switch (condition.op) {
+    case "pathway":
+      return `Cần ${definition.campaign?.resonance?.pathways.find((p) => p.id === condition.pathwayId)?.name ?? "con đường tương ứng"} bậc ${condition.tierAtMost} trở lên.`;
     case "always":
       return "Không có điều kiện bổ sung";
     case "all":
