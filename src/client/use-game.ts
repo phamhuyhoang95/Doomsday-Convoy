@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { argonDefinition } from "../content/argon";
+import { journeyDefinition } from "../content/journey";
+import { argonDefinition as o1Definition } from "../content/argon";
 import { campaignDefinition } from "../content/campaign";
 import type { GameCommand } from "../core/commands";
 import type { DomainEvent } from "../core/events";
@@ -21,7 +22,7 @@ export interface GameTransition {
 
 /** QA setups use the same accepted commands as the game; never write localStorage. */
 function previewState(kind: string): GameState {
-  let current = createGame(42, argonDefinition);
+  let current = createGame(42, journeyDefinition);
   const take = (payload: GameCommand["payload"]) => {
     const result = processCommand(
       current,
@@ -31,7 +32,7 @@ function previewState(kind: string): GameState {
         payload,
       },
       { principalId: current.player.id },
-      argonDefinition,
+      journeyDefinition,
     );
     if (!result.ok) throw new Error(result.error.message);
     current = result.state;
@@ -46,6 +47,7 @@ function previewState(kind: string): GameState {
   if (kind === "gara") return current;
   choose("prepare");
   if (kind === "map") return current;
+  if (kind === "water" || kind === "consequence") choose("radio-scan");
   take({
     type: "travel",
     convoyId: current.player.convoyId,
@@ -62,15 +64,27 @@ function previewState(kind: string): GameState {
     return current;
   }
   if (kind === "market") return current;
+  if (kind === "water" || kind === "consequence") {
+    choose("leave-ha");
+    if (kind === "water") return current;
+    choose("water-accept");
+    take({
+      type: "travel",
+      convoyId: current.player.convoyId,
+      routeId: "route.market-service",
+    });
+    return current;
+  }
   choose("leave-ha");
   choose("raid-cache");
   return current;
 }
 
 export function useGame() {
+  const [session, setSession] = useState(0);
   const [state, setState] = useState<GameState | null>(null);
   const [definition, setDefinition] =
-    useState<WorldDefinition>(argonDefinition);
+    useState<WorldDefinition>(journeyDefinition);
   const [message, setMessage] = useState("");
   const [report, setReport] = useState<ActionReport | null>(null);
   const [transition, setTransition] = useState<GameTransition | null>(null);
@@ -78,11 +92,13 @@ export function useGame() {
   const store = (content = definition) =>
     new LocalSaveStore(window.localStorage, content);
   const slotName = (slot: string, content = definition) =>
-    content.campaign?.tactics
-      ? `argon-${slot}`
-      : content.campaign?.operations
-        ? `r1-${slot}`
-        : slot;
+    content.contentVersion === journeyDefinition.contentVersion
+      ? `journey-${slot}`
+      : content.campaign?.tactics
+        ? `argon-${slot}`
+        : content.campaign?.operations
+          ? `r1-${slot}`
+          : slot;
   const safely = (fn: () => void) => {
     try {
       fn();
@@ -95,15 +111,16 @@ export function useGame() {
   const start = (seed: number) =>
     safely(() => {
       void audio.unlock();
-      const next = createGame(seed, argonDefinition);
-      setDefinition(argonDefinition);
+      const next = createGame(seed, journeyDefinition);
+      setSession((value) => value + 1);
+      setDefinition(journeyDefinition);
       setState(next);
       setReport(null);
       setTransition(null);
       setMessage("");
       audio.setScene("road");
       try {
-        store(argonDefinition).save("argon-autosave", next);
+        store(journeyDefinition).save("journey-autosave", next);
       } catch {
         setMessage("Đã bắt đầu nhưng chưa ghi được autosave.");
       }
@@ -115,11 +132,11 @@ export function useGame() {
       safely(() => {
         const next = previewState(kind);
         setState(next);
-        setDefinition(argonDefinition);
+        setDefinition(journeyDefinition);
       });
   }, []);
   const dispatch = (payload: GameCommand["payload"]) => {
-    if (!state) return;
+    if (!state) return false;
     void audio.unlock();
     const command = {
       id: `command.${state.commandLog.length + 1}`,
@@ -134,7 +151,7 @@ export function useGame() {
     );
     if (!result.ok) {
       setMessage(result.error.message);
-      return;
+      return false;
     }
     const summary = summarizeTransition(
       state,
@@ -166,21 +183,28 @@ export function useGame() {
     } catch {
       setMessage("Hành động đã thực hiện nhưng autosave không ghi được.");
     }
+    return true;
   };
   const load = (slot = "manual") =>
     safely(() => {
       const loaded =
-        slot === "legacy"
-          ? loadCompatibleSlot(window.localStorage, "legacy")
-          : slot === "r1"
-            ? loadCompatibleSlot(window.localStorage, "manual")
-            : {
-                state: store(state ? definition : argonDefinition).load(
-                  slotName(slot, state ? definition : argonDefinition),
-                ),
-                definition: state ? definition : argonDefinition,
-              };
+        slot === "o1"
+          ? {
+              state: store(o1Definition).load("argon-autosave"),
+              definition: o1Definition,
+            }
+          : slot === "legacy"
+            ? loadCompatibleSlot(window.localStorage, "legacy")
+            : slot === "r1"
+              ? loadCompatibleSlot(window.localStorage, "manual")
+              : {
+                  state: store(state ? definition : journeyDefinition).load(
+                    slotName(slot, state ? definition : journeyDefinition),
+                  ),
+                  definition: state ? definition : journeyDefinition,
+                };
       void audio.unlock();
+      setSession((value) => value + 1);
       setState(loaded.state);
       setDefinition(loaded.definition);
       setReport(null);
@@ -189,6 +213,7 @@ export function useGame() {
       audio.setScene(loaded.state.combat ? "combat" : "road");
     });
   return {
+    session,
     state,
     definition,
     message,
@@ -206,6 +231,7 @@ export function useGame() {
         }
       }),
     menu: () => {
+      setSession((value) => value + 1);
       setState(null);
       setReport(null);
       setTransition(null);

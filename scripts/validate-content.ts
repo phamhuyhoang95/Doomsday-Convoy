@@ -1,8 +1,9 @@
 import { campaignDefinition } from "../src/content/campaign";
+import { journeyDefinition } from "../src/content/journey";
 import { argonDefinition } from "../src/content/argon";
 import { inspectWorldDefinition } from "../src/world/registry";
 
-for (const definition of [campaignDefinition, argonDefinition]) {
+for (const definition of [campaignDefinition, argonDefinition, journeyDefinition]) {
   const issues = inspectWorldDefinition(definition);
   if (issues.length) {
     console.error(JSON.stringify(issues, null, 2));

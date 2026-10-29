@@ -1,0 +1,29 @@
+{
+  "kind": "offline-motion-composition",
+  "durationSeconds": 5.2,
+  "fps": 24,
+  "size": [
+    1280,
+    720
+  ],
+  "sources": "A1/A2 alpha bus and service backdrop, pan/suspension/fades/grain; no new raster generation or AI video service",
+  "script": "scripts/build-journey-clip.py",
+  "files": {
+    "public/art/a2/vehicle.bus.png": {
+      "bytes": 661926,
+      "sha256": "97f0af7e979d205cd2afa4c7c7582586bb2e54cb9814e2b789ddc7b53f9a9c46"
+    },
+    "public/art/a2/location.service.jpg": {
+      "bytes": 536704,
+      "sha256": "0ceff209a999c8db5c5b83fb4d53e625354d712050d578426ee8e29feaa2d824"
+    },
+    "public/video/journey/convoy-departure.mp4": {
+      "bytes": 714592,
+      "sha256": "3cf0da2f28e7ad5bbac94a48b200a909b3884a0997516f65f6889b5f63fa82a3"
+    },
+    "public/video/journey/convoy-departure.jpg": {
+      "bytes": 186289,
+      "sha256": "86f1f606da491287d43688e28e25e1ac645c7fe4e1cae6e5687fa1b70bdfcf67"
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import { campaignDefinition } from "../src/content/campaign";
+import { journeyDefinition } from "../src/content/journey";
 import { argonDefinition } from "../src/content/argon";
 import { assertReplayEquivalent } from "../src/core/replay";
 import { loadGame, serializeGame } from "../src/persistence/save";
@@ -6,8 +7,8 @@ import { playCampaign } from "../src/simulation/campaign";
 import { integerOption, parseArgs } from "./args";
 
 const options = parseArgs(process.argv.slice(2), ["--seed", "--policy", "--content"]);
-if (options.has("--content") && !["argon", "r1"].includes(options.get("--content")!)) throw new Error("Content must be argon or r1");
-const definition = options.get("--content") === "argon" ? argonDefinition : campaignDefinition;
+if (options.has("--content") && !["journey", "argon", "r1"].includes(options.get("--content")!)) throw new Error("Content must be journey, argon or r1");
+const definition = options.get("--content") === "journey" ? journeyDefinition : options.get("--content") === "argon" ? argonDefinition : campaignDefinition;
 const seed = integerOption(options.get("--seed") ?? "42", 0, 0xffff_ffff);
 const policy = options.get("--policy") ?? "peaceful";
 if (

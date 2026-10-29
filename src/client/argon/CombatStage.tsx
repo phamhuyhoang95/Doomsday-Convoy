@@ -18,6 +18,7 @@ import { useDefinition } from "../definition";
 import { resourceLabels } from "../components/shared";
 import type { ResourceId } from "../../core/primitives";
 import { AssetArt } from "../components/AssetArt";
+import { useAutoCombat } from "./use-auto-combat";
 import { Atmosphere } from "./Atmosphere";
 
 const atlas: Record<string, number> = {
@@ -47,7 +48,7 @@ export function CombatStage({
   beat: Beat | null;
   busy: boolean;
   skip: () => void;
-  dispatch: (payload: GameCommand["payload"]) => void;
+  dispatch: (payload: GameCommand["payload"]) => boolean | void;
 }) {
   const definition = useDefinition();
   const [enemyId, setEnemyId] = useState("");
@@ -55,6 +56,7 @@ export function CombatStage({
   const [selected, setSelected] = useState("");
   const [mode, setMode] = useState<"skills" | "move">("skills");
   const [atlasFailed, setAtlasFailed] = useState(false);
+  const auto = useAutoCombat(decision, definition, busy, dispatch);
   const battle = decision.combat;
   const current = currentCombatActor(decision);
   if (!battle || !current) return null;
@@ -177,8 +179,19 @@ export function CombatStage({
   const visualCurrent = currentCombatActor(state) ?? current;
   return (
     <section
-      className={`battle-screen ${beat ? `effect-${beat.effect}` : ""}`}
+      className={`battle-screen ${battle.tactics ? "with-auto" : ""} ${beat ? `effect-${beat.effect}` : ""}`}
       aria-label="Chiến trường"
+      onPointerDownCapture={(e) => {
+        const button = (e.target as Element).closest("button");
+        if (button && !button.hasAttribute("data-auto-toggle")) auto.stop();
+      }}
+      onKeyDownCapture={(e) => {
+        if (
+          ["Enter", " "].includes(e.key) &&
+          !(e.target as Element).closest("[data-auto-toggle]")
+        )
+          auto.stop();
+      }}
     >
       <img
         hidden
@@ -371,6 +384,23 @@ export function CombatStage({
           </button>
         )}
       </div>
+      {battle.tactics && (
+        <div className="combat-mode-bar">
+          <button
+            data-auto-toggle
+            aria-pressed={auto.enabled}
+            disabled={battle.phase !== "active"}
+            onClick={auto.toggle}
+          >
+            {auto.enabled ? "AUTO: BẬT · DỪNG" : "AUTO: TẮT · BẬT"}
+          </button>
+          <small>
+            {auto.enabled
+              ? "Đang tự chiến đấu · Esc hoặc chạm thao tác để dừng"
+              : "Ưu tiên cứu thương, sửa xe nguy cấp và combo · Tự quyết định hậu chiến"}
+          </small>
+        </div>
+      )}
       <div className="combat-console">
         <div className="active-portrait">
           <AssetArt

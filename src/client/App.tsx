@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DefinitionContext } from "./definition";
 import { useGame } from "./use-game";
 import { usePresentation } from "./argon/use-presentation";
+import { useTravel } from "./argon/use-travel";
+import { TravelCinematic } from "./argon/TravelCinematic";
 import { CombatStage } from "./argon/CombatStage";
 import { SceneScreen } from "./argon/SceneScreen";
 import { StrategicMap } from "./argon/StrategicMap";
@@ -24,6 +26,15 @@ export default function App() {
     game.transition,
     game.audio.playBeat,
   );
+  const travel = useTravel(game.state, game.transition);
+  useEffect(() => {
+    if (
+      game.transition?.events.some((e) => e.payload.type === "convoy.moved")
+    ) {
+      setPage("scene");
+      setBriefing(false);
+    }
+  }, [game.transition]);
   const state = game.state;
   const view = presentation.frame;
   const convoy = state?.convoys[state.player.convoyId];
@@ -49,7 +60,10 @@ export default function App() {
   };
   return (
     <DefinitionContext.Provider value={game.definition}>
-      <div className={`argon-shell ${state ? "in-game" : "at-menu"}`}>
+      <div
+        className={`argon-shell ${state ? "in-game" : "at-menu"}`}
+        inert={Boolean(travel.shot)}
+      >
         <header className="argon-header">
           <button
             className="wordmark"
@@ -234,8 +248,9 @@ export default function App() {
               </form>
               <div className="menu-loads">
                 <button onClick={() => loadJourney("autosave")}>
-                  Tiếp tục Argon
+                  Tiếp tục hành trình
                 </button>
+                <button onClick={() => loadJourney("o1")}>Tải Argon O1</button>
                 <button onClick={() => loadJourney("r1")}>
                   Tải hành trình R1
                 </button>
@@ -281,6 +296,7 @@ export default function App() {
           </main>
         ) : (state.combat || (presentation.busy && view?.combat)) && view ? (
           <CombatStage
+            key={`${game.session}:${state.combat?.id ?? view.combat?.id}`}
             state={view}
             decision={state.combat ? state : view}
             beat={presentation.beat}
@@ -345,6 +361,14 @@ export default function App() {
           </div>
         )}
       </div>
+      {travel.shot && (
+        <TravelCinematic
+          key={travel.shot.key}
+          shot={travel.shot}
+          finish={travel.skip}
+          motor={game.audio.startTravel}
+        />
+      )}
     </DefinitionContext.Provider>
   );
 }

@@ -504,6 +504,37 @@ class AudioDirector {
             : "config";
     void this.unlock().then(() => this.cue(cue));
   }
+  startTravel() {
+    if (!this.enabled || !this.context || !this.master) return () => {};
+    const context = this.context;
+    const engine = context.createOscillator();
+    const gain = context.createGain();
+    const filter = context.createBiquadFilter();
+    engine.type = "sawtooth";
+    engine.frequency.setValueAtTime(43, context.currentTime);
+    engine.frequency.linearRampToValueAtTime(68, context.currentTime + 3);
+    filter.type = "lowpass";
+    filter.frequency.value = 170;
+    gain.gain.setValueAtTime(0, context.currentTime);
+    gain.gain.linearRampToValueAtTime(
+      this.sfxVolume * 0.28,
+      context.currentTime + 0.6,
+    );
+    engine.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.master);
+    engine.start();
+    return () => {
+      gain.gain.cancelScheduledValues(context.currentTime);
+      gain.gain.setTargetAtTime(0, context.currentTime, 0.06);
+      engine.stop(context.currentTime + 0.25);
+      engine.onended = () => {
+        engine.disconnect();
+        filter.disconnect();
+        gain.disconnect();
+      };
+    };
+  }
   close() {
     this.changed = null;
     this.stopBgm();
@@ -538,6 +569,7 @@ export function useAudio() {
     setScene: (scene: Scene) => director.setScene(scene),
     play: (report: ActionReport, events: readonly DomainEvent[]) =>
       director.play(report, events),
+    startTravel: () => director.startTravel(),
     playBeat: (
       beat: Extract<DomainEvent["payload"], { type: "battle.beat" }>,
     ) => director.playBeat(beat),

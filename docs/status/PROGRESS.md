@@ -1,5 +1,14 @@
 # LAST CONVOY — tiến độ hiện tại
 
+**2026-10-29 — phản hồi hành trình/auto đã triển khai:** Người dùng đánh giá combat ổn hơn nhưng xe chuyển nơi đột ngột, lựa chọn cụt/dễ đoán và muốn auto. Đã có clip travel 5.2s/skip/fallback + tiếng máy, AUTO có stop/load/aftermath boundaries, và 4 event liên địa điểm với điều tra/hậu quả trả sau. Đã sửa leak mô tả manh mối qua nút khóa. [Báo cáo](../reports/JOURNEY_FEEL_AND_AUTO.md), [plan](../plans/JOURNEY_FEEL_AND_AUTO.md).
+
+- New game: bundle `0.2.0-campaign.2-journey`, slots `journey-*`; giữ O1 `argon-*`, có nút tải O1. Không migrate ngầm. Luật combat O1 giữ nguyên.
+- Node24.14.0: **129 tests/8 files**, validators/TS/build pass; 48 Journey runs: 36 thắng/12 thua chủ đích, 0 softlock/rejected, 48 save/load/replay. Browser desktop/mobile đã thử video đang phát thật/skip/tự hết/404 fallback, auto thắng→OFF, manual stop và load→OFF, điều tra mở lựa chọn, text không tràn ngang.
+- Source/media mới: `src/content/journey.ts`, `src/read-models/auto-combat.ts`, client hooks/TravelCinematic; `public/video/journey/`, `art/journey/clip-receipt.json`, `scripts/build-journey-clip.py`. Cinematic dựng motion từ art A2, không phải clip Flow/Veo; chỉ có một shot chung. Không gen lại A1/A2 hoặc tiêu Google credits.
+- Chưa làm sâu mọi địa điểm; cần playtest độ hấp dẫn/nhịp clip và các slice tiếp. Chưa QA setting reduced-motion hệ điều hành/điện thoại thật. Mobile combat có scroll dọc ngắn; console desktop đã sửa grid 3 hàng.
+- Quyền tiếp tục: QA/code trong scope phản hồi được phép. Bước tiếp là đánh giá bản Journey mới, không quay lại O1 từ đầu. Khi dừng, giữ media/simulation/evidence trong repo và xác nhận Git thực tế; `docs 2/`/ZIP không stage.
+
+
 **Checkpoint 2026-10-29 — Argon O0/O1 đã tích hợp, đang chờ duyệt hình/nhạc:** Người dùng đã yêu cầu “bắt đầu triển khai đi”; được sửa code/art và chạy QA cho phần thay đổi. Đã có combat mới + shell/scene/map/stage, atlas/nền mới, nhạc Gemini và sequencer. Bundle `0.2.0-campaign.1-argon`, legacy resolver giữ nguyên, slot mới tách riêng. [Báo cáo triển khai](../reports/ARGON_O1_IMPLEMENTATION.md).
 
 - Gate thật Node24.14.0: full check 118 tests rồi bổ sung reflection/revive; cuối **120 tests pass**, strict TS/build pass. 96 Argon simulation runs: 72 thắng/24 thua chủ đích, 0 softlock/rejected, 96 save/load/replay. Không chạy lại batch lớn nếu không có thay đổi liên quan.

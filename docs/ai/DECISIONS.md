@@ -47,3 +47,7 @@ Test pass phải gắn với code/content checkpoint thực tế. Simulation R1 
 ## 9. Đại tu Argon được ủy quyền — 2026-10-29
 
 Người dùng đã yêu cầu triển khai cả combat/UI/media mới. New game dùng bundle `0.2.0-campaign.1-argon`; optional tactics trong state/save v3 chọn resolver mới, `.4`/`.5-r1` chọn `legacy-engine.ts` giữ nguyên. Thu một giờ khi mở encounter; lượt/hậu chiến tactical 0 giờ, cooldown theo lượt actor. Slots Argon tách riêng, không migrate hành trình cũ ngầm. Pixi chỉ presentation; chưa thay source of truth. Atlas/nền/nhạc thuộc O1; ngoại lệ phạm vi này không tự mở server/AI runtime. Chi tiết [plan](../plans/ARGON_COMBAT_UI_OVERHAUL.md), [checkpoint](../reports/ARGON_O1_IMPLEMENTATION.md).
+
+## 10. Journey bundle và presentation automation
+
+Nội dung radio/nước/hậu quả mới ở `0.2.0-campaign.2-journey`; giữ O1 trong registry và slots riêng `journey-*`. Auto là policy gợi ý command, không tự mutate và không giải quyết hậu chiến. Travel transaction/autosave chốt trước cinematic có thể skip/fallback; phát phim không thu thêm tick/RNG. Lý do khóa UI không được tiết lộ fact chưa có trong player knowledge. Xem [báo cáo](../reports/JOURNEY_FEEL_AND_AUTO.md).

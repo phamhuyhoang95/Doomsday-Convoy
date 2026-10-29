@@ -25,6 +25,8 @@
 
 ## Kế hoạch trước triển khai
 
+- [JOURNEY_FEEL_AND_AUTO](plans/JOURNEY_FEEL_AND_AUTO.md): cinematic travel, auto combat và slice lựa chọn có hậu quả ở chặng sau.
+
 - [ARGON_COMBAT_UI_OVERHAUL](plans/ARGON_COMBAT_UI_OVERHAUL.md): phương án thay toàn bộ UI và combat theo định hướng Argon mới của người dùng; luật đề nghị, asset, compatibility và các đợt triển khai; O0/O1 đã có code, O2–O4 còn mở.
 - [PHASE_PLANS](plans/PHASE_PLANS.md): Phase0–5 đã triển khai.
 - [PLAYABILITY_PLAN](plans/PLAYABILITY_PLAN.md): R1 theo phản hồi game sơ sài.
@@ -34,6 +36,8 @@
 - [ASSET_PRODUCTION_PLAN](plans/ASSET_PRODUCTION_PLAN.md): A2 đang chốt.
 
 ## Báo cáo và lịch sử
+
+- [JOURNEY_FEEL_AND_AUTO](reports/JOURNEY_FEEL_AND_AUTO.md): clip travel, auto, arc liên địa điểm, 129 tests/48 runs và giới hạn thực tế.
 
 - [ARGON_O1_IMPLEMENTATION](reports/ARGON_O1_IMPLEMENTATION.md): combat/UI/media đầu tiên, 120 tests, 96 simulation runs, ảnh QA và giới hạn thực tế.
 

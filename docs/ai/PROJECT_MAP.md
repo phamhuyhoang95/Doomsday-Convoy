@@ -6,6 +6,8 @@ LAST CONVOY: chiến thuật theo lượt + sinh tồn + quỷ dị có quy tắ
 
 TypeScript strict, Zod, Vitest, React, Vite, tsx. Không có server multiplayer, AI sinh content runtime hoặc persistent backend. Node 24 là runtime gate; package.json là nguồn chính xác cho versions/scripts.
 
+**Checkpoint mới:** Journey/Argon bundles và hooks mới xem [báo cáo](../reports/JOURNEY_FEEL_AND_AUTO.md); new game dùng `0.2.0-campaign.2-journey`, giữ O1/R1/legacy. Các mô tả R1 dưới đây ghi theo nền gốc.
+
 ## Source tree
 
 | Đường dẫn | Vai trò / entry point |

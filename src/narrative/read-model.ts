@@ -71,8 +71,10 @@ export function conditionDescription(
   state?: GameState,
 ): string {
   const factText = (id: string): string =>
-    definition.campaign?.facts.find((fact) => fact.id === id)?.description ??
-    id;
+    state && !state.knowledge.factIds.includes(id)
+      ? "một diễn biến chưa được khám phá"
+      : (definition.campaign?.facts.find((fact) => fact.id === id)
+          ?.description ?? id);
   switch (condition.op) {
     case "always":
       return "Không có điều kiện bổ sung";
@@ -86,9 +88,13 @@ export function conditionDescription(
         .map((item) => conditionDescription(item, definition, state))
         .join(" hoặc ");
     case "not":
-      return `Chưa: ${conditionDescription(condition.condition, definition)}`;
+      return state
+        ? "Thông tin hoặc hành động này đã được xử lý."
+        : `Chưa: ${conditionDescription(condition.condition, definition)}`;
     case "known":
-      return `Cần manh mối: ${factText(condition.id)}`;
+      return state && !state.knowledge.factIds.includes(condition.id)
+        ? "Cần điều tra thêm trước khi chọn cách này."
+        : `Cần manh mối: ${factText(condition.id)}`;
     case "fact":
       return `Cần: ${factText(condition.id)}`;
     case "resource":

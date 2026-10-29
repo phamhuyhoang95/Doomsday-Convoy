@@ -8,6 +8,7 @@ import { operationPreview } from "../../expedition/read-model";
 import { useDefinition } from "../definition";
 import { AssetArt } from "../components/AssetArt";
 import { Costs } from "../components/shared";
+import { presentationAsset } from "../art/registry";
 import { Atmosphere } from "./Atmosphere";
 
 export function SceneScreen({
@@ -32,6 +33,12 @@ export function SceneScreen({
   const event = definition.campaign?.events.find(
     (e) => e.id === instance?.eventId,
   );
+  const eventAssetId = event ? `asset.${event.id}` : undefined;
+  const eventArt = Boolean(
+    event &&
+    (presentationAsset(eventAssetId, "event") ||
+      definition.campaign?.assets.find((a) => a.id === eventAssetId)?.uri),
+  );
   const text = (key: string) => definition.campaign?.texts[key] ?? key;
   const known = state.knowledge.factIds
     .map((id) => definition.campaign?.facts.find((f) => f.id === id))
@@ -43,8 +50,8 @@ export function SceneScreen({
     >
       <div className="scene-backdrop">
         <AssetArt
-          id={`asset.${event?.id ?? location.id}`}
-          kind={event ? "event" : "location"}
+          id={eventArt ? eventAssetId : `asset.${location.id}`}
+          kind={eventArt ? "event" : "location"}
           label={location.name}
         />
         <Atmosphere />
