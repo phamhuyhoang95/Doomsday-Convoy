@@ -10,6 +10,8 @@ import { summarizeTransition } from "../read-models/transition";
 import type { ActionReport } from "../read-models/transition";
 import { useAudio } from "./audio";
 import { loadCompatibleSlot } from "../persistence/compatible";
+import { campaignChoice } from "../simulation/campaign";
+import { travelCommand } from "../simulation/scenarios";
 
 export function useGame() {
   const [state, setState] = useState<GameState | null>(null);
@@ -71,6 +73,17 @@ export function useGame() {
         setState(current);
         return;
       }
+      if (qa === "map") {
+        const r1 = processCommand(
+          current,
+          { id: "cmd.1", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.prepare" } },
+          { principalId: current.player.id },
+          campaignDefinition,
+        );
+        if (r1.ok) current = r1.state;
+        setState(current);
+        return;
+      }
       if (qa === "market") {
         const r1 = processCommand(
           current,
@@ -89,7 +102,7 @@ export function useGame() {
         setState(current);
         return;
       }
-      if (qa === "combat") {
+      if (qa === "combat" || qa === "combat-debuff") {
         const r1 = processCommand(
           current,
           { id: "cmd.1", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.prepare" } },
@@ -118,6 +131,48 @@ export function useGame() {
           campaignDefinition,
         );
         if (r4.ok) current = r4.state;
+
+        if (qa === "combat-debuff" && current.combat) {
+          const r5 = processCommand(
+            current,
+            {
+              id: "cmd.5",
+              issuerId: current.player.id,
+              payload: {
+                type: "skill",
+                actorId: "character.minh",
+                targetId: "character.hunger",
+                skillId: "skill.pierce",
+              },
+            },
+            { principalId: current.player.id },
+            campaignDefinition,
+          );
+          if (r5.ok) {
+            current = structuredClone(r5.state);
+            if (current.combat) {
+              current.combat.panickedActorIds = ["character.watcher"];
+              current.combat.bleedingActorIds = ["character.hunger"];
+            }
+          }
+        }
+        setState(current);
+        return;
+      }
+      if (qa === "hospital") {
+        const take = (cmd: GameCommand) => {
+          const res = processCommand(current, cmd, { principalId: current.player.id }, campaignDefinition);
+          if (res.ok) current = res.state;
+        };
+        take(campaignChoice(current, "prepare"));
+        take(travelCommand(current, "route.garage-market"));
+        take(campaignChoice(current, "leave-ha"));
+        take(campaignChoice(current, "search-cache"));
+        take(travelCommand(current, "route.market-hospital"));
+        take(campaignChoice(current, "listen"));
+        take(campaignChoice(current, "read-records"));
+        take(travelCommand(current, "route.hospital-ward"));
+        take(campaignChoice(current, "ignore-patient"));
         setState(current);
         return;
       }
