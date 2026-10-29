@@ -1,6 +1,6 @@
 # Chuyển cảnh hành trình, auto combat và lựa chọn nối dài
 
-2026-10-29; baseline `26ef77f`. Phản hồi: combat đã ổn hơn nhưng travel nhảy đột ngột, nội dung cụt/dễ đoán, muốn auto để rảnh tay. Đã triển khai theo [plan](../plans/JOURNEY_FEEL_AND_AUTO.md). Đây là một đợt cải thiện cảm giác chơi và slice nội dung, chưa phải hoàn tất O2–O4.
+2026-10-29; baseline `26ef77f`; implementation `da38847` đã push `origin/main` và đối chiếu SHA remote. Phản hồi: combat đã ổn hơn nhưng travel nhảy đột ngột, nội dung cụt/dễ đoán, muốn auto để rảnh tay. Đã triển khai theo [plan](../plans/JOURNEY_FEEL_AND_AUTO.md). Đây là một đợt cải thiện cảm giác chơi và slice nội dung, chưa phải hoàn tất O2–O4.
 
 ## Chức năng
 

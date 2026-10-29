@@ -6,6 +6,7 @@
 - Node24.14.0: **129 tests/8 files**, validators/TS/build pass; 48 Journey runs: 36 thắng/12 thua chủ đích, 0 softlock/rejected, 48 save/load/replay. Browser desktop/mobile đã thử video đang phát thật/skip/tự hết/404 fallback, auto thắng→OFF, manual stop và load→OFF, điều tra mở lựa chọn, text không tràn ngang.
 - Source/media mới: `src/content/journey.ts`, `src/read-models/auto-combat.ts`, client hooks/TravelCinematic; `public/video/journey/`, `art/journey/clip-receipt.json`, `scripts/build-journey-clip.py`. Cinematic dựng motion từ art A2, không phải clip Flow/Veo; chỉ có một shot chung. Không gen lại A1/A2 hoặc tiêu Google credits.
 - Chưa làm sâu mọi địa điểm; cần playtest độ hấp dẫn/nhịp clip và các slice tiếp. Chưa QA setting reduced-motion hệ điều hành/điện thoại thật. Mobile combat có scroll dọc ngắn; console desktop đã sửa grid 3 hàng.
+- Git: implementation `da38847` đã commit/push `origin/main`, SHA remote đã đối chiếu; cập nhật bàn giao Git này ở commit docs tiếp. Tracked tree sạch trước cập nhật docs, chỉ còn `docs 2/` và ZIP đầu vào chưa tracked.
 - Quyền tiếp tục: QA/code trong scope phản hồi được phép. Bước tiếp là đánh giá bản Journey mới, không quay lại O1 từ đầu. Khi dừng, giữ media/simulation/evidence trong repo và xác nhận Git thực tế; `docs 2/`/ZIP không stage.
 
 
