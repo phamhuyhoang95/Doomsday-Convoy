@@ -5,7 +5,7 @@ LAST CONVOY là game chiến thuật đoàn xe sinh tồn chạy được trên 
 ## Thứ tự nhận việc
 
 1. Đọc [AGENTS root](../../AGENTS.md).
-2. Đọc [HANDOFF](HANDOFF.md) để biết yêu cầu gần nhất. **Hiện tại là phân công model; việc chỉnh docs không tự mở lại test/QA.**
+2. Đọc [HANDOFF](HANDOFF.md) để biết yêu cầu gần nhất. **Hiện tại là đề xuất R4 gameplay/media; chưa triển khai và chưa mở lại gameplay QA.**
 3. Đọc [PROGRESS](../status/PROGRESS.md) để phân biệt đã triển khai/đã QA/đã push.
 4. Đọc [PROJECT_MAP](PROJECT_MAP.md), [ARCHITECTURE](../engineering/ARCHITECTURE.md) và guide/plan liên quan.
 5. Xem Git status/diff/log và kiểm tra file tồn tại trước khi sửa. Không dùng lịch sử chat hoặc biến REPL làm nguồn duy nhất.
@@ -24,3 +24,5 @@ LAST CONVOY là game chiến thuật đoàn xe sinh tồn chạy được trên 
 ## Khi tiếp tục
 
 Nếu người dùng chỉ hỏi thông tin/tài liệu, xử lý đúng phần đó. Nếu người dùng yêu cầu tiếp tục A2/QA, cập nhật trạng thái tạm dừng rồi làm các bước còn mở trong HANDOFF, không quay lại generate hàng loạt hoặc xây lại R1.
+
+Đề xuất mới nhất là [R4_GAMEPLAY_REDESIGN](../plans/R4_GAMEPLAY_REDESIGN.md) và [GOOGLE_MEDIA_PRODUCTION](../assets/GOOGLE_MEDIA_PRODUCTION.md). Đọc trạng thái đề xuất/đã triển khai trước khi hành động; không coi kế hoạch ngân sách là lệnh gọi dịch vụ trả phí.

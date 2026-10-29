@@ -20,12 +20,14 @@
 - [ARCHITECTURE](engineering/ARCHITECTURE.md): commands/state, replay, world/narrative/combat/persistence.
 - [CONTENT_GUIDE](engineering/CONTENT_GUIDE.md): thêm event/quest/skill/artifact/region/encounter bằng data.
 - [ASSET_PIPELINE](assets/ASSET_PIPELINE.md): master → web derivative → catalog → client và QA ảnh.
+- [GOOGLE_MEDIA_PRODUCTION](assets/GOOGLE_MEDIA_PRODUCTION.md): đề xuất voice/nhạc/clip, Flow Pro, Cloud credits và giá/giới hạn đã tra nguồn; chưa sản xuất.
 
 ## Kế hoạch trước triển khai
 
 - [PHASE_PLANS](plans/PHASE_PLANS.md): Phase0–5 đã triển khai.
 - [PLAYABILITY_PLAN](plans/PLAYABILITY_PLAN.md): R1 theo phản hồi game sơ sài.
 - [R2_UPGRADE_PLAN](plans/R2_UPGRADE_PLAN.md): Đợt nâng cấp toàn diện R2 (Game feel, Combat depth, Narrative polish, Survival tension).
+- [R4_GAMEPLAY_REDESIGN](plans/R4_GAMEPLAY_REDESIGN.md): đề xuất làm lại vòng chơi, slice 20–30 phút và chiến dịch 65–90 phút; chưa triển khai.
 - [ASSET_PLAN](plans/ASSET_PLAN.md): bộ mẫu A1.
 - [ASSET_PRODUCTION_PLAN](plans/ASSET_PRODUCTION_PLAN.md): A2 đang chốt.
 

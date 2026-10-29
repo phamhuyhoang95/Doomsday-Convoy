@@ -1,8 +1,19 @@
 # Bàn giao hiện tại
 
-**Ngày:** 2026-10-29, Asia/Saigon. **Trạng thái hiện tại:** cập nhật quy tắc phân công model và điều phối dự án trong AGENTS/WORKFLOW. Đợt này chỉ chỉnh tài liệu, không chạy test/build/simulation/browser QA và không thay code game.
+**Ngày:** 2026-10-29, Asia/Saigon. **Trạng thái hiện tại:** đã nghiên cứu và viết đề xuất R4 cải tổ gameplay + phương án media Google, chưa triển khai. Lượt này chỉ đọc source/web và chỉnh docs; không chạy test/build/simulation/browser QA, tạo media hoặc tiêu tiền.
 
 ## Yêu cầu mới nhất
+
+Người dùng vẫn thấy game tẻ nhạt, màn quá ngắn và không cảm nhận nhạc/chuyển động; yêu cầu đề xuất cải tiến hoặc làm lại để thú vị và dài hơn, đồng thời khảo sát voice/clip bằng Google AI Pro và khoảng $100 Google Cloud.
+
+- Đề xuất chính: [R4_GAMEPLAY_REDESIGN](../plans/R4_GAMEPLAY_REDESIGN.md). Làm lại vòng chơi/cấu trúc màn trên engine hiện có; trước tiên slice “Chợ mất điện” 20–30 phút, sau đó mới hướng tới chiến dịch 65–90 phút. Các phút này là mục tiêu chưa đo, không phải kết quả đã đạt.
+- Nghiên cứu dịch vụ/ngân sách: [GOOGLE_MEDIA_PRODUCTION](../assets/GOOGLE_MEDIA_PRODUCTION.md). Ưu tiên Flow có sẵn để làm clip, Cloud TTS cho giọng Việt, cân nhắc Lyria cho nhạc. Chưa xác minh grant $100 của tài khoản; không mặc định nó trả Gemini Developer API.
+- Hai sub-agent Terra 6.1 High điều tra source và nguồn Google; Astral tổng hợp/review. Chưa giao Sol code vì user đang hỏi đề xuất.
+- Source có BGM tổng hợp/CSS animation; chưa nghe/xem lại runtime nên chưa biết nguyên nhân người dùng không cảm nhận được. Các event/quest một bước và đường bỏ bệnh viện là dữ kiện source; nhận định về sức hút cần human playtest.
+- Bảng giá Veo Developer API có cache cũ: preview đã ngừng 22/10/2026 theo trang chính thức. Tài liệu mới đã loại bỏ ước tính dựa trên endpoint này; Flow còn bảng credit riêng.
+- Bước tiếp: khi người dùng chọn triển khai hướng R4, làm R4.0 để chốt slice/baseline/compatibility, rồi Sol triển khai từng bước, Terra kiểm chứng và Astral review. Không tự bỏ engine, sản xuất hàng loạt hoặc chi tiền theo một bản đề xuất.
+
+## Bối cảnh phân công model
 
 Người dùng yêu cầu Astral High lập plan, review, đề xuất ý tưởng và điều phối mục tiêu; Sol 6.1 High viết code/triển khai plan; Terra 6.1 High điều tra source, tìm thông tin, chạy test, computer use và các tác vụ hỗ trợ.
 
