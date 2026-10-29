@@ -1,384 +1,127 @@
 import { useEffect, useState } from "react";
+import { argonDefinition } from "../content/argon";
 import { campaignDefinition } from "../content/campaign";
 import type { GameCommand } from "../core/commands";
+import type { DomainEvent } from "../core/events";
 import { processCommand } from "../core/processor";
 import { createGame } from "../core/state";
 import type { GameState } from "../core/state-schema";
+import type { WorldDefinition } from "../world/schema";
 import { LocalSaveStore } from "../persistence/local-storage";
-import { SaveError } from "../persistence/save";
+import { loadCompatibleSlot } from "../persistence/compatible";
 import { summarizeTransition } from "../read-models/transition";
 import type { ActionReport } from "../read-models/transition";
 import { useAudio } from "./audio";
-import { loadCompatibleSlot } from "../persistence/compatible";
-import { campaignChoice } from "../simulation/campaign";
-import { travelCommand } from "../simulation/scenarios";
+
+export interface GameTransition {
+  before: GameState;
+  after: GameState;
+  events: DomainEvent[];
+}
+
+/** QA setups use the same accepted commands as the game; never write localStorage. */
+function previewState(kind: string): GameState {
+  let current = createGame(42, argonDefinition);
+  const take = (payload: GameCommand["payload"]) => {
+    const result = processCommand(
+      current,
+      {
+        id: `command.${current.commandLog.length + 1}`,
+        issuerId: current.player.id,
+        payload,
+      },
+      { principalId: current.player.id },
+      argonDefinition,
+    );
+    if (!result.ok) throw new Error(result.error.message);
+    current = result.state;
+  };
+  const choose = (choiceId: string) =>
+    take({
+      type: "choose",
+      convoyId: current.player.convoyId,
+      instanceId: current.activeEvents[0]!.instanceId,
+      choiceId,
+    });
+  if (kind === "gara") return current;
+  choose("prepare");
+  if (kind === "map") return current;
+  take({
+    type: "travel",
+    convoyId: current.player.convoyId,
+    routeId: "route.garage-market",
+  });
+  if (kind === "scenario") {
+    take({
+      type: "scenario-start",
+      convoyId: current.player.convoyId,
+      scenarioId: "scenario.market-blackout",
+      scoutIds: ["character.minh", "character.bao"],
+      guardId: "character.lan",
+    });
+    return current;
+  }
+  if (kind === "market") return current;
+  choose("leave-ha");
+  choose("raid-cache");
+  return current;
+}
 
 export function useGame() {
   const [state, setState] = useState<GameState | null>(null);
-  const [definition, setDefinition] = useState(campaignDefinition);
+  const [definition, setDefinition] =
+    useState<WorldDefinition>(argonDefinition);
   const [message, setMessage] = useState("");
   const [report, setReport] = useState<ActionReport | null>(null);
+  const [transition, setTransition] = useState<GameTransition | null>(null);
   const audio = useAudio();
-  const store = (content = definition): LocalSaveStore =>
+  const store = (content = definition) =>
     new LocalSaveStore(window.localStorage, content);
   const slotName = (slot: string, content = definition) =>
-    content.campaign?.operations ? `r1-${slot}` : slot;
-  const safely = (operation: () => void): void => {
+    content.campaign?.tactics
+      ? `argon-${slot}`
+      : content.campaign?.operations
+        ? `r1-${slot}`
+        : slot;
+  const safely = (fn: () => void) => {
     try {
-      operation();
-    } catch (error) {
-      const saveMessages = {
-        INVALID_SAVE: "Bản lưu bị lỗi hoặc thiếu dữ liệu.",
-        UNSUPPORTED_VERSION: "Phiên bản bản lưu chưa được hỗ trợ.",
-        CONTENT_MISMATCH: "Bản lưu dùng phiên bản nội dung khác.",
-        REPLAY_MISMATCH: "Bản lưu không khớp lịch sử hành động.",
-        STORAGE_ERROR: "Không truy cập được bộ nhớ trình duyệt.",
-        NOT_FOUND: "Chưa có bản lưu ở slot này.",
-      };
+      fn();
+    } catch (e) {
       setMessage(
-        error instanceof SaveError
-          ? saveMessages[error.code]
-          : error instanceof Error
-            ? error.message
-            : "Không thể thực hiện thao tác.",
+        e instanceof Error ? e.message : "Không thể thực hiện thao tác.",
       );
     }
   };
-  const start = (seed: number): void =>
+  const start = (seed: number) =>
     safely(() => {
       void audio.unlock();
-      audio.setScene("road");
-      const next = createGame(seed, campaignDefinition);
+      const next = createGame(seed, argonDefinition);
+      setDefinition(argonDefinition);
       setState(next);
-      setDefinition(campaignDefinition);
       setReport(null);
-      setMessage(
-        "R1: Trinh sát lấy cache/intel, nâng chỉ số ngay trên map, rồi tới chợ để thử trận chiến đầu tiên.",
-      );
+      setTransition(null);
+      setMessage("");
+      audio.setScene("road");
       try {
-        store(campaignDefinition).save("r1-autosave", next);
+        store(argonDefinition).save("argon-autosave", next);
       } catch {
         setMessage("Đã bắt đầu nhưng chưa ghi được autosave.");
       }
     });
-
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    const params = new URLSearchParams(window.location.search);
-    const qa = params.get("qa");
-    if (!qa) return;
-    safely(() => {
-      let current = createGame(42, campaignDefinition);
-      if (qa === "gara") {
-        setState(current);
-        return;
-      }
-      if (qa === "map") {
-        const r1 = processCommand(
-          current,
-          { id: "cmd.1", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.prepare" } },
-          { principalId: current.player.id },
-          campaignDefinition,
-        );
-        if (r1.ok) current = r1.state;
-        setState(current);
-        return;
-      }
-      if (qa === "market") {
-        const r1 = processCommand(
-          current,
-          { id: "cmd.1", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.prepare" } },
-          { principalId: current.player.id },
-          campaignDefinition,
-        );
-        if (r1.ok) current = r1.state;
-        const r2 = processCommand(
-          current,
-          { id: "cmd.2", issuerId: current.player.id, payload: { type: "travel", routeId: "route.garage-market" } },
-          { principalId: current.player.id },
-          campaignDefinition,
-        );
-        if (r2.ok) current = r2.state;
-        setState(current);
-        return;
-      }
-      if (qa === "combat" || qa === "combat-debuff") {
-        const r1 = processCommand(
-          current,
-          { id: "cmd.1", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.prepare" } },
-          { principalId: current.player.id },
-          campaignDefinition,
-        );
-        if (r1.ok) current = r1.state;
-        const r2 = processCommand(
-          current,
-          { id: "cmd.2", issuerId: current.player.id, payload: { type: "travel", routeId: "route.garage-market" } },
-          { principalId: current.player.id },
-          campaignDefinition,
-        );
-        if (r2.ok) current = r2.state;
-        const r3 = processCommand(
-          current,
-          { id: "cmd.3", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.rescue-ha" } },
-          { principalId: current.player.id },
-          campaignDefinition,
-        );
-        if (r3.ok) current = r3.state;
-        const r4 = processCommand(
-          current,
-          { id: "cmd.4", issuerId: current.player.id, payload: { type: "choose", choiceId: "choice.raid-cache" } },
-          { principalId: current.player.id },
-          campaignDefinition,
-        );
-        if (r4.ok) current = r4.state;
-
-        if (qa === "combat-debuff" && current.combat) {
-          const r5 = processCommand(
-            current,
-            {
-              id: "cmd.5",
-              issuerId: current.player.id,
-              payload: {
-                type: "skill",
-                actorId: "character.minh",
-                targetId: "character.hunger",
-                skillId: "skill.pierce",
-              },
-            },
-            { principalId: current.player.id },
-            campaignDefinition,
-          );
-          if (r5.ok) {
-            current = structuredClone(r5.state);
-            if (current.combat) {
-              current.combat.panickedActorIds = ["character.watcher"];
-              current.combat.bleedingActorIds = ["character.hunger"];
-            }
-          }
-        }
-        setState(current);
-        return;
-      }
-      if (qa === "scenario-briefing") {
-        const take = (cmd: GameCommand) => {
-          const res = processCommand(
-            current,
-            cmd,
-            { principalId: current.player.id },
-            campaignDefinition,
-          );
-          if (res.ok) current = res.state;
-        };
-        take(campaignChoice(current, "prepare"));
-        take(travelCommand(current, "route.garage-market"));
-        current = structuredClone(current);
-        current.scenario = {
-          id: "scenario.market-blackout",
-          phase: "planning",
-          scoutIds: [],
-          guardId: "",
-          currentNodeId: "node.parking",
-          visitedNodeIds: ["node.parking"],
-          completedActionIds: [],
-          alert: 0,
-          maxAlert: 6,
-          powerOn: false,
-          rescuedHa: false,
-          cargo: [],
-          maxCargo: 2,
-          installedModuleId: null,
-          log: [],
-        };
-        setState(current);
-        return;
-      }
-      if (qa === "scenario-debrief") {
-        const take = (cmd: GameCommand) => {
-          const res = processCommand(
-            current,
-            cmd,
-            { principalId: current.player.id },
-            campaignDefinition,
-          );
-          if (res.ok) current = res.state;
-        };
-        take(campaignChoice(current, "prepare"));
-        take(travelCommand(current, "route.garage-market"));
-        take({
-          id: "cmd.3",
-          issuerId: current.player.id,
-          payload: {
-            type: "scenario-start",
-            convoyId: current.player.convoyId,
-            scenarioId: "scenario.market-blackout",
-            scoutIds: ["character.minh", "character.bao"],
-            guardId: "character.lan",
-          },
-        });
-        current = structuredClone(current);
-        if (current.scenario) {
-          current.scenario.phase = "completed";
-          current.scenario.rescuedHa = true;
-          current.scenario.cargo = ["cargo.fuel", "cargo.generator"];
-          current.scenario.alert = 2;
-        }
-        setState(current);
-        return;
-      }
-      if (qa === "scenario" || qa === "scenario-crisis") {
-        const take = (cmd: GameCommand) => {
-          const res = processCommand(
-            current,
-            cmd,
-            { principalId: current.player.id },
-            campaignDefinition,
-          );
-          if (res.ok) current = res.state;
-        };
-        take(campaignChoice(current, "prepare"));
-        take(travelCommand(current, "route.garage-market"));
-        take({
-          id: "cmd.3",
-          issuerId: current.player.id,
-          payload: {
-            type: "scenario-start",
-            convoyId: current.player.convoyId,
-            scenarioId: "scenario.market-blackout",
-            scoutIds: ["character.minh", "character.bao"],
-            guardId: "character.lan",
-          },
-        });
-        if (qa === "scenario-crisis") {
-          take({
-            id: "cmd.4",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-move",
-              convoyId: current.player.convoyId,
-              targetNodeId: "node.stalls",
-            },
-          });
-          take({
-            id: "cmd.5",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-act",
-              convoyId: current.player.convoyId,
-              nodeId: "node.stalls",
-              actionId: "act.scout-stalls",
-            },
-          });
-          take({
-            id: "cmd.6",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-move",
-              convoyId: current.player.convoyId,
-              targetNodeId: "node.power",
-            },
-          });
-          take({
-            id: "cmd.7",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-act",
-              convoyId: current.player.convoyId,
-              nodeId: "node.power",
-              actionId: "act.start-generator",
-            },
-          });
-          take({
-            id: "cmd.8",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-move",
-              convoyId: current.player.convoyId,
-              targetNodeId: "node.warehouse",
-            },
-          });
-          take({
-            id: "cmd.9",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-act",
-              convoyId: current.player.convoyId,
-              nodeId: "node.warehouse",
-              actionId: "act.take-fuel",
-            },
-          });
-          take({
-            id: "cmd.10",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-move",
-              convoyId: current.player.convoyId,
-              targetNodeId: "node.backroom",
-            },
-          });
-          take({
-            id: "cmd.11",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-act",
-              convoyId: current.player.convoyId,
-              nodeId: "node.backroom",
-              actionId: "act.rescue-ha",
-            },
-          });
-          take({
-            id: "cmd.12",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-move",
-              convoyId: current.player.convoyId,
-              targetNodeId: "node.warehouse",
-            },
-          });
-          take({
-            id: "cmd.13",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-move",
-              convoyId: current.player.convoyId,
-              targetNodeId: "node.stalls",
-            },
-          });
-          take({
-            id: "cmd.14",
-            issuerId: current.player.id,
-            payload: {
-              type: "scenario-move",
-              convoyId: current.player.convoyId,
-              targetNodeId: "node.parking",
-            },
-          });
-        }
-        setState(current);
-        return;
-      }
-      if (qa === "hospital") {
-        const take = (cmd: GameCommand) => {
-          const res = processCommand(current, cmd, { principalId: current.player.id }, campaignDefinition);
-          if (res.ok) current = res.state;
-        };
-        take(campaignChoice(current, "prepare"));
-        take(travelCommand(current, "route.garage-market"));
-        take(campaignChoice(current, "leave-ha"));
-        take(campaignChoice(current, "search-cache"));
-        take(travelCommand(current, "route.market-hospital"));
-        take(campaignChoice(current, "listen"));
-        take(campaignChoice(current, "read-records"));
-        take(travelCommand(current, "route.hospital-ward"));
-        take(campaignChoice(current, "ignore-patient"));
-        setState(current);
-        return;
-      }
-    });
+    if (!import.meta.env.DEV) return;
+    const kind = new URLSearchParams(window.location.search).get("qa");
+    if (kind)
+      safely(() => {
+        const next = previewState(kind);
+        setState(next);
+        setDefinition(argonDefinition);
+      });
   }, []);
-  const dispatch = (payload: GameCommand["payload"]): void => {
+  const dispatch = (payload: GameCommand["payload"]) => {
     if (!state) return;
     void audio.unlock();
-    const command: GameCommand = {
+    const command = {
       id: `command.${state.commandLog.length + 1}`,
       issuerId: state.player.id,
       payload,
@@ -390,7 +133,6 @@ export function useGame() {
       definition,
     );
     if (!result.ok) {
-      setReport(null);
       setMessage(result.error.message);
       return;
     }
@@ -403,6 +145,11 @@ export function useGame() {
     );
     setState(result.state);
     setReport(summary);
+    setTransition({
+      before: state,
+      after: result.state,
+      events: result.events,
+    });
     setMessage("");
     audio.setScene(
       result.state.combat
@@ -411,58 +158,63 @@ export function useGame() {
           ? "road"
           : "menu",
     );
-    audio.play(summary, result.events);
+    if (!result.events.some((e) => e.payload.type === "battle.beat"))
+      audio.play(summary, result.events);
+    // Save the authoritative result before the presentation queue starts.
     try {
       store().save(slotName("autosave"), result.state);
     } catch {
       setMessage("Hành động đã thực hiện nhưng autosave không ghi được.");
     }
   };
-  const save = (): void =>
+  const load = (slot = "manual") =>
     safely(() => {
-      if (state) {
-        store().save(slotName("manual"), state);
-        setMessage("Đã lưu hành trình. Slot R1 và v0.1 tách riêng.");
-      }
-    });
-  const load = (slot = "manual"): void =>
-    safely(() => {
+      const loaded =
+        slot === "legacy"
+          ? loadCompatibleSlot(window.localStorage, "legacy")
+          : slot === "r1"
+            ? loadCompatibleSlot(window.localStorage, "manual")
+            : {
+                state: store(state ? definition : argonDefinition).load(
+                  slotName(slot, state ? definition : argonDefinition),
+                ),
+                definition: state ? definition : argonDefinition,
+              };
       void audio.unlock();
-      const loaded = loadCompatibleSlot(
-        window.localStorage,
-        slot,
-        !!state && !definition.campaign?.operations,
-      );
-      const content = loaded.definition;
-      const next = loaded.state;
-      setDefinition(content);
-      setState(next);
+      setState(loaded.state);
+      setDefinition(loaded.definition);
       setReport(null);
-      audio.setScene(
-        next.combat ? "combat" : next.status === "active" ? "road" : "menu",
-      );
-      setMessage(
-        content.campaign?.operations
-          ? "Đã tải hành trình R1 và xác minh replay."
-          : "Đã giữ nguyên hành trình v0.1. Để chơi trinh sát/nghỉ/tùy chỉnh mới, về Menu và bắt đầu R1; bản lưu cũ không bị ghi đè.",
-      );
+      setTransition(null);
+      setMessage("Đã tải và xác minh replay.");
+      audio.setScene(loaded.state.combat ? "combat" : "road");
     });
   return {
     state,
     definition,
     message,
     report,
+    transition,
     audio,
     start,
     dispatch,
-    save,
     load,
+    save: () =>
+      safely(() => {
+        if (state) {
+          store().save(slotName("manual"), state);
+          setMessage("Đã lưu hành trình.");
+        }
+      }),
     menu: () => {
       setState(null);
       setReport(null);
+      setTransition(null);
+      setMessage("");
       audio.setScene("menu");
     },
     dismiss: () => setMessage(""),
     dismissReport: () => setReport(null),
+    // Retain the known R1 bundle for explicitly selected older saves.
+    legacyVersion: campaignDefinition.contentVersion,
   };
 }

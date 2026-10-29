@@ -115,7 +115,7 @@ export function applyEffects(
         break;
       }
       case "combat":
-        startCombat(state, effect.enemyConvoyId, effect.ambush, emit);
+        startCombat(state, effect.enemyConvoyId, effect.ambush, emit, definition);
         break;
       case "anomaly": {
         const anomaly = definition.campaign?.anomalies.find(

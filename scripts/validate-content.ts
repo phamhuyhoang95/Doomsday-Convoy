@@ -1,11 +1,11 @@
 import { campaignDefinition } from "../src/content/campaign";
+import { argonDefinition } from "../src/content/argon";
 import { inspectWorldDefinition } from "../src/world/registry";
 
-const issues = inspectWorldDefinition(campaignDefinition);
-if (issues.length) {
-  console.error(JSON.stringify(issues, null, 2));
-  process.exitCode = 1;
-} else
-  console.log(
-    `Campaign ${campaignDefinition.contentVersion}: valid, ${campaignDefinition.campaign?.events.length} events, ${campaignDefinition.campaign?.quests.length} contracts. Schema/operators, IDs, refs, weights, costs, fallback choices and dependency cycles checked.`,
-  );
+for (const definition of [campaignDefinition, argonDefinition]) {
+  const issues = inspectWorldDefinition(definition);
+  if (issues.length) {
+    console.error(JSON.stringify(issues, null, 2));
+    process.exitCode = 1;
+  } else console.log(`Campaign ${definition.contentVersion}: valid, ${definition.campaign?.events.length} events, ${definition.campaign?.quests.length} contracts, ${definition.campaign?.tactics?.abilities.length ?? 0} tactical abilities. Schema/operators, IDs, refs, weights, costs, fallback choices and dependency cycles checked.`);
+}

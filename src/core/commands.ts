@@ -134,6 +134,15 @@ export const commandSchema = z
       scenarioActSchema,
       scenarioCrisisSchema,
       scenarioFinishSchema,
+      z.object({
+        type: z.literal("battle-action"),
+        convoyId: idSchema,
+        actorId: idSchema,
+        action: z.enum(["attack", "guard", "move", "ability"]),
+        targetId: idSchema.optional(),
+        abilityId: idSchema.optional(),
+        slot: z.number().int().min(0).max(3).optional(),
+      }).strict(),
     ]),
   })
   .strict();

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { idSchema } from "../core/primitives";
+import { tacticalStateSchema } from "./tactical-schema";
 
 export const combatStateSchema = z
   .object({
@@ -22,6 +23,7 @@ export const combatStateSchema = z
       })
       .optional(),
     log: z.array(z.string()),
+    tactics: tacticalStateSchema.optional(),
   })
   .strict();
 export const npcStateSchema = z

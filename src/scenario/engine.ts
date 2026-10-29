@@ -215,7 +215,7 @@ export function resolveScenarioCommand(
       if (payload.method === "combat") {
         scenario.log.push("Minh giơ súng ra hiệu! Đội thám hiểm nổ súng áp chế toán cướp!");
         // Start combat with scavenger encounter
-        startCombat(state, "convoy.scavengers", false, emit);
+        startCombat(state, "convoy.scavengers", false, emit, definition);
         // Scenario phase becomes completed once combat finishes
         scenario.phase = "completed";
       } else if (payload.method === "decoy") {

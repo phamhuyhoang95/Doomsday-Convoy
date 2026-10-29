@@ -27,6 +27,11 @@ class AudioDirector {
   private master: GainNode | null = null;
   private ambient: GainNode | null = null;
   private drone: OscillatorNode | null = null;
+  private music: HTMLAudioElement | null = null;
+  private musicGain: GainNode | null = null;
+  musicVolume = 0.65;
+  sfxVolume = 0.8;
+  ambienceVolume = 0.55;
   private scene: Scene = "menu";
   enabled = true;
   volume = 0.4;
@@ -39,10 +44,22 @@ class AudioDirector {
     try {
       const raw = localStorage.getItem("last-convoy:audio");
       if (raw) {
-        const data = JSON.parse(raw) as { enabled?: boolean; volume?: number };
+        const data = JSON.parse(raw) as {
+          enabled?: boolean;
+          volume?: number;
+          music?: number;
+          sfx?: number;
+          ambience?: number;
+        };
         this.enabled = data.enabled !== false;
         if (typeof data.volume === "number")
           this.volume = Math.max(0, Math.min(1, data.volume));
+        if (typeof data.music === "number")
+          this.musicVolume = Math.max(0, Math.min(1, data.music));
+        if (typeof data.sfx === "number")
+          this.sfxVolume = Math.max(0, Math.min(1, data.sfx));
+        if (typeof data.ambience === "number")
+          this.ambienceVolume = Math.max(0, Math.min(1, data.ambience));
       }
     } catch {
       /* audio remains usable without storage */
@@ -52,7 +69,13 @@ class AudioDirector {
     try {
       localStorage.setItem(
         "last-convoy:audio",
-        JSON.stringify({ enabled: this.enabled, volume: this.volume }),
+        JSON.stringify({
+          enabled: this.enabled,
+          volume: this.volume,
+          music: this.musicVolume,
+          sfx: this.sfxVolume,
+          ambience: this.ambienceVolume,
+        }),
       );
     } catch {
       /* preference only */
@@ -68,6 +91,14 @@ class AudioDirector {
         compressor.threshold.value = -14;
         this.master.connect(compressor);
         compressor.connect(this.context.destination);
+        this.musicGain = this.context.createGain();
+        this.musicGain.connect(this.master);
+        this.music = new Audio("/audio/argon/market-combat.mp3");
+        this.music.loop = true;
+        this.music.preload = "none";
+        this.context
+          .createMediaElementSource(this.music)
+          .connect(this.musicGain);
         this.ambient = this.context.createGain();
         this.ambient.gain.value = 0;
         this.ambient.connect(this.master);
@@ -103,6 +134,8 @@ class AudioDirector {
       this.applyVolume();
       this.setScene(this.scene);
       this.startBgm();
+      document.removeEventListener("visibilitychange", this.visibility);
+      document.addEventListener("visibilitychange", this.visibility);
       this.changed?.();
     } catch {
       this.status = "Trình duyệt chưa cho phát âm thanh";
@@ -125,19 +158,20 @@ class AudioDirector {
   }
   private tickBgm() {
     if (!this.context || !this.master) return;
+    if (this.music && !this.music.paused && !this.music.error) return;
     this.bgmStep = (this.bgmStep + 1) % 32;
 
     if (this.scene === "combat") {
       if (this.bgmStep % 2 === 0) {
-        this.tone(95, 0.22, 0, "triangle", 0.35);
-        this.tone(48, 0.28, 0.01, "sine", 0.45);
+        this.musicTone(95, 0.22, 0, "triangle", 0.35);
+        this.musicTone(48, 0.28, 0.01, "sine", 0.45);
       } else {
-        this.tone(140, 0.08, 0, "sawtooth", 0.12);
+        this.musicTone(140, 0.08, 0, "sawtooth", 0.12);
       }
       if (this.bgmStep % 4 === 0) {
         const combatNotes = [58.27, 65.41, 69.3, 77.78];
         const note = combatNotes[(this.bgmStep / 4) % combatNotes.length]!;
-        this.tone(note, 0.7, 0, "sawtooth", 0.18);
+        this.musicTone(note, 0.7, 0, "sawtooth", 0.18);
       }
     } else if (this.scene === "road" || this.scene === "menu") {
       if (this.bgmStep % 8 === 0) {
@@ -149,13 +183,14 @@ class AudioDirector {
         ];
         const chord = chords[Math.floor(this.bgmStep / 8) % chords.length]!;
         chord.forEach((freq, idx) => {
-          this.tone(freq, 2.2, idx * 0.12, "sine", 0.12);
+          this.musicTone(freq, 2.2, idx * 0.12, "sine", 0.12);
         });
       }
       if (this.bgmStep % 8 === 4) {
         const bellNotes = [523.25, 587.33, 659.25, 783.99];
-        const bell = bellNotes[Math.floor(this.bgmStep / 8) % bellNotes.length]!;
-        this.tone(bell, 0.8, 0, "triangle", 0.08);
+        const bell =
+          bellNotes[Math.floor(this.bgmStep / 8) % bellNotes.length]!;
+        this.musicTone(bell, 0.8, 0, "triangle", 0.08);
       }
     }
   }
@@ -166,6 +201,48 @@ class AudioDirector {
         this.context.currentTime,
         0.04,
       );
+    this.updateMusic();
+  }
+  private visibility = () => {
+    if (document.hidden) {
+      this.music?.pause();
+      void this.context?.suspend();
+    } else if (this.enabled)
+      void this.context?.resume().then(() => this.updateMusic());
+  };
+  private updateMusic() {
+    if (!this.context || !this.music || !this.musicGain) return;
+    const playing = this.enabled && !document.hidden && this.scene === "combat";
+    this.musicGain.gain.setTargetAtTime(
+      playing ? this.musicVolume : 0,
+      this.context.currentTime,
+      0.45,
+    );
+    if (playing && this.context.state === "running")
+      void this.music
+        .play()
+        .then(() => {
+          if (
+            this.music &&
+            !this.music.paused &&
+            this.scene === "combat" &&
+            this.status !== "Đang phát nhạc combat"
+          ) {
+            this.status = "Đang phát nhạc combat";
+            this.changed?.();
+          }
+        })
+        .catch(() => {});
+    else this.music.pause();
+  }
+  setMix(channel: "music" | "sfx" | "ambience", value: number) {
+    const level = Math.max(0, Math.min(1, value));
+    if (channel === "music") this.musicVolume = level;
+    if (channel === "sfx") this.sfxVolume = level;
+    if (channel === "ambience") this.ambienceVolume = level;
+    this.persist();
+    this.setScene(this.scene);
+    this.changed?.();
   }
   setEnabled(value: boolean) {
     this.enabled = value;
@@ -190,10 +267,12 @@ class AudioDirector {
     this.scene = scene;
     if (this.context && this.ambient)
       this.ambient.gain.setTargetAtTime(
-        scene === "menu" ? 0 : scene === "combat" ? 0.2 : 0.12,
+        (scene === "menu" ? 0 : scene === "combat" ? 0.2 : 0.12) *
+          this.ambienceVolume,
         this.context.currentTime,
         0.6,
       );
+    this.updateMusic();
     if (this.context && this.drone)
       this.drone.frequency.setTargetAtTime(
         scene === "combat" ? 73 : 55,
@@ -201,12 +280,22 @@ class AudioDirector {
         0.4,
       );
   }
+  private musicTone(
+    frequency: number,
+    duration: number,
+    offset = 0,
+    type: OscillatorType = "sine",
+    strength = 0.55,
+  ) {
+    this.tone(frequency, duration, offset, type, strength, "music");
+  }
   private tone(
     frequency: number,
     duration: number,
     offset = 0,
     type: OscillatorType = "sine",
     strength = 0.55,
+    channel: "music" | "sfx" = "sfx",
   ) {
     if (!this.context || !this.master) return;
     const at = this.context.currentTime + offset;
@@ -219,7 +308,13 @@ class AudioDirector {
       at + duration,
     );
     gain.gain.setValueAtTime(0.0001, at);
-    gain.gain.exponentialRampToValueAtTime(strength, at + 0.008);
+    gain.gain.exponentialRampToValueAtTime(
+      Math.max(
+        0.0001,
+        strength * (channel === "music" ? this.musicVolume : this.sfxVolume),
+      ),
+      at + 0.008,
+    );
     gain.gain.exponentialRampToValueAtTime(0.0001, at + duration);
     node.connect(gain);
     gain.connect(this.master);
@@ -227,6 +322,38 @@ class AudioDirector {
     node.stop(at + duration + 0.03);
     node.onended = () => {
       node.disconnect();
+      gain.disconnect();
+    };
+  }
+  private noiseBurst(duration: number, strength: number, frequency: number) {
+    if (!this.context || !this.master) return;
+    const samples = Math.ceil(this.context.sampleRate * duration);
+    const buffer = this.context.createBuffer(
+      1,
+      samples,
+      this.context.sampleRate,
+    );
+    const data = buffer.getChannelData(0);
+    let seed = 0x735a1d;
+    for (let i = 0; i < samples; i++) {
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      data[i] = (seed / 0x80000000 - 1) * Math.pow(1 - i / samples, 2);
+    }
+    const source = this.context.createBufferSource();
+    source.buffer = buffer;
+    const filter = this.context.createBiquadFilter();
+    filter.type = "bandpass";
+    filter.frequency.value = frequency;
+    filter.Q.value = 0.7;
+    const gain = this.context.createGain();
+    gain.gain.value = strength * this.sfxVolume;
+    source.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.master);
+    source.start();
+    source.onended = () => {
+      source.disconnect();
+      filter.disconnect();
       gain.disconnect();
     };
   }
@@ -239,6 +366,7 @@ class AudioDirector {
         this.tone(72, 0.4, 0.12, "triangle", 0.2);
         break;
       case "attack":
+        this.noiseBurst(0.13, 0.65, 1700);
         this.tone(140, 0.12, 0, "sawtooth", 0.7);
         this.tone(48, 0.22, 0.02, "triangle", 0.6);
         break;
@@ -288,6 +416,7 @@ class AudioDirector {
         this.tone(220, 0.18, 0, "triangle", 0.25);
         break;
       case "heavy_hit":
+        this.noiseBurst(0.3, 0.95, 650);
         this.tone(80, 0.35, 0, "sawtooth", 0.75);
         this.tone(42, 0.45, 0.03, "triangle", 0.85);
         this.tone(190, 0.15, 0.01, "square", 0.35);
@@ -330,10 +459,10 @@ class AudioDirector {
           : isAnomalyEvent
             ? "eerie_bell"
             : payloads.some(
-                (p) =>
-                  p.type === "combat.action" &&
-                  (p.action === "attack" || p.action === "skill"),
-              )
+                  (p) =>
+                    p.type === "combat.action" &&
+                    (p.action === "attack" || p.action === "skill"),
+                )
               ? "attack"
               : payloads.some((p) => p.type === "skill.used")
                 ? payloads.some(
@@ -362,8 +491,25 @@ class AudioDirector {
       }
     });
   }
+  playBeat(beat: Extract<DomainEvent["payload"], { type: "battle.beat" }>) {
+    const cue: Cue =
+      beat.effect === "heal" || beat.effect === "repair"
+        ? "heal"
+        : beat.effect === "damage" || beat.effect === "reflect"
+          ? beat.amount >= 20
+            ? "heavy_hit"
+            : "attack"
+          : beat.effect === "status"
+            ? "skill"
+            : "config";
+    void this.unlock().then(() => this.cue(cue));
+  }
   close() {
     this.changed = null;
+    this.stopBgm();
+    document.removeEventListener("visibilitychange", this.visibility);
+    this.music?.pause();
+    this.music?.removeAttribute("src");
     if (this.context) void this.context.close().catch(() => {});
   }
 }
@@ -380,12 +526,20 @@ export function useAudio() {
   return {
     enabled: director.enabled,
     volume: director.volume,
+    musicVolume: director.musicVolume,
+    sfxVolume: director.sfxVolume,
+    ambienceVolume: director.ambienceVolume,
     status: director.status,
     unlock: () => director.unlock(),
     setEnabled: (value: boolean) => director.setEnabled(value),
     setVolume: (value: number) => director.setVolume(value),
+    setMix: (channel: "music" | "sfx" | "ambience", value: number) =>
+      director.setMix(channel, value),
     setScene: (scene: Scene) => director.setScene(scene),
     play: (report: ActionReport, events: readonly DomainEvent[]) =>
       director.play(report, events),
+    playBeat: (
+      beat: Extract<DomainEvent["payload"], { type: "battle.beat" }>,
+    ) => director.playBeat(beat),
   };
 }

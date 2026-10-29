@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { operationsDefinitionSchema } from "../expedition/schema";
+import { tacticalRulesSchema } from "../combat/tactical-schema";
 import {
   amountSchema,
   emptyResources,
@@ -267,6 +268,7 @@ export const assetDefinitionSchema = z
   .strict();
 export const campaignContentSchema = z
   .object({
+    tactics: tacticalRulesSchema.optional(),
     operations: operationsDefinitionSchema.optional(),
     encounters: z
       .array(

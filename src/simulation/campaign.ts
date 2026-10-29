@@ -1,4 +1,5 @@
 import { currentCombatActor } from "../combat/engine";
+import { abilityReason, attackReason } from "../combat/tactical-engine";
 import type { GameCommand } from "../core/commands";
 import { processCommand } from "../core/processor";
 import { canAfford, supplyCosts } from "../core/resources";
@@ -76,6 +77,18 @@ function combatBot(
     .filter((entry) => entry.status === "active")
     .sort((a, b) => a.health - b.health)[0];
   if (!target) throw new Error("Missing enemy");
+  if (combat.tactics && definition.campaign?.tactics) {
+    const abilities = definition.campaign.tactics.abilities;
+    const injured = Object.values(state.actors).find(a => a.convoyId === actor.convoyId && a.health < a.maxHealth * 0.5 && a.status !== "dead" && a.status !== "captured");
+    const heal = injured ? abilities.find(a => a.effect === "heal" && !abilityReason(state, actor.id, a, injured.id)) : undefined;
+    const chosen = heal ?? abilities.find(a => a.effect === "damage" && !abilityReason(state, actor.id, a, target.id));
+    if (chosen) return {
+      id: `command.${state.commandLog.length + 1}`, issuerId: state.player.id,
+      payload: { type: "battle-action", convoyId: state.player.convoyId, actorId: actor.id, action: "ability", abilityId: chosen.id, targetId: heal && injured ? injured.id : target.id },
+    };
+    const legal = enemies.find(a => a.status === "active" && !attackReason(state, actor.id, a.id));
+    return legal ? battleCommand(state, "attack", legal.id) : battleCommand(state, "defend");
+  }
   const skill = definition.campaign?.skills.find(
     (entry) =>
       entry.effect === "damage" &&

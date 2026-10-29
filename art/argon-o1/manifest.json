@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "packId": "last-convoy.argon-o1",
+  "created": "2026-10-29",
+  "baseline": "6955279",
+  "status": "technical-qa-passed-visual-audio-acceptance-open",
+  "assets": [
+    {
+      "id": "argon.market-actors",
+      "tool": "built-in image_gen",
+      "promptKey": "atlas",
+      "references": [
+        "references/combat-concept.jpg",
+        "../../public/art/a2/character.minh.jpg"
+      ],
+      "master": {
+        "path": "art/argon-o1/masters/market-actors-atlas-v1.png",
+        "bytes": 1869415,
+        "sha256": "7e7418fbc34364e6213f5cf88cc02995ca8a815c89f672220eaa6ac9e6c905cc",
+        "width": 1774,
+        "height": 887,
+        "mode": "RGBA",
+        "transparentPixels": 912263
+      },
+      "web": {
+        "path": "public/art/argon/market-actors-atlas.png",
+        "bytes": 1869415,
+        "sha256": "7e7418fbc34364e6213f5cf88cc02995ca8a815c89f672220eaa6ac9e6c905cc",
+        "width": 1774,
+        "height": 887,
+        "mode": "RGBA",
+        "transparentPixels": 912263
+      },
+      "columns": [
+        "character.minh",
+        "character.bao",
+        "character.lan",
+        "character.hunger",
+        "character.watcher"
+      ],
+      "poses": [
+        "idle",
+        "action"
+      ],
+      "notes": [
+        "Enemy sprites face right in the output; renderer mirrors them to face player.",
+        "Two poses per actor; recoil/downed currently use transforms, not dedicated new frames."
+      ]
+    },
+    {
+      "id": "argon.market-stage",
+      "tool": "built-in image_gen",
+      "promptKey": "stage",
+      "references": [
+        "references/combat-concept.jpg"
+      ],
+      "master": {
+        "path": "art/argon-o1/masters/market-stage-v1.png",
+        "bytes": 2818580,
+        "sha256": "d8f17cd7d226c005e18c3befacd60c85111caad57540dd8187e1b3a17dd0c699",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      },
+      "web": {
+        "path": "public/art/argon/market-stage.jpg",
+        "bytes": 691595,
+        "sha256": "90e3be406bbd3f0c1e4a8a73859dc7837222ad2ac5579aef034747a59bf5b98e",
+        "width": 1672,
+        "height": 941,
+        "mode": "RGB"
+      }
+    },
+    {
+      "id": "argon.market-combat-music",
+      "tool": "Gemini web Create music",
+      "model": "Not identified in generation UI",
+      "promptKey": "combatMusic",
+      "sourceUrl": "https://gemini.google.com/app/cffcfb3d6e890123",
+      "master": {
+        "path": "art/argon-o1/audio/market-combat-gemini-v1.mp3",
+        "bytes": 2222355,
+        "sha256": "0a6084749690750fdb63a58e7a26c988057d6b3f72d79ef9b846773157295973"
+      },
+      "web": {
+        "path": "public/audio/argon/market-combat.mp3",
+        "bytes": 1521164,
+        "sha256": "303fe1721c6bfae1fdb1a7df752c6a32daeb43954e51bee1c1356a610e47da1f"
+      },
+      "masterDurationSeconds": 92.342792,
+      "webDurationSeconds": 76.032,
+      "notes": [
+        "Created/downloaded through existing Google account; no API billing or credit purchase.",
+        "Generated download title was Midnight_at_the_Foundry; renamed locally.",
+        "Prompt title lost final word Dark in native typing timeout; recorded submitted prompt ends After.",
+        "76s PCM loop with 4s tail/head crossfade, normalized to -20 LUFS; rebuild with scripts/prepare-argon-audio.py. Listening approval of music and seam remains open."
+      ]
+    }
+  ]
+}

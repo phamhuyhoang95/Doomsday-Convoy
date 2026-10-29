@@ -24,6 +24,7 @@
     "check": "npm run validate:world && npm run validate:content && npm run validate:art && npm run test && npm run build"
   },
   "dependencies": {
+    "pixi.js": "^8.22.0",
     "react": "19.3.1",
     "react-dom": "19.3.1",
     "zod": "4.6.7"

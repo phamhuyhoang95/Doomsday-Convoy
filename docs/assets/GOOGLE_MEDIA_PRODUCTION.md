@@ -2,6 +2,8 @@
 
 Đối chiếu nguồn ngày **2026-10-29, Asia/Saigon**. Trạng thái: nghiên cứu/đề xuất; chưa xem billing riêng của người dùng, chưa gọi API, tạo media, mua credit hoặc tiêu ngân sách. Người dùng cho biết có Google AI Pro và khoảng $100 Google Cloud; chưa rõ loại khoản credit và ngày hết hạn.
 
+**Bổ sung sau trao đổi Argon cùng ngày:** Người dùng xác nhận vẫn có Google AI Pro. Ưu tiên tạo nhạc qua Gemini web bằng quyền có sẵn, không mặc định phải dùng Lyria API trong bảng nghiên cứu bên dưới. [Gemini Help](https://support.google.com/gemini/answer/16901237?hl=en) xác nhận tạo và tải nhạc; [Flow Help](https://support.google.com/flow/answer/16526234?hl=en) hiện ghi Pro thêm 1.000 Flow credits/tháng. Chưa kiểm tra tài khoản/số dư, chưa tạo output. Phương án hiện hành theo [ARGON_MEDIA_PLAN](ARGON_MEDIA_PLAN.md); các dự toán/API bên dưới là tham khảo, không phải quyết định mua/gọi dịch vụ.
+
 ## 1. Chọn công cụ theo đầu việc
 
 | Nhu cầu | Đề xuất | Cách dùng cho game |

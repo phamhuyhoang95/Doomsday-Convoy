@@ -43,3 +43,7 @@ MVP không có online multiplayer, persistent server, marketplace hoặc AI runt
 ## 8. Evidence và bàn giao
 
 Test pass phải gắn với code/content checkpoint thực tế. Simulation R1 không phải simulation mới của A2. Có ảnh master không đồng nghĩa đã tích hợp/QA/push. Khi người dùng dừng test, ghi phần chưa xác minh và dừng; không chạy lại để làm báo cáo trông hoàn chỉnh.
+
+## 9. Đại tu Argon được ủy quyền — 2026-10-29
+
+Người dùng đã yêu cầu triển khai cả combat/UI/media mới. New game dùng bundle `0.2.0-campaign.1-argon`; optional tactics trong state/save v3 chọn resolver mới, `.4`/`.5-r1` chọn `legacy-engine.ts` giữ nguyên. Thu một giờ khi mở encounter; lượt/hậu chiến tactical 0 giờ, cooldown theo lượt actor. Slots Argon tách riêng, không migrate hành trình cũ ngầm. Pixi chỉ presentation; chưa thay source of truth. Atlas/nền/nhạc thuộc O1; ngoại lệ phạm vi này không tự mở server/AI runtime. Chi tiết [plan](../plans/ARGON_COMBAT_UI_OVERHAUL.md), [checkpoint](../reports/ARGON_O1_IMPLEMENTATION.md).

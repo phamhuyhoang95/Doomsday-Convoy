@@ -74,7 +74,8 @@ export function processCommand(
   if (
     state.combat &&
     command.payload.type !== "combat" &&
-    command.payload.type !== "use-skill"
+    command.payload.type !== "use-skill" &&
+    command.payload.type !== "battle-action"
   )
     return reject("COMBAT_ACTIVE", "Resolve combat before other actions.");
   const convoy = Object.hasOwn(state.convoys, command.payload.convoyId)
@@ -98,7 +99,9 @@ export function processCommand(
       command.payload.type === "train-actor" ||
       command.payload.type === "set-stance" ||
       command.payload.type.startsWith("scenario-");
-    const ticks = configuring
+    const tacticalTurn = Boolean(definition.campaign?.tactics && state.combat);
+    const tacticalEntry = definition.campaign?.tactics && command.payload.type === "scenario-crisis" && command.payload.method === "combat";
+    const ticks = tacticalTurn ? 0 : tacticalEntry ? 1 : configuring
       ? 0
       : plan
         ? plan.route.travelTicks
@@ -234,7 +237,7 @@ export function processCommand(
         definition,
         emit,
       );
-    } else if (command.payload.type === "combat") {
+    } else if (command.payload.type === "combat" || command.payload.type === "battle-action") {
       resolveCombatCommand(next, command.payload, definition, emit);
     } else if (command.payload.type === "use-skill") {
       if (next.combat)

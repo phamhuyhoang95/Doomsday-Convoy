@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import "./style.css";
+import "./argon/argon.css";
 import App from "./App";
 
 const root = document.getElementById("root");

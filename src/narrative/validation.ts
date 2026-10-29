@@ -263,6 +263,18 @@ export function inspectCampaignContent(
       message: "Ending contracts need an unconditional fallback",
     });
   const skills = new Set(content.skills.map((entry) => entry.id));
+  if (content.tactics) {
+    const abilityIds = new Set<string>();
+    for (const ability of content.tactics.abilities) {
+      ref(skills, ability.id, "tactics.abilities");
+      if (abilityIds.has(ability.id)) issues.push({ path: ability.id, message: "Duplicate tactical ability" });
+      abilityIds.add(ability.id);
+      if (ability.source === "artifact") {
+        if (!ability.artifactId) issues.push({ path: ability.id, message: "Artifact ability requires artifactId" });
+        else ref(artifacts, ability.artifactId, ability.id);
+      }
+    }
+  }
   definition.characters.forEach((entry) =>
     entry.skillIds?.forEach((id) => ref(skills, id, entry.id)),
   );

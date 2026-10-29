@@ -21,9 +21,11 @@
 - [CONTENT_GUIDE](engineering/CONTENT_GUIDE.md): thêm event/quest/skill/artifact/region/encounter bằng data.
 - [ASSET_PIPELINE](assets/ASSET_PIPELINE.md): master → web derivative → catalog → client và QA ảnh.
 - [GOOGLE_MEDIA_PRODUCTION](assets/GOOGLE_MEDIA_PRODUCTION.md): đề xuất voice/nhạc/clip, Flow Pro, Cloud credits và giá/giới hạn đã tra nguồn; chưa sản xuất.
+- [ARGON_MEDIA_PLAN](assets/ARGON_MEDIA_PLAN.md): phạm vi ảnh/pose, animation, SFX/ambience/nhạc, voice/clip tùy điều kiện; nguồn sản xuất, sequencer/audio mix và gate O1; đã có gói media đầu tiên, còn duyệt chất lượng.
 
 ## Kế hoạch trước triển khai
 
+- [ARGON_COMBAT_UI_OVERHAUL](plans/ARGON_COMBAT_UI_OVERHAUL.md): phương án thay toàn bộ UI và combat theo định hướng Argon mới của người dùng; luật đề nghị, asset, compatibility và các đợt triển khai; O0/O1 đã có code, O2–O4 còn mở.
 - [PHASE_PLANS](plans/PHASE_PLANS.md): Phase0–5 đã triển khai.
 - [PLAYABILITY_PLAN](plans/PLAYABILITY_PLAN.md): R1 theo phản hồi game sơ sài.
 - [R2_UPGRADE_PLAN](plans/R2_UPGRADE_PLAN.md): Đợt nâng cấp toàn diện R2 (Game feel, Combat depth, Narrative polish, Survival tension).
@@ -33,6 +35,9 @@
 
 ## Báo cáo và lịch sử
 
+- [ARGON_O1_IMPLEMENTATION](reports/ARGON_O1_IMPLEMENTATION.md): combat/UI/media đầu tiên, 120 tests, 96 simulation runs, ảnh QA và giới hạn thực tế.
+
+- [CONCEPT_REDESIGN_REVIEW](reports/CONCEPT_REDESIGN_REVIEW.md): review bộ đề xuất `docs 2`/7 concept trên baseline R4.1; findings, hướng mỹ thuật và lộ trình UI đề nghị, chưa triển khai redesign.
 - [R4_BASELINE](reports/R4_BASELINE.md): audit source/save/audio và gate baseline R4.0.
 - [R4_ARCHITECTURE_REVIEW](reports/R4_ARCHITECTURE_REVIEW.md): quyết định compatibility/core/time cho slice R4.
 
@@ -41,6 +46,8 @@
 - [PROGRESS_HISTORY](status/PROGRESS_HISTORY.md): bản lưu toàn bộ nhật ký cũ; không lấy các dòng NEXT ở đó làm việc tiếp theo.
 
 ## Dữ liệu đi kèm cần giữ
+
+- [Argon O1 manifest](../art/argon-o1/manifest.json), [prompts](../art/argon-o1/prompts.json), [audio preparation](../scripts/prepare-argon-audio.py).
 
 - [Gói A1](../art/asset-pack-a1/README.md), [manifest](../art/asset-pack-a1/manifest.json), [prompts](../art/asset-pack-a1/prompts.json).
 - [A2 jobs](../art/production-a2/jobs.json), [prompt chính xác](../art/production-a2/prompts-final.json), [build manifest](../art/production-a2/build-manifest.json); receipts ở `art/production-a2/receipts/`.

@@ -38,7 +38,7 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
       <div className="scenario-shell">
         <div className="scenario-briefing-panel">
           <div className="briefing-header">
-            <span className="threat-tier tier-2">NHIỆM VỤ ĐỘT KÍCH THỜI GIAN THỰC</span>
+            <span className="threat-tier tier-2">NHIỆM VỤ ĐỘT KÍCH HIỆN TRƯỜNG</span>
             <h2>CHỢ MẤT ĐIỆN</h2>
             <p className="briefing-desc">{marketBlackoutScenario.description}</p>
           </div>
