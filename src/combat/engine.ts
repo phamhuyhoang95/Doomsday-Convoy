@@ -42,15 +42,26 @@ export function startCombat(
       "REQUIREMENTS_NOT_MET",
       "Rival is absent or cannot fight.",
     );
+  const playerActors = activeTeam(state, player.id);
+  const enemyActors = activeTeam(state, enemy.id);
+  const interleavedTurnOrder: string[] = [];
+  const maxTeamLen = Math.max(playerActors.length, enemyActors.length);
+  for (let i = 0; i < maxTeamLen; i++) {
+    const p = playerActors[i];
+    if (p) interleavedTurnOrder.push(p.id);
+    const e = enemyActors[i];
+    if (e) interleavedTurnOrder.push(e.id);
+  }
+  const turnOrder =
+    state.contentVersion === "0.1.0-campaign.4"
+      ? [...playerActors, ...enemyActors].map((actor) => actor.id)
+      : interleavedTurnOrder;
   state.combat = {
     id: `combat.${state.commandLog.length + 1}`,
     enemyConvoyId,
     phase: "active",
     round: 1,
-    turnOrder: [
-      ...activeTeam(state, player.id),
-      ...activeTeam(state, enemy.id),
-    ].map((actor) => actor.id),
+    turnOrder,
     turnIndex: 0,
     defendedActorIds: [],
     vulnerableActorIds: [],
@@ -168,7 +179,15 @@ function advanceTurn(
       checkBattleEnd(state, definition, emit);
       return;
     }
+    const hpBefore = target.health;
     dealDamage(state, actor.id, target.id, 0, definition, emit);
+    const damageDone = Math.max(0, hpBefore - target.health);
+    combat.lastEnemyAction = {
+      actorName: actor.name,
+      targetName: target.name,
+      damage: damageDone,
+      text: `${actor.name} phản công! Lao vào ${target.name} gây ${damageDone} sát thương!`,
+    };
     const vehicle = state.convoys[state.player.convoyId]?.vehicle;
     if (vehicle) vehicle.condition = Math.max(0, vehicle.condition - 2);
     if (checkBattleEnd(state, definition, emit)) return;

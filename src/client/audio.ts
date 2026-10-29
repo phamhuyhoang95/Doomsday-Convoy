@@ -32,6 +32,8 @@ class AudioDirector {
   volume = 0.4;
   status = "Chờ tương tác";
   changed: (() => void) | null = null;
+  private bgmTimer: number | null = null;
+  private bgmStep = 0;
 
   constructor() {
     try {
@@ -100,10 +102,61 @@ class AudioDirector {
         this.context.state === "running" ? "Đang phát" : "Chạm để phát";
       this.applyVolume();
       this.setScene(this.scene);
+      this.startBgm();
       this.changed?.();
     } catch {
       this.status = "Trình duyệt chưa cho phát âm thanh";
       this.changed?.();
+    }
+  }
+  private startBgm() {
+    if (this.bgmTimer != null || typeof window === "undefined") return;
+    this.bgmTimer = window.setInterval(() => {
+      if (!this.enabled || !this.context || this.context.state !== "running")
+        return;
+      this.tickBgm();
+    }, 550);
+  }
+  private stopBgm() {
+    if (this.bgmTimer != null) {
+      clearInterval(this.bgmTimer);
+      this.bgmTimer = null;
+    }
+  }
+  private tickBgm() {
+    if (!this.context || !this.master) return;
+    this.bgmStep = (this.bgmStep + 1) % 32;
+
+    if (this.scene === "combat") {
+      if (this.bgmStep % 2 === 0) {
+        this.tone(95, 0.22, 0, "triangle", 0.35);
+        this.tone(48, 0.28, 0.01, "sine", 0.45);
+      } else {
+        this.tone(140, 0.08, 0, "sawtooth", 0.12);
+      }
+      if (this.bgmStep % 4 === 0) {
+        const combatNotes = [58.27, 65.41, 69.3, 77.78];
+        const note = combatNotes[(this.bgmStep / 4) % combatNotes.length]!;
+        this.tone(note, 0.7, 0, "sawtooth", 0.18);
+      }
+    } else if (this.scene === "road" || this.scene === "menu") {
+      if (this.bgmStep % 8 === 0) {
+        const chords = [
+          [130.81, 155.56, 196.0],
+          [116.54, 155.56, 174.61],
+          [103.83, 130.81, 155.56],
+          [98.0, 146.83, 174.61],
+        ];
+        const chord = chords[Math.floor(this.bgmStep / 8) % chords.length]!;
+        chord.forEach((freq, idx) => {
+          this.tone(freq, 2.2, idx * 0.12, "sine", 0.12);
+        });
+      }
+      if (this.bgmStep % 8 === 4) {
+        const bellNotes = [523.25, 587.33, 659.25, 783.99];
+        const bell = bellNotes[Math.floor(this.bgmStep / 8) % bellNotes.length]!;
+        this.tone(bell, 0.8, 0, "triangle", 0.08);
+      }
     }
   }
   private applyVolume() {
@@ -118,8 +171,13 @@ class AudioDirector {
     this.enabled = value;
     this.persist();
     this.applyVolume();
-    if (value) void this.unlock().then(() => this.cue("reward"));
-    else this.status = "Đã tắt";
+    if (value) {
+      this.startBgm();
+      void this.unlock().then(() => this.cue("reward"));
+    } else {
+      this.stopBgm();
+      this.status = "Đã tắt";
+    }
     this.changed?.();
   }
   setVolume(value: number) {

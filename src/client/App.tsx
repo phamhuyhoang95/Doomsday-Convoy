@@ -459,88 +459,72 @@ function GameView({ game }: { game: ReturnType<typeof useGame> }) {
             <span>●</span>
           </span>
         </div>
-        <nav className="tabs" aria-label="Màn hình game">
-          {tabs.map(([id, label]) => (
-            <button
-              key={id}
-              className={tab === id ? "active" : ""}
-              aria-current={tab === id ? "page" : undefined}
-              onClick={() => setTab(id ?? "map")}
-            >
-              {label}
-            </button>
-          ))}
-        </nav>
-        {tab === "map" && (
-          <>
-            <div className="reserve-line">
-              <span>
-                Khẩu phần còn khoảng{" "}
-                <strong>{operations.reserveHours} giờ</strong>
-              </span>
-              <span>
-                Mỗi giờ: {operations.costs.food} food + {operations.costs.water}{" "}
-                water · đang có {convoy.vehicle.condition}% xe
-              </span>
-              {state.campaign?.operations?.recon[convoy.locationId] && (
-                <span className="intel-badge">
-                  ⌖ Intel{" "}
-                  {Math.max(
-                    0,
-                    state.campaign.operations.recon[convoy.locationId]!
-                      .expiresAt - state.world.tick,
-                  )}
-                  h
-                </span>
-              )}
-            </div>
-            <CrewConsole state={state} dispatch={game.dispatch} compact />
-            {game.report && (
-              <ActionReportPanel
-                key={game.report.id}
-                report={game.report}
-                close={game.dismissReport}
-              />
-            )}
-          </>
-        )}
-        {tab === "map" ? (
-          <>
-            {state.status !== "active" ? (
-              <Ending state={state} />
-            ) : state.combat ? (
-              <CombatPanel state={state} dispatch={game.dispatch} />
-            ) : (
-              <div className="main-grid production-art">
-                <WorldMap state={state} dispatch={game.dispatch} />
-                <EventPanel state={state} dispatch={game.dispatch} />
-              </div>
-            )}
-            <div className="below-map">
-              <RecentLog state={state} />
-              <section className="panel action-panel">
-                <p className="eyebrow">QUYỀN CHỈ HUY</p>
-                <h3>Chiến thuật cho chặng này</h3>
-                <p className="muted">
-                  Trinh sát làm giảm rủi ro tuyến và chỉ nhận cache một lần.
-                  Nghỉ hồi HP/năng lượng nhưng đối thủ vẫn đi. Sửa xe dùng 2 phế
-                  liệu. Nhấp nhân vật phía trên để dùng điểm nâng hoặc Cấp cứu
-                  ngoài trận.
-                </p>
-              </section>
-            </div>
-          </>
-        ) : tab === "crew" ? (
-          <CrewConsole state={state} dispatch={game.dispatch} />
-        ) : tab === "inventory" ? (
-          <Inventory state={state} />
-        ) : tab === "journal" ? (
-          <Journal state={state} />
+        {state.status !== "active" ? (
+          <Ending state={state} />
+        ) : state.combat ? (
+          <CombatPanel state={state} dispatch={game.dispatch} />
         ) : (
-          <DebugPanel state={state} />
+          <>
+            <nav className="tabs" aria-label="Màn hình game">
+              {tabs.map(([id, label]) => (
+                <button
+                  key={id}
+                  className={tab === id ? "active" : ""}
+                  aria-current={tab === id ? "page" : undefined}
+                  onClick={() => setTab(id ?? "map")}
+                >
+                  {label}
+                </button>
+              ))}
+            </nav>
+            {tab === "map" && (
+              <>
+                <div className="reserve-line">
+                  <span>
+                    Khẩu phần còn khoảng{" "}
+                    <strong>{operations.reserveHours} giờ</strong>
+                  </span>
+                  <span>
+                    Mỗi giờ: {operations.costs.food} food + {operations.costs.water}{" "}
+                    water · đang có {convoy.vehicle.condition}% xe
+                  </span>
+                  {state.campaign?.operations?.recon[convoy.locationId] && (
+                    <span className="intel-badge">
+                      ⌖ Intel{" "}
+                      {Math.max(
+                        0,
+                        state.campaign.operations.recon[convoy.locationId]!
+                          .expiresAt - state.world.tick,
+                      )}
+                      h
+                    </span>
+                  )}
+                </div>
+                {game.report && (
+                  <ActionReportPanel
+                    key={game.report.id}
+                    report={game.report}
+                    close={game.dismissReport}
+                  />
+                )}
+                <div className="main-grid production-art">
+                  <WorldMap state={state} dispatch={game.dispatch} />
+                  <EventPanel state={state} dispatch={game.dispatch} />
+                </div>
+                <div className="below-map">
+                  <CrewConsole state={state} dispatch={game.dispatch} compact />
+                  <RecentLog state={state} />
+                </div>
+              </>
+            )}
+            {tab === "crew" && <CrewConsole state={state} dispatch={game.dispatch} />}
+            {tab === "inventory" && <Inventory state={state} />}
+            {tab === "journal" && <Journal state={state} />}
+            {tab === "debug" && <DebugPanel state={state} />}
+          </>
         )}
       </main>
-      {tab === "map" && <ActionDeck state={state} dispatch={game.dispatch} />}
+      {!state.combat && tab === "map" && <ActionDeck state={state} dispatch={game.dispatch} />}
       <footer className="game-footer">
         <span>LAST CONVOY / R1</span>
         <span>MỘT CHUYẾN XE. MỌI QUYẾT ĐỊNH ĐỀU CÓ HẬU QUẢ.</span>

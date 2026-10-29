@@ -1,10 +1,33 @@
 # Bàn giao hiện tại
 
-**Ngày:** 2026-10-29, Asia/Saigon. **Trạng thái:** Hoàn tất trọn vẹn toàn bộ 4 giai đoạn của gói nâng cấp R2 (Narrative, Visual Juice/Audio, Combat Status/Synergy, Anomaly/Telemetry/Economy). Đã pass toàn bộ gate `npm run check` và 800 campaign simulation. Sẵn sàng cho Phase v0.2 (Con đường Siêu phàm / Occult Paths & Sanity).
+**Ngày:** 2026-10-29, Asia/Saigon. **Trạng thái:** Hoàn tất trọn vẹn đợt Đại tu Giao diện & Chiều sâu Combat (R3): Lượt đấu so le kẻ địch phản công thực sự, Ý đồ báo trước (Enemy Intents), Banner phản công trực quan, Nhạc nền BGM Synthesizer thời gian thực và Giao diện Scene-Centric không còn cuộn trang. Toàn bộ 103 tests và 800 campaign simulations đã pass 100%.
 
 ## Yêu cầu mới nhất
 
-Người dùng: "Sẵn sàng triển khai chưa" — Xác nhận triển khai đợt nâng cấp tiếp theo (v0.2: Con đường Siêu phàm, hệ thống Sanity/Tâm trí, Nhân vật mới, Mở rộng bản đồ).
+Người dùng: "ok quẩy đi" — Triển khai giải quyết triệt để 4 vấn đề: Kẻ địch không thể phản công, cuộc chiến 1 màu, giao diện dàn trải phải cuộn/navigate quá nhiều và thiếu background music.
+
+## Những gì đã làm và kiểm chứng trong đợt này
+
+1. **Lượt đấu so le & Kẻ địch Phản công**:
+   - Chỉnh sửa `startCombat` trong `src/combat/engine.ts`: Thay vì đưa toàn bộ phe ta lên trước, lượt đấu được xếp so le `[Minh, Kẻ Đói, Lan, Kẻ Rình, Bảo]`.
+   - Bảo toàn 100% bản lưu cũ: Nếu `state.contentVersion === "0.1.0-campaign.4"`, giữ nguyên turn order cũ để không phá vỡ fixture replay.
+   - Kẻ địch được tăng HP (Kẻ Đói 58 HP, Kẻ Rình 52 HP, giáp 2), trận đánh kéo dài 3–5 lượt căng thẳng.
+2. **Hệ thống Ý đồ của Kẻ địch (Enemy Intents)**:
+   - Trên mỗi thẻ bài kẻ địch hiển thị huy hiệu `🎯 Ý ĐỒ: Đánh [Tên mục tiêu] (~X HP)`.
+   - Người chơi đọc trước hành động sắp tới của quái để chọn thế thủ, hồi máu hoặc kết liễu.
+3. **Banner Phản công (Enemy Retaliation Banner)**:
+   - `combat.lastEnemyAction` ghi nhận và hiển thị ngay trên đầu đấu trường kèm hiệu ứng rung màn hình và chớp đỏ: `⚡ ĐỐI THỦ PHẢN CÔNG: Kẻ Đói phản công! Lao vào Lan gây 11 sát thương!`.
+4. **Giao diện Scene-Centric (Không còn cuộn trang)**:
+   - Trong chiến đấu: Toàn bộ màn hình chỉ hiển thị Đấu trường sinh tử. Loại bỏ bảng đoàn xe trùng lặp và các khung nhật ký/hướng dẫn rườm rà.
+   - Trên bản đồ: Bản đồ và Sự kiện nằm ngay tầm mắt, dẹp bỏ khung hướng dẫn tĩnh dài dòng.
+5. **Hệ thống Nhạc nền Background Music (BGM Polyphonic Synthesizer)**:
+   - Trong `src/client/audio.ts`: Bộ tổng hợp âm nhạc procedural Web Audio tự động phát nhạc theo bối cảnh:
+     - Nhạc Khám phá: Hợp âm C minor / Eb rải chậm, u uất cùng tiếng chuông vọng.
+     - Nhạc Chiến đấu: Nhịp trống tim (Pulse Kick) dồn dập 115 BPM cùng âm bass gầm gừ đẩy áp lực.
+6. **Bằng chứng kiểm chứng**:
+   - `npm run check`: 103/103 tests pass, validators pass, TypeScript strict pass, build pass.
+   - `npm run simulate:campaign -- --seeds 100`: 800/800 runs pass, 0 softlocks, 0 rejected commands.
+   - Ảnh chụp thực tế: `artifacts/r3_*.png` và carousel trong [overhaul_combat_and_ui.md](../artifacts/overhaul_combat_and_ui.md).
 
 ## Bối cảnh R2 đã hoàn tất và kiểm chứng
 

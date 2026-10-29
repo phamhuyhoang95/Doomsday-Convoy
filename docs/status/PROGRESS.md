@@ -15,13 +15,13 @@ Nguồn bàn giao chi tiết: [HANDOFF](../ai/HANDOFF.md). Mục lục: [docs/RE
 | A2 web/catalog/client | Đã tích hợp local, 38 ID/29 web images ~8.90 MiB |
 | A2 final QA/Git delivery | Hoàn tất; 29 ảnh master / web / catalog đã sync |
 | Kho docs/AGENTS | Đã tổ chức xong nội dung; lưu checkpoint để AI mới tiếp nhận |
-| R2 Nâng cấp toàn diện | Hoàn tất Phase 1–4: Narrative văn học, Game Feel/Audio Web, Phân tầng combat, Hiệu ứng trạng thái (Lộ điểm yếu/Hoảng loạn/Chảy máu), Anomaly suy luận, Cân bằng kinh tế & Telemetry Tro Tàn |
+| R2 & R3 Đại tu toàn diện | Hoàn tất: Giao diện Scene-Centric (không cuộn trang), Lượt đấu so le kẻ địch phản công thực sự, Ý đồ báo trước (Enemy Intents), Banner phản đòn, Nhạc nền BGM Web Audio tự tổng hợp, Narrative grimdark, Anomaly suy luận |
 
-## Gate có bằng chứng R2
+## Gate có bằng chứng R3
 
-- `npm run check` trên Node 24: 103/103 tests pass (5 test suites), world/content/art validators pass, TypeScript strict pass, Vite production build thành công (`dist/assets/index-BhE3zORl.js`).
-- `npm run simulate:campaign -- --seeds 100`: 800/800 campaign runs qua 8 bộ chính sách, 0 softlocks, 0 rejected commands, 800 save/load checks pass, 800 replay verified runs pass.
-- Đã kiểm tra trực tiếp qua Mobile Browser QA (viewport 390x844) và Desktop QA, ghi nhận ảnh màn hình thực tế trong `artifacts/`.
+- `npm run check` trên Node 24: 103/103 tests pass (5 test suites), world/content/art validators pass, TypeScript strict pass, Vite production build thành công.
+- `npm run simulate:campaign -- --seeds 100`: 800/800 campaign runs qua 8 bộ chính sách, 0 softlocks, 0 rejected commands, 800 save/load checks pass, 800 replay verified runs pass với lượt đấu so le.
+- Ảnh chụp màn hình thực tế: `artifacts/r3_*.png` và slide carousel [overhaul_combat_and_ui.md](../artifacts/overhaul_combat_and_ui.md).
 
 ## Việc đã đổi trong đợt docs
 

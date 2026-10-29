@@ -181,6 +181,30 @@ export function CombatPanel({
           </span>
         ))}
       </div>
+      {combat.lastEnemyAction && combat.phase === "active" && (
+        <div
+          className="enemy-retaliation-banner combat-screen-shake"
+          style={{
+            padding: "8px 14px",
+            margin: "8px 0 12px",
+            background: "linear-gradient(90deg, rgba(180, 30, 20, 0.45), rgba(50, 10, 10, 0.7))",
+            border: "1px solid #ff4d40",
+            borderRadius: "4px",
+            color: "#ffc8c0",
+            fontSize: "0.85rem",
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            boxShadow: "0 0 14px rgba(255, 60, 50, 0.4)",
+          }}
+        >
+          <span style={{ fontSize: "1.2rem", animation: "hitFlashRed 0.6s ease" }}>⚡</span>
+          <span>
+            <strong style={{ color: "#ff7b6e", letterSpacing: "0.5px" }}>ĐỐI THỦ PHẢN CÔNG: </strong>
+            {combat.lastEnemyAction.text}
+          </span>
+        </div>
+      )}
       {combat.phase === "aftermath" && (
         <div className="victory-loot">
           <strong>Đối thủ bị hạ. Bạn quyết định ai được sống.</strong>
@@ -324,6 +348,35 @@ export function CombatPanel({
                   </span>
                 )}
               </div>
+              {actor.status === "active" && (() => {
+                const predictedTarget = [...allies]
+                  .filter((a) => a.status === "active")
+                  .sort((a, b) => a.health - b.health || (a.id < b.id ? -1 : 1))[0];
+                if (!predictedTarget) return null;
+                const estDmg = Math.max(
+                  1,
+                  (actor.attributes?.attack ?? 10) - (predictedTarget.attributes?.defense ?? 2),
+                );
+                return (
+                  <div
+                    style={{
+                      marginTop: "6px",
+                      padding: "3px 6px",
+                      background: "rgba(220, 50, 40, 0.2)",
+                      border: "1px solid rgba(255, 90, 80, 0.5)",
+                      borderRadius: "3px",
+                      fontSize: "0.65rem",
+                      color: "#ffc2b8",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <span>🎯 Ý ĐỒ:</span>
+                    <strong>Đánh {predictedTarget.name} (~{estDmg} HP)</strong>
+                  </div>
+                );
+              })()}
               {enemy?.id === actor.id && actor.status === "active" && (
                 <small className="target-selected">◎ ĐANG NHẮM</small>
               )}

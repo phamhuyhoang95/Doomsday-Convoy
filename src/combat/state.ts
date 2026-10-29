@@ -13,6 +13,14 @@ export const combatStateSchema = z
     vulnerableActorIds: z.array(idSchema).optional().default([]),
     panickedActorIds: z.array(idSchema).optional().default([]),
     bleedingActorIds: z.array(idSchema).optional().default([]),
+    lastEnemyAction: z
+      .object({
+        actorName: z.string(),
+        targetName: z.string(),
+        damage: z.number(),
+        text: z.string(),
+      })
+      .optional(),
     log: z.array(z.string()),
   })
   .strict();
