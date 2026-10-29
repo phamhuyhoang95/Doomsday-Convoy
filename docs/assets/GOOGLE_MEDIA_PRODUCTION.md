@@ -60,11 +60,11 @@ Với dự án này ưu tiên Flow trước. Nếu tự động hóa Cloud video
 
 ## 7. Pipeline đề xuất, chưa triển khai
 
-1. Astral chốt beat sheet, thoại và shot list gắn với gameplay; lựa chọn nào cần được nghe/thấy rõ.
-2. Terra chuẩn bị brief/prompt và khảo sát model/billing trong phạm vi được người dùng giao; sản xuất batch nhỏ trước, giữ receipts. Raster image vẫn theo skill imagegen hiện hành; không tự đổi nhà cung cấp tạo ảnh A2.
+1. Chốt beat sheet, thoại và shot list gắn với gameplay; lựa chọn nào cần được nghe/thấy rõ.
+2. Chuẩn bị brief/prompt và khảo sát dịch vụ/billing trong phạm vi được người dùng giao; sản xuất batch nhỏ trước, giữ receipts. Raster image vẫn theo skill imagegen hiện hành; không tự đổi nhà cung cấp tạo ảnh A2.
 3. Lưu master WAV/video cùng manifest: asset ID, text key, model/voice, prompt, source, ngày, chi phí, transcript, duration, phiên bản điều khoản/ghi chú sử dụng.
 4. Biên tập/encode thành media web; giữ master riêng, không nhúng API key vào client. Theo dõi dung lượng, tải theo cảnh và fallback ảnh/text khi thiếu media.
-5. Sol nối registry và presentation/audio director; controls bật/tắt/volume/phụ đề/skip. Clip không kích hoạt thêm command hay RNG khi tua/bỏ qua.
-6. Terra kiểm tra nghe/xem sau khi được giao QA; Astral duyệt sự ăn khớp với scene và nhịp chơi. Đọc điều khoản đúng dịch vụ dùng để tạo output trước phát hành; không mặc định subscription đồng nghĩa độc quyền tác phẩm.
+5. Nối registry và presentation/audio director; controls bật/tắt/volume/phụ đề/skip. Clip không kích hoạt thêm command hay RNG khi tua/bỏ qua.
+6. Kiểm tra nghe/xem khi QA được phép; duyệt sự ăn khớp với scene và nhịp chơi. Đọc điều khoản đúng dịch vụ dùng để tạo output trước phát hành; không mặc định subscription đồng nghĩa độc quyền tác phẩm.
 
 Tiêu chí chốt media: phát âm đúng, nhân vật/xe nhất quán, không chữ rác, không lặp âm gây mệt, có subtitle/fallback, không chặn tương tác, dung lượng phù hợp. Chất lượng cuối được quyết định bằng nghe/xem, không chỉ file tồn tại hoặc API trả thành công.

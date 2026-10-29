@@ -1,8 +1,8 @@
 # R4 — đề xuất làm lại trải nghiệm LAST CONVOY
 
-Ngày: 2026-10-29 (Asia/Saigon). Trạng thái: **đề xuất để review, chưa triển khai**. Người phụ trách thiết kế/review: Astral High; điều tra source và dịch vụ: Terra 6.1 High; khi triển khai: Sol 6.1 High.
+Ngày: 2026-10-29 (Asia/Saigon). Trạng thái: **đã được người dùng yêu cầu triển khai; R4.0 đang dở và tạm dừng khi người dùng đổi ưu tiên sang sửa quy tắc tài liệu**.
 
-Yêu cầu: game chạy được nhưng tẻ nhạt, màn quá ngắn, thiếu cảm giác âm nhạc/chuyển động; cần ý tưởng cải tổ, có thể làm lại, và cách tận dụng Google AI Pro + khoảng $100 Google Cloud. Lượt này chỉ đọc source, nghiên cứu web và viết kế hoạch; không chạy test/browser QA, tạo media trả phí hoặc thay code game.
+Yêu cầu: game chạy được nhưng tẻ nhạt, màn quá ngắn, thiếu cảm giác âm nhạc/chuyển động; cần ý tưởng cải tổ, có thể làm lại, và cách tận dụng Google AI Pro + khoảng $100 Google Cloud. Phần đề xuất ban đầu chỉ đọc source/nghiên cứu. Yêu cầu tiếp tục mới ngày 2026-10-29 đã mở code, sản xuất tài nguyên và QA liên quan; chi Google Cloud/billing mới vẫn cần giới hạn được xác minh.
 
 ## 1. Quyết định đề xuất
 
@@ -109,38 +109,38 @@ Cách tận dụng Google và ngân sách: [GOOGLE_MEDIA_PRODUCTION](../assets/G
 
 ### R4.0 — chốt baseline và thiết kế slice
 
-- Astral: chốt sơ đồ chợ, beat sheet, 6 quyết định quan trọng, hai cách thoát và ngân sách kinh tế/thời gian; đưa phần ngoài scope vào backlog.
-- Terra: khi được yêu cầu triển khai/QA, ghi thời lượng và đường đi baseline, nghe audio/unlock trên desktop/mobile, audit compatibility của R2/R3. Hiện `campaign.ts:163` vẫn là `.5-r1` dù đã có đổi rules; phải khảo sát replay thực trước khi tuyên bố giữ được mọi save R1.
+- Chốt sơ đồ chợ, beat sheet, 6 quyết định quan trọng, hai cách thoát và ngân sách kinh tế/thời gian; đưa phần ngoài scope vào backlog.
+- Khi được yêu cầu triển khai/QA, ghi thời lượng và đường đi baseline, nghe audio/unlock trên desktop/mobile, audit compatibility của R2/R3. Hiện `campaign.ts:163` vẫn là `.5-r1` dù đã có đổi rules; phải khảo sát replay thực trước khi tuyên bố giữ được mọi save R1.
 - File: plan này, `docs/reports/R4_BASELINE.md` dự kiến; đọc `content`, `persistence`, `core/processor`, `client/audio`.
 - Gate: biết đoạn nào rút ngắn game, biết vấn đề audio thuộc code/mix/trạng thái trình duyệt; có plan slice đủ để Sol triển khai. Không đặt kết quả fun từ số test.
 
 ### R4.1 — thám hiểm địa điểm và lựa chọn có hậu quả
 
-- Sol: module expedition/scenario cho graph điểm tương tác, phân công crew, trạng thái mục tiêu, cảnh giới và rút lui; tạo scenario chợ bằng data/schema. Tiếp tục command validation nguyên tử.
+- Xây module expedition/scenario cho graph điểm tương tác, phân công crew, trạng thái mục tiêu, cảnh giới và rút lui; tạo scenario chợ bằng data/schema. Tiếp tục command validation nguyên tử.
 - File dự kiến: `src/expedition/`, `src/core/commands.ts`, `state-schema.ts`, `events.ts`, `processor.ts`, `src/content/`, client scene mới trong `src/client/components/`.
 - Chốt thang thời gian mới trước cân supplies: travel giờ, hành động hiện trường phút hoặc mission budget; không để một lần mở tủ/đánh tự đốt một giờ như rules cũ. Tránh đồng hồ chạy ngoài command. Chỉ áp dụng rules mới trong bundle mới.
-- Terra: kiểm tra deterministic, crew vắng/downed, loot/capacity, rút lui, save giữa nhiệm vụ, invalid commands và đường kết thúc thay thế.
-- Astral review: ít nhất hai cách giải nhiệm vụ khả thi; ít nhất ba hậu quả được nhìn thấy ở checkpoint tiếp theo; không cần sửa engine theo ID của riêng chợ.
+- Kiểm tra deterministic, crew vắng/downed, loot/capacity, rút lui, save giữa nhiệm vụ, invalid commands và đường kết thúc thay thế.
+- Review: ít nhất hai cách giải nhiệm vụ khả thi; ít nhất ba hậu quả được nhìn thấy ở checkpoint tiếp theo; không cần sửa engine theo ID của riêng chợ.
 
 ### R4.2 — combat mục tiêu và build
 
-- Sol: vị trí/AP, tương tác môi trường, objective win/loss, ý đồ có counterplay, 3 vai trò địch và 2 module xe; giữ lựa chọn nghi binh/thoát.
+- Xây vị trí/AP, tương tác môi trường, objective win/loss, ý đồ có counterplay, 3 vai trò địch và 2 module xe; giữ lựa chọn nghi binh/thoát.
 - File: `src/combat/`, `src/read-models/`, content skill/encounter/scenario và `CombatPanel`/scene.
-- Terra: mục tiêu sống/chết/rút, target/range/AP không hợp lệ, địch chết/downed/capture, chuyển loot/ownership, save/replay và tránh softlock khi mất người cần thiết.
-- Astral review: chơi thắng bằng hơn một chiến thuật; vị trí/skill/module đổi cách giải tình huống; không dùng tăng HP làm nội dung chính.
+- Kiểm tra mục tiêu sống/chết/rút, target/range/AP không hợp lệ, địch chết/downed/capture, chuyển loot/ownership, save/replay và tránh softlock khi mất người cần thiết.
+- Review: chơi thắng bằng hơn một chiến thuật; vị trí/skill/module đổi cách giải tình huống; không dùng tăng HP làm nội dung chính.
 
 ### R4.3 — trình diễn có thể cảm nhận
 
-- Sol: scene animation timeline, nhạc/ambience/SFX có assets, mixer/unlock, reduced motion; registry hỗ trợ media có metadata và fallback. Voice/clip placeholder có thể dùng để thử timing nhưng phải ghi rõ chưa phải media cuối.
+- Xây scene animation timeline, nhạc/ambience/SFX có assets, mixer/unlock, reduced motion; registry hỗ trợ media có metadata và fallback. Voice/clip placeholder có thể dùng để thử timing nhưng phải ghi rõ chưa phải media cuối.
 - File: `src/client/audio.ts`, client presentation/scene, `src/client/art/`, CSS, pipeline media riêng dưới `scripts/` khi cần. Core chỉ phát event/ID ổn định.
-- Terra: nghe thật sau click mở đầu, tab background/resume, mute/volume, lỗi asset, trình duyệt/mobile; xác nhận từng reaction, skip và chơi khi tắt media.
+- Nghe thật sau click mở đầu, tab background/resume, mute/volume, lỗi asset, trình duyệt/mobile; xác nhận từng reaction, skip và chơi khi tắt media.
 - Gate: người chơi nhận ra ai làm gì và mất/được gì không cần đọc log; nhạc/thoại không lấn tín hiệu gameplay.
 
 ### R4.4 — kiểm chứng sức hút rồi mở rộng
 
 - Mời tối thiểu 5 người chưa biết đường giải chơi slice; ghi thời gian chủ động, bỏ cuộc, thao tác không hiểu và ba quyết định họ nhớ. Đây là mẫu formative nhỏ, không phải thống kê thị trường.
 - Gate thử nghiệm: ít nhất 4/5 hoàn thành mà không cần hướng dẫn miệng; ít nhất 3/5 tự nguyện chọn chơi chặng tiếp; quan sát có ít nhất hai chiến lược khác nhau; phần lớn người chơi nêu được một đánh đổi có ý nghĩa. Thời gian mục tiêu 20–30 phút nhưng không đạt bằng cách ép chờ.
-- Nếu chưa đạt: Astral sửa giả thuyết/plan, Sol sửa gameplay, Terra kiểm tra phần đổi; chưa đổ tiền vào nhiều cinematic hoặc nhân bản ba hồi.
+- Nếu chưa đạt: sửa giả thuyết/plan và gameplay, kiểm tra phần đổi; chưa đổ tiền vào nhiều cinematic hoặc nhân bản ba hồi.
 - Khi đạt: mở rộng 2 hồi còn lại theo bảng thời lượng, thêm các tình huống thay thế, rồi làm thoại/clip cuối. Mỗi hồi có plan content và gate riêng trước code.
 
 ## 8. Compatibility, đo lường và giao hàng
@@ -158,8 +158,49 @@ Online multiplayer, open world, hàng trăm event, mô phỏng quan hệ sâu, f
 
 ## 10. Trạng thái công việc
 
-- [x] Terra đọc source và báo bằng chứng, không chạy QA.
-- [x] Terra nghiên cứu Google; Astral đối chiếu lại nguồn, loại bỏ giá Veo Developer API đã ngừng.
-- [x] Astral đề xuất cấu trúc, slice, phương án media và gates.
-- [ ] Người dùng chọn hướng/phạm vi triển khai tiếp.
-- [ ] R4.0–R4.4: chưa bắt đầu triển khai.
+- [x] Đã đọc source và báo bằng chứng, không chạy QA ở đợt đề xuất.
+- [x] Đã nghiên cứu Google, đối chiếu nguồn và loại bỏ giá Veo Developer API đã ngừng.
+- [x] Đã đề xuất cấu trúc, slice, phương án media và gates.
+- [x] Người dùng chọn tiếp tục R4, cải tiến gameplay và sản xuất tài nguyên (2026-10-29).
+- [ ] R4.0 đang audit và chốt; R4.1/R4.3 triển khai slice đầu. R4.2 đầy đủ và R4.4 human playtest còn mở.
+
+
+## 11. Đợt triển khai đầu đã được ủy quyền — 2026-10-29
+
+Baseline `9113203`, working tree sạch trước đợt. Việc audit/đóng băng compatibility đã bắt đầu; xem HANDOFF và R4_BASELINE. Không có quy định dùng model cụ thể.
+
+### Phạm vi giao hàng đầu
+
+Hoàn tất một nhiệm vụ chợ chơi được trên command engine: 5 điểm tương tác, chọn đội ngoài/giữ xe, ngân sách hiện trường, cảnh giới, chỗ mang đồ, cứu Hà, lựa chọn chiến đấu hoặc nghi binh và rút lui hợp lệ; hai module có tác dụng thật. Tích hợp scene mới và audio assets đóng gói. Giữ combat hiện có trong slice đầu; sân vị trí/2 AP/ba vai trò địch đầy đủ ở R4.2 là bước tiếp, không được báo đã xong.
+
+Sơ đồ trình bày: bãi xe bên trái → dãy sạp/cổng → phòng điện giữa → kho bên phải → phòng Hà phía sau. Các hotspot là UI từ dữ liệu; ảnh không quyết định đường đi hoặc rules.
+
+Sáu quyết định cần giữ:
+
+1. Cho ai đi: hai người ngoài hiện trường, một người giữ xe; năng lực khác nhau nhưng luôn có phương án thay thế.
+2. Trinh sát/dò dấu vết trước để biết rủi ro, hoặc đi thẳng tiết kiệm bước.
+3. Bật điện để cứu người/mở kho nhanh nhưng tăng cảnh giới; phá khóa/thao tác tay tốn thêm công.
+4. Chọn đồ mang về trong sức chứa hữu hạn; ưu tiên nhiên liệu/vật tư hoặc máy phát.
+5. Mở đường bằng chiến đấu hoặc nghi binh tốn vật tư; luôn cho rút sớm với hậu quả thật.
+6. Lắp module phù hợp thành quả, thấy tác dụng ở chuyến đi tiếp theo; không chỉ đổi dòng mô tả.
+
+### Tài nguyên và khả năng tiếp cận
+
+- Ảnh chợ mất điện mới cho bố cục tương tác (không tạo lại A2): master/receipt tại `art/production-r4/`, web tại `public/art/r4/market-blackout.jpg`.
+- Nhạc/âm cảnh/SFX đóng gói offline và có source/manifest; không cần API khi chơi. Đợt đầu có thể dùng nhạc tổng hợp được biên tập thành asset thật, ghi rõ nguồn thay vì gọi là Lyria/thu âm.
+- Âm thanh unlock sau tương tác, có nghe thử/mute/volume và fallback; reduced-motion không khóa gameplay. Voice/Google clip là bước tiếp sau audition/budget, không coi placeholder là media cuối.
+
+### Compatibility và acceptance
+
+Chờ kết luận review kiến trúc ở `docs/reports/R4_ARCHITECTURE_REVIEW.md`; nguyên tắc bắt buộc: bundle mới + slot riêng, đóng băng `.5-r1` hiện tại và `.4`, không hứa khôi phục mọi save lịch sử cùng `.5-r1` vì R2/R3 đã đổi rules dưới cùng ID.
+
+Kiểm chứng: invalid commands nguyên tử; không có actor/downed loophole; chỗ chứa/loot không lặp; đường cứu/nghi binh/chiến đấu/rút hợp lệ; save/replay giữa nhiệm vụ; fixture legacy thật; UI desktop/mobile có fallback và không che nút; media thiếu/tắt vẫn chơi. Human playtest 5 người và thời lượng 20–30 phút vẫn là gate chưa xác nhận.
+
+### Checklist đợt đầu
+
+- [ ] Audit baseline + report.
+- [ ] Quyết định core/time/compatibility + report.
+- [ ] Gameplay, persistence, scene và audio integration.
+- [ ] Tài nguyên: scene master/web/receipt và audio assets/source/manifest.
+- [ ] Checks và browser evidence trên snapshot ổn định.
+- [ ] Review diff/bằng chứng, sửa findings, báo cáo/HANDOFF/PROGRESS, commit/push.

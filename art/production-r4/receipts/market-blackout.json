@@ -1,0 +1,34 @@
+{
+  "assetId": "asset.scene.market-blackout",
+  "date": "2026-10-29",
+  "tool": "built-in image_gen",
+  "intent": "new mission environment, not replacement A2",
+  "prompt": "Use case: stylized-concept\nAsset type: interactive wide environment backdrop for LAST CONVOY survival strategy game, new mission Chợ mất điện.\nPrimary request: An explorable Vietnamese evacuation market during a blackout, seen from a high oblique cinematic viewpoint, five clearly separated navigable areas linked by wet alleys. Left foreground parking apron with a weathered armored bus, center-left open main gate and tangled electrical cables, center small caged diesel generator and electrical shed, right foreground shuttered supply warehouse with fuel cans, right rear a small locked clinic/storeroom with one dim amber window where a survivor is trapped. Leave traversable open ground connecting these landmarks. These are neutral starting conditions: no victory, no active fight, no person prominently visible.\nStyle: richly textured painterly semi-realism, gritty supernatural post-apocalypse, premium illustrated survival-strategy art. Worn Vietnamese concrete architecture, sagging tarps, rust, ash, damp surfaces, repaired canvas and iron. Deep charcoal and petrol-teal shadows, bone-gray midtones, amber practical lamps and a subtle distant crimson haze. Cinematic chiaroscuro but all five landmarks legible.\nComposition: wide 16:9, environment fills frame, readable spatial layout from above at about 35 degrees, no split panels, no HUD; quiet upper edge for external UI. Strong environmental depth, moderately sized buildings, bus parked within the left foreground.\nConstraints: original artwork, no text, letters, numbers, labels, logos, signatures, watermarks, UI, borders, gore, close-up faces, glossy sci-fi, cartoon or anime. Single finished game environment.",
+  "source": "/Users/tdt/.codex/generated_images/01a18537-4f1c-7113-8dd7-dd45cfbeffbd/exec-6c2e5f7f-4690-4d8b-b551-048ea8f72725.png",
+  "master": "art/production-r4/masters/market-blackout.png",
+  "web": "public/art/r4/market-blackout.jpg",
+  "review": "Visually inspected: bus foreground left, gate upper left, generator center, warehouse right, rescue room upper right; no readable text or UI. Warm practical lamps remain despite blackout; main grid unlit.",
+  "suggestedHotspots": {
+    "parking": [
+      20,
+      62
+    ],
+    "gate": [
+      25,
+      30
+    ],
+    "generator": [
+      51,
+      43
+    ],
+    "warehouse": [
+      78,
+      64
+    ],
+    "rescue": [
+      84,
+      24
+    ]
+  },
+  "encoding": "macOS sips JPEG quality 82; native size preserved"
+}

@@ -15,6 +15,7 @@ import { ActionDeck } from "./components/ActionDeck";
 import { ActionReportPanel } from "./components/ActionReport";
 import { operationPreview } from "../expedition/read-model";
 import { AssetArt } from "./components/AssetArt";
+import { ScenarioScene } from "./components/ScenarioScene";
 
 function Brand() {
   return (
@@ -324,6 +325,7 @@ export default function App() {
 function GameView({ game }: { game: ReturnType<typeof useGame> }) {
   const definition = useDefinition();
   const [tab, setTab] = useState("map");
+  const [inScenarioBriefing, setInScenarioBriefing] = useState(false);
   const state = game.state;
   const toast = game.message && (
     <div className="toast" role="status">
@@ -365,6 +367,8 @@ function GameView({ game }: { game: ReturnType<typeof useGame> }) {
     (id) => state.actors[id]?.status !== "dead",
   ).length;
   const operations = operationPreview(state, "wait", definition);
+  const isScenarioActive =
+    inScenarioBriefing || (state.scenario && !state.scenario.installedModuleId);
   const tabs = [
     ["map", "Bản đồ hành trình"],
     ["crew", "Đoàn xe"],
@@ -463,6 +467,12 @@ function GameView({ game }: { game: ReturnType<typeof useGame> }) {
           <Ending state={state} />
         ) : state.combat ? (
           <CombatPanel state={state} dispatch={game.dispatch} />
+        ) : inScenarioBriefing || (state.scenario && !state.scenario.installedModuleId) ? (
+          <ScenarioScene
+            state={state}
+            dispatch={game.dispatch}
+            onCancel={() => setInScenarioBriefing(false)}
+          />
         ) : (
           <>
             <nav className="tabs" aria-label="Màn hình game">
@@ -507,6 +517,25 @@ function GameView({ game }: { game: ReturnType<typeof useGame> }) {
                     close={game.dismissReport}
                   />
                 )}
+                {convoy.locationId === "location.market" &&
+                  !state.world.facts["cache.secured"] && (
+                    <div className="scenario-entry-card">
+                      <span className="threat-tier tier-2">NHIỆM VỤ HIỆN TRƯỜNG</span>
+                      <h3>🔦 NHIỆM VỤ ĐỘT KÍCH: CHỢ MẤT ĐIỆN</h3>
+                      <p>
+                        Khu chợ đầu mối chìm trong bóng tối sau sự cố ngắt điện. Hà đang bị kẹt phía trong
+                        và toán cướp kho đang rải người canh gác. Bạn cần đưa người vào trinh sát, cứu người
+                        và thu hồi các module nâng cấp giá trị cho đoàn xe.
+                      </p>
+                      <button
+                        type="button"
+                        className="button primary pulse-btn"
+                        onClick={() => setInScenarioBriefing(true)}
+                      >
+                        TIẾN VÀO HIỆN TRƯỜNG KHU CHỢ <span>↗</span>
+                      </button>
+                    </div>
+                  )}
                 <div className="main-grid production-art">
                   <WorldMap state={state} dispatch={game.dispatch} />
                   <EventPanel state={state} dispatch={game.dispatch} />
@@ -524,7 +553,7 @@ function GameView({ game }: { game: ReturnType<typeof useGame> }) {
           </>
         )}
       </main>
-      {!state.combat && tab === "map" && <ActionDeck state={state} dispatch={game.dispatch} />}
+      {!state.combat && !isScenarioActive && tab === "map" && <ActionDeck state={state} dispatch={game.dispatch} />}
       <footer className="game-footer">
         <span>LAST CONVOY / R1</span>
         <span>MỘT CHUYẾN XE. MỌI QUYẾT ĐỊNH ĐỀU CÓ HẬU QUẢ.</span>

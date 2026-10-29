@@ -176,6 +176,14 @@ const payloadSchema = z.discriminatedUnion("type", [
       locationId: idSchema,
     })
     .strict(),
+  z
+    .object({
+      type: z.literal("scenario.event"),
+      scenarioId: idSchema,
+      action: z.string(),
+      detail: z.string(),
+    })
+    .strict(),
 ]);
 export type DomainEventPayload = z.infer<typeof payloadSchema>;
 export const domainEventSchema = z

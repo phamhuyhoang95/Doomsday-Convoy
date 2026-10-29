@@ -11,7 +11,7 @@
 | [PROGRESS](status/PROGRESS.md) | Checkpoint hiện tại, bằng chứng và gate còn mở |
 | [PROJECT_MAP](ai/PROJECT_MAP.md) | Source tree, entry points, lệnh và runtime |
 | [DECISIONS](ai/DECISIONS.md) | Những quyết định cần giữ khi sửa dự án |
-| [WORKFLOW](ai/WORKFLOW.md) | Phân công Astra medium/high, Sol/Terra high, quy trình plan/code/gate/review/docs/Git và bàn giao |
+| [WORKFLOW](ai/WORKFLOW.md) | Quy trình plan/code/gate/review/docs/Git và bàn giao |
 
 ## Thiết kế và kỹ thuật
 
@@ -27,11 +27,14 @@
 - [PHASE_PLANS](plans/PHASE_PLANS.md): Phase0–5 đã triển khai.
 - [PLAYABILITY_PLAN](plans/PLAYABILITY_PLAN.md): R1 theo phản hồi game sơ sài.
 - [R2_UPGRADE_PLAN](plans/R2_UPGRADE_PLAN.md): Đợt nâng cấp toàn diện R2 (Game feel, Combat depth, Narrative polish, Survival tension).
-- [R4_GAMEPLAY_REDESIGN](plans/R4_GAMEPLAY_REDESIGN.md): đề xuất làm lại vòng chơi, slice 20–30 phút và chiến dịch 65–90 phút; chưa triển khai.
+- [R4_GAMEPLAY_REDESIGN](plans/R4_GAMEPLAY_REDESIGN.md): kế hoạch và đợt triển khai slice Chợ mất điện; thời lượng 20–30 phút và chiến dịch 65–90 phút còn là mục tiêu thử nghiệm.
 - [ASSET_PLAN](plans/ASSET_PLAN.md): bộ mẫu A1.
 - [ASSET_PRODUCTION_PLAN](plans/ASSET_PRODUCTION_PLAN.md): A2 đang chốt.
 
 ## Báo cáo và lịch sử
+
+- [R4_BASELINE](reports/R4_BASELINE.md): audit source/save/audio và gate baseline R4.0.
+- [R4_ARCHITECTURE_REVIEW](reports/R4_ARCHITECTURE_REVIEW.md): quyết định compatibility/core/time cho slice R4.
 
 - [QA_REPORT](reports/QA_REPORT.md): checkpoint Phase5, content `.4`.
 - [PLAYABILITY_REPORT](reports/PLAYABILITY_REPORT.md): R1, content `.5-r1`, 103 tests và batch2.400 runs.

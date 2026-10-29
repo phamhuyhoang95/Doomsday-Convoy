@@ -47,7 +47,11 @@ export function planTravel(
       "Destination story requirements are not met.",
     );
   const costs = supplyCosts(state, convoy, route.travelTicks, definition);
-  costs.fuel += route.fuelCost;
+  const isFuelTankInstalled =
+    state.scenario?.installedModuleId === "module.fuel-tank";
+  costs.fuel += isFuelTankInstalled
+    ? Math.max(1, Math.floor(route.fuelCost * 0.8))
+    : route.fuelCost;
   const recon = state.campaign?.operations?.recon[convoy.locationId];
   const reduction =
     recon && recon.expiresAt > state.world.tick ? recon.riskReductionBps : 0;

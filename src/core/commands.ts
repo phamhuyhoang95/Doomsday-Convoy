@@ -72,6 +72,49 @@ const stanceSchema = z
   })
   .strict();
 
+const scenarioStartSchema = z
+  .object({
+    type: z.literal("scenario-start"),
+    convoyId: idSchema,
+    scenarioId: idSchema,
+    scoutIds: z.array(idSchema).min(1).max(3),
+    guardId: idSchema,
+  })
+  .strict();
+
+const scenarioMoveSchema = z
+  .object({
+    type: z.literal("scenario-move"),
+    convoyId: idSchema,
+    targetNodeId: idSchema,
+  })
+  .strict();
+
+const scenarioActSchema = z
+  .object({
+    type: z.literal("scenario-act"),
+    convoyId: idSchema,
+    nodeId: idSchema,
+    actionId: idSchema,
+  })
+  .strict();
+
+const scenarioCrisisSchema = z
+  .object({
+    type: z.literal("scenario-crisis"),
+    convoyId: idSchema,
+    method: z.enum(["combat", "decoy", "evacuate"]),
+  })
+  .strict();
+
+const scenarioFinishSchema = z
+  .object({
+    type: z.literal("scenario-finish"),
+    convoyId: idSchema,
+    chosenModuleId: z.enum(["module.fuel-tank", "module.triage-unit"]),
+  })
+  .strict();
+
 export const commandSchema = z
   .object({
     id: idSchema,
@@ -86,6 +129,11 @@ export const commandSchema = z
       repairSchema,
       trainSchema,
       stanceSchema,
+      scenarioStartSchema,
+      scenarioMoveSchema,
+      scenarioActSchema,
+      scenarioCrisisSchema,
+      scenarioFinishSchema,
     ]),
   })
   .strict();
@@ -114,7 +162,20 @@ export type CommandErrorCode =
   | "NO_COMBAT"
   | "NOT_YOUR_TURN"
   | "INVALID_TARGET"
-  | "SKILL_UNAVAILABLE";
+  | "SKILL_UNAVAILABLE"
+  | "SCENARIO_ACTIVE"
+  | "INVALID_LOCATION"
+  | "INVALID_CREW"
+  | "NO_SCENARIO"
+  | "INVALID_MOVE"
+  | "INVALID_NODE"
+  | "ACTION_ALREADY_DONE"
+  | "UNKNOWN_ACTION"
+  | "ROLE_REQUIRED"
+  | "CARGO_FULL"
+  | "NO_CRISIS"
+  | "NO_DECOY_SUPPLIES"
+  | "NOT_READY";
 
 export class CommandError extends Error {
   constructor(

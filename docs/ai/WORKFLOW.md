@@ -1,25 +1,23 @@
 # Quy trình làm việc và bàn giao
 
-## Vai trò và luồng điều phối
+## Luồng làm việc
 
-Nguồn chính thức về model/effort và ranh giới trách nhiệm là [AGENTS.md](../../AGENTS.md#phân-công-model-bắt-buộc). Astra (`gpt-6-astra`) dùng **medium** để điều phối, chia task, lập plan thông thường, đề xuất ý tưởng và review thường lệ. Chỉ dùng **Astra high** cho review kiến trúc quan trọng hoặc quyết định quan trọng. Sol 6.1 và Terra 6.1 tiếp tục dùng **high**.
+Không có phân công model, mức suy luận hoặc số lượng agent bắt buộc. Hoàn thành công việc trong phiên hiện tại; chỉ chia việc khi điều đó thực sự cần thiết. Nếu chia việc, giao rõ phạm vi và tránh nhiều người sửa cùng file.
 
-1. **Astra** ghi mục tiêu, scope và acceptance criteria; giao **Terra** khảo sát source/thông tin nếu còn điều chưa rõ.
-2. **Terra high** bàn giao bằng chứng và các câu hỏi còn mở; **Astra medium** hoàn thiện plan trước khi giao code. Nếu có quyết định kiến trúc/scope/compatibility quan trọng, giao **Astra high** chốt phần đó rồi trở lại medium.
-3. **Sol** triển khai theo plan, bàn giao diff và cách thử. Việc độc lập có thể song song; tránh ghi trùng file hoặc kiểm tra snapshot đang bị sửa.
-4. **Terra** chạy kiểm chứng phù hợp khi được phép, lưu lệnh/kết quả/artifact. QA đang dừng thì ghi chưa kiểm chứng, không tự chạy lại.
-5. **Astra medium** review diff và bằng chứng thường lệ; phần kiến trúc/quyết định quan trọng chuyển **Astra high**. Gửi findings cụ thể cho **Sol** sửa, **Terra** kiểm tra lại phần liên quan. Tự xem lại plan nếu giả định ban đầu sai; kết thúc review quan trọng thì điều phối về medium.
-6. **Astra** cập nhật HANDOFF/PROGRESS, chốt trạng thái thật và điều phối giao hàng. Ý tưởng ngoài scope lưu thành đề xuất để xem xét sau.
-
-Mặc định mọi bước điều phối của Astra ở mức medium. Sửa tài liệu điều phối nhỏ có thể làm trực tiếp, không bắt buộc tạo ba agent. Việc chọn model phải thực hiện bằng tùy chọn thật của runtime; chỉ viết tên vai trò trong Markdown không đổi model/effort đang chạy.
+1. Xác định mục tiêu, scope và tiêu chí nghiệm thu; điều tra source khi còn điều chưa rõ.
+2. Chốt plan và các quyết định quan trọng về kiến trúc, version hoặc compatibility trước khi sửa rules.
+3. Triển khai theo từng phần có thể review, bàn giao diff và cách thử.
+4. Kiểm chứng trong phạm vi người dùng cho phép, lưu lệnh, kết quả và artifact thật.
+5. Review diff và bằng chứng, sửa findings, kiểm tra lại phần bị ảnh hưởng.
+6. Cập nhật HANDOFF/PROGRESS và giao hàng. Ghi ý tưởng ngoài scope vào plan để xét sau.
 
 ### Brief và bàn giao tối thiểu
 
-- **Brief:** mục tiêu; plan/source cần đọc; model + effort (ghi lý do nếu nâng Astra lên high); file được sửa; giới hạn; phụ thuộc; quyền chạy QA hiện tại; acceptance criteria; đầu ra và nơi lưu.
+- **Brief nếu có chia việc:** mục tiêu; plan/source cần đọc; file được sửa; giới hạn; phụ thuộc; quyền chạy QA hiện tại; acceptance criteria; đầu ra và nơi lưu.
 - **Bàn giao:** đã làm; file/diff hoặc nguồn; phát hiện; command/kết quả/artifact thật; chưa kiểm chứng; blocker và bước tiếp đề xuất.
 - **Review:** file/line; trigger; hậu quả; mức ưu tiên; cách xác minh sửa; kết luận đạt/cần sửa/chưa đủ bằng chứng.
 
-Ghi đầu việc, người phụ trách, trạng thái và link bằng chứng vào checklist của plan đang dùng. Astra cập nhật trạng thái tổng hợp; không tạo hệ thống tracker riêng chỉ để điều phối.
+Ghi đầu việc, người phụ trách nếu có, trạng thái và link bằng chứng vào checklist của plan đang dùng; không tạo hệ thống tracker riêng chỉ để điều phối.
 
 ## Trước khi sửa
 
@@ -38,7 +36,7 @@ Ghi đầu việc, người phụ trách, trạng thái và link bằng chứng 
 
 ## Kiểm tra khi được phép
 
-Đọc yêu cầu mới nhất và HANDOFF trước; chỉ giao Terra chạy checks trong phạm vi được phép. Yêu cầu chỉnh tài liệu điều phối không tự mở lại QA. Chạy checks phù hợp thay đổi; không lặp batch lớn nếu không có lý do mới. `npm run check` gồm world/content/art validators, Vitest, TS và Vite build.
+Đọc yêu cầu mới nhất và HANDOFF trước; chạy checks trong phạm vi được phép. Yêu cầu chỉ chỉnh tài liệu không tự mở lại QA. Chạy checks phù hợp thay đổi; không lặp batch lớn nếu không có lý do mới. `npm run check` gồm world/content/art validators, Vitest, TS và Vite build.
 
 Browser phải dùng UI automation được cấp, lấy state mới sau thao tác và xác minh hành vi đã xảy ra. AssetArt fallback cần thử khi file lỗi; responsive cần xem ảnh thật, không chỉ compile. Không bypass browser URL/security policy; dùng đường HTTP được hỗ trợ cho gallery.
 

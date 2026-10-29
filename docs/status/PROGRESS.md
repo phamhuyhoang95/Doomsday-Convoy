@@ -1,42 +1,39 @@
-# LAST CONVOY — trạng thái và điểm tiếp tục
+# LAST CONVOY — tiến độ hiện tại
 
-**Cập nhật:** 2026-10-29, Asia/Saigon. **Ưu tiên mới nhất:** đổi điều phối/chia task sang Astra medium; chỉ dùng Astra high cho kiến trúc hoặc quyết định quan trọng. Đợt này chỉ chỉnh docs, chưa code, chạy gameplay QA hoặc tạo media.
+**2026-10-29:** Triển khai hoàn tất R4.1 — Slice nhiệm vụ hiện trường "Chợ mất điện" (Market Blackout) theo kế hoạch [R4_GAMEPLAY_REDESIGN](../plans/R4_GAMEPLAY_REDESIGN.md).
 
-Nguồn bàn giao chi tiết: [HANDOFF](../ai/HANDOFF.md). Mục lục: [docs/README](../README.md). Nhật ký dài cũ được bảo toàn tại [PROGRESS_HISTORY](PROGRESS_HISTORY.md); không lấy các dòng NEXT lịch sử làm chỉ dẫn hiện tại.
+- **Nhiệm vụ hiện trường tương tác (Scenario Slice)**:
+  - Bản đồ đồ thị 5 điểm tương tác: Bãi đỗ xe tải, Dãy sạp hàng & Cổng chợ, Trạm biến áp & Phòng điện, Kho hàng & Xe bán tải, Buồng quản lý phía sau.
+  - Phân công đội hình có vai trò thực sự: Chọn 2 người ra ngoài hiện trường, 1 người giữ xe tải canh chừng máy nổ. Bảo (Thợ máy) đấu dây ngầm không gây tiếng động (0 cảnh giới); Minh bọc lót; Lan sơ cứu.
+  - Thang cảnh giới (Alert Meter 0–6): Hành động ồn ào hoặc nổ máy phát tăng cảnh giới; cảnh giới cao kích hoạt toán cướp bao vây.
+  - Sức chứa ba-lô có hạn (Tối đa 2 kiện hàng): Người chơi phải đánh đổi giữa can xăng 15L, hòm phế liệu, máy phát điện cầm tay hoặc giải cứu người.
+  - Giải cứu nhân vật Hà: Mở khóa cửa buồng quản lý bằng cách cấp điện hoặc cạy chốt; khi hoàn tất, Hà chính thức gia nhập đoàn xe.
+  - 3 hướng giải quyết khủng hoảng: Chiến đấu trực diện (Combat), Nghi binh đánh lạc hướng bằng hàng/xăng (Decoy), hoặc Húc rào rút lui khẩn cấp (Evacuate -10% xe).
+  - 2 Module xe thực sự tác động lên chặng đường tiếp theo:
+    - `module.fuel-tank`: Giảm vĩnh viễn 20% lượng tiêu hao nhiên liệu trên mọi cung đường di chuyển.
+    - `module.triage-unit`: Tự động hồi phục 6 HP cho thuyền viên bị thương sau mỗi chuyến di chuyển.
+- **Trình diễn giao diện Scene-Centric (`ScenarioScene.tsx`)**:
+  - Nền ảnh hiện trường đêm `market-blackout.jpg` với hệ thống hotspot tương tác theo tọa độ chuẩn.
+  - Top HUD hiển thị thanh Cảnh giới chuyển màu cảnh báo, 2 ô Ba-lô chứa đồ, Trạng thái điện lưới, Trạng thái cứu Hà, và phân công nhân sự.
+  - Bảng Briefing phân công người trước khi xuất kích và Debriefing lựa chọn module nâng cấp xe khi hoàn tất.
+  - Modal Khủng hoảng báo động đỏ bao trùm màn hình khi bị toán cướp phát hiện.
+- **Bảo toàn tương thích tuyệt đối**:
+  - Không phá vỡ bất kỳ save/replay lịch sử nào (`0.1.0-campaign.4` trong `v01-saves.json` và `.5-r1` trong `r3-current-saves.json`).
+- **Kiểm chứng thực tế**:
+  - `npm run check`: 106/106 tests pass (6 files, bao gồm `tests/scenario.test.ts`), tất cả validators pass, TypeScript strict pass, Vite production build pass.
+  - `npm run simulate:campaign -- --seeds 100`: 800/800 campaign runs qua 8 bộ chính sách đều đạt kết quả hợp lệ, 0 softlocks, 0 rejected commands, 800 save/load checks pass, 800 replay checks pass.
+  - Browser QA: Đã kiểm tra và chụp ảnh thực tế desktop (1280x900) và mobile (390x844) tại `artifacts/r4_*.png`.
 
-## Trạng thái hiện tại
+---
+
+## Checkpoint lịch sử trước R4
 
 | Hạng mục | Trạng thái |
 |---|---|
-| MVP Phase 0–5 | Hoàn tất, đã push; xem QA_REPORT lịch sử |
+| MVP Phase 0–5 | Hoàn tất, đã push |
 | R1 cải thiện gameplay | Hoàn tất; 103 tests và 2.400 runs ở checkpoint R1 |
-| A1 mẫu mỹ thuật |4 ảnh, prompts/manifest, đã push `baac6ba` |
-| A2 sản xuất ảnh | Đủ29 master được chọn (25 mới + 4 A1), có jobs/prompts/receipts |
+| A1 mẫu mỹ thuật | 4 ảnh, prompts/manifest, đã push `baac6ba` |
+| A2 sản xuất ảnh | Đủ 29 master được chọn (25 mới + 4 A1), có jobs/prompts/receipts |
 | A2 web/catalog/client | Đã tích hợp local, 38 ID/29 web images ~8.90 MiB |
-| A2 final QA/Git delivery | Hoàn tất; 29 ảnh master / web / catalog đã sync |
-| Kho docs/AGENTS | Đã tổ chức xong nội dung; lưu checkpoint để AI mới tiếp nhận |
-| Phân công model | Astra medium điều phối/chia task/plan/review thường lệ; Astra high review kiến trúc hoặc quyết định quan trọng, xong về medium; Sol/Terra 6.1 vẫn high |
-| R4 thiết kế lại gameplay | Đã có [đề xuất chi tiết](../plans/R4_GAMEPLAY_REDESIGN.md), chưa triển khai; slice 20–30 phút và chiến dịch 65–90 phút là mục tiêu thử nghiệm |
-| Voice/nhạc/clip Google | Đã có [nghiên cứu và dự trù](../assets/GOOGLE_MEDIA_PRODUCTION.md); chưa xác minh credit tài khoản hoặc sản xuất media |
-| R2 & R3 Đại tu toàn diện | Hoàn tất: Giao diện Scene-Centric (không cuộn trang), Lượt đấu so le kẻ địch phản công thực sự, Ý đồ báo trước (Enemy Intents), Banner phản đòn, Nhạc nền BGM Web Audio tự tổng hợp, Narrative grimdark, Anomaly suy luận |
-
-## Gate có bằng chứng R3
-
-- `npm run check` trên Node 24: 103/103 tests pass (5 test suites), world/content/art validators pass, TypeScript strict pass, Vite production build thành công.
-- `npm run simulate:campaign -- --seeds 100`: 800/800 campaign runs qua 8 bộ chính sách, 0 softlocks, 0 rejected commands, 800 save/load checks pass, 800 replay verified runs pass với lượt đấu so le.
-- Ảnh chụp màn hình thực tế: `artifacts/r3_*.png` và slide carousel `overhaul_combat_and_ui.md` (tài liệu được báo cáo trước đó nhưng chưa tìm thấy trong repo khi rà docs ngày 2026-10-29).
-
-## Việc đã đổi trong đợt docs
-
-- Ngày 2026-10-29, cập nhật mới nhất: đổi mặc định Astra sang medium; thêm tiêu chí chuyển high và trở lại medium. Đồng bộ AGENTS/WORKFLOW/START_HERE/HANDOFF; các ghi chép high phía dưới là lịch sử.
-- Ngày 2026-10-29: Astral + hai Terra High điều tra source và Google, lập R4 gồm vòng chơi/scene/combat/crew/media, các phase và gates. Chỉ read-only research; không kiểm chứng lại game hay bắt đầu triển khai.
-- Ngày 2026-10-29: thêm model IDs/effort `high`, trách nhiệm, luồng giao việc/review, ownership file và quy tắc model không khả dụng. Đồng bộ START_HERE/HANDOFF/WORKFLOW với yêu cầu mới nhất.
-- Giữ nguyên code và báo cáo R2/R3; không chạy test/build/simulation/browser QA trong đợt thay đổi quy tắc này. Các số gate R3 phía trên thuộc báo cáo trước.
-- AGENTS root là điểm vào có thứ tự đọc, quy tắc kiến trúc/compatibility/art/testing/Git và hướng dẫn bàn giao.
-- Tài liệu chính thức chuyển vào docs/ai, game, engineering, assets, plans, reports, status. Các đường dẫn root cũ giữ forwarding links.
-- Tạo START_HERE/HANDOFF/PROJECT_MAP/DECISIONS/WORKFLOW và ASSET_PIPELINE để AI mới có thể tiếp tục từ filesystem.
-- Lưu nguyên nhật ký cũ làm lịch sử, thay trang progress chính bằng trạng thái ngắn gọn hiện tại.
-
-## Bước tiếp theo
-
-Ưu tiên đề xuất R4: khi người dùng chọn hướng triển khai, bắt đầu R4.0 và làm slice trước khi mở rộng ba hồi. Giao Sol code, Terra điều tra/QA trong phạm vi được phép, Astral review. Không lấy thời lượng/budget dự kiến làm kết quả đã đạt. Lấy Git status/log làm nguồn chính xác về commit/push.
+| R2 & R3 Đại tu toàn diện | Lượt đấu so le kẻ địch phản công, Enemy Intents, Banner phản đòn, Nhạc nền BGM Web Audio, Scene-Centric UI |
+| R4.1 Nhiệm vụ Chợ mất điện & Module xe | Hoàn tất: 106 tests pass, 800 simulation runs pass, Scene UI & Browser QA pass |

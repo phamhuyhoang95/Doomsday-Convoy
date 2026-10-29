@@ -96,6 +96,9 @@ export function createGame(seed: number, input: WorldDefinition): GameState {
         }
       : null,
     combat: null,
+    ...(definition.contentVersion === "0.1.0-campaign.4"
+      ? {}
+      : { scenario: null }),
     eventSequence: 0,
     commandLog: [],
   };

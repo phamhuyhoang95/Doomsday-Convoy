@@ -159,6 +159,203 @@ export function useGame() {
         setState(current);
         return;
       }
+      if (qa === "scenario-briefing") {
+        const take = (cmd: GameCommand) => {
+          const res = processCommand(
+            current,
+            cmd,
+            { principalId: current.player.id },
+            campaignDefinition,
+          );
+          if (res.ok) current = res.state;
+        };
+        take(campaignChoice(current, "prepare"));
+        take(travelCommand(current, "route.garage-market"));
+        current = structuredClone(current);
+        current.scenario = {
+          id: "scenario.market-blackout",
+          phase: "planning",
+          scoutIds: [],
+          guardId: "",
+          currentNodeId: "node.parking",
+          visitedNodeIds: ["node.parking"],
+          completedActionIds: [],
+          alert: 0,
+          maxAlert: 6,
+          powerOn: false,
+          rescuedHa: false,
+          cargo: [],
+          maxCargo: 2,
+          installedModuleId: null,
+          log: [],
+        };
+        setState(current);
+        return;
+      }
+      if (qa === "scenario-debrief") {
+        const take = (cmd: GameCommand) => {
+          const res = processCommand(
+            current,
+            cmd,
+            { principalId: current.player.id },
+            campaignDefinition,
+          );
+          if (res.ok) current = res.state;
+        };
+        take(campaignChoice(current, "prepare"));
+        take(travelCommand(current, "route.garage-market"));
+        take({
+          id: "cmd.3",
+          issuerId: current.player.id,
+          payload: {
+            type: "scenario-start",
+            convoyId: current.player.convoyId,
+            scenarioId: "scenario.market-blackout",
+            scoutIds: ["character.minh", "character.bao"],
+            guardId: "character.lan",
+          },
+        });
+        current = structuredClone(current);
+        if (current.scenario) {
+          current.scenario.phase = "completed";
+          current.scenario.rescuedHa = true;
+          current.scenario.cargo = ["cargo.fuel", "cargo.generator"];
+          current.scenario.alert = 2;
+        }
+        setState(current);
+        return;
+      }
+      if (qa === "scenario" || qa === "scenario-crisis") {
+        const take = (cmd: GameCommand) => {
+          const res = processCommand(
+            current,
+            cmd,
+            { principalId: current.player.id },
+            campaignDefinition,
+          );
+          if (res.ok) current = res.state;
+        };
+        take(campaignChoice(current, "prepare"));
+        take(travelCommand(current, "route.garage-market"));
+        take({
+          id: "cmd.3",
+          issuerId: current.player.id,
+          payload: {
+            type: "scenario-start",
+            convoyId: current.player.convoyId,
+            scenarioId: "scenario.market-blackout",
+            scoutIds: ["character.minh", "character.bao"],
+            guardId: "character.lan",
+          },
+        });
+        if (qa === "scenario-crisis") {
+          take({
+            id: "cmd.4",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-move",
+              convoyId: current.player.convoyId,
+              targetNodeId: "node.stalls",
+            },
+          });
+          take({
+            id: "cmd.5",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-act",
+              convoyId: current.player.convoyId,
+              nodeId: "node.stalls",
+              actionId: "act.scout-stalls",
+            },
+          });
+          take({
+            id: "cmd.6",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-move",
+              convoyId: current.player.convoyId,
+              targetNodeId: "node.power",
+            },
+          });
+          take({
+            id: "cmd.7",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-act",
+              convoyId: current.player.convoyId,
+              nodeId: "node.power",
+              actionId: "act.start-generator",
+            },
+          });
+          take({
+            id: "cmd.8",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-move",
+              convoyId: current.player.convoyId,
+              targetNodeId: "node.warehouse",
+            },
+          });
+          take({
+            id: "cmd.9",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-act",
+              convoyId: current.player.convoyId,
+              nodeId: "node.warehouse",
+              actionId: "act.take-fuel",
+            },
+          });
+          take({
+            id: "cmd.10",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-move",
+              convoyId: current.player.convoyId,
+              targetNodeId: "node.backroom",
+            },
+          });
+          take({
+            id: "cmd.11",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-act",
+              convoyId: current.player.convoyId,
+              nodeId: "node.backroom",
+              actionId: "act.rescue-ha",
+            },
+          });
+          take({
+            id: "cmd.12",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-move",
+              convoyId: current.player.convoyId,
+              targetNodeId: "node.warehouse",
+            },
+          });
+          take({
+            id: "cmd.13",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-move",
+              convoyId: current.player.convoyId,
+              targetNodeId: "node.stalls",
+            },
+          });
+          take({
+            id: "cmd.14",
+            issuerId: current.player.id,
+            payload: {
+              type: "scenario-move",
+              convoyId: current.player.convoyId,
+              targetNodeId: "node.parking",
+            },
+          });
+        }
+        setState(current);
+        return;
+      }
       if (qa === "hospital") {
         const take = (cmd: GameCommand) => {
           const res = processCommand(current, cmd, { principalId: current.player.id }, campaignDefinition);

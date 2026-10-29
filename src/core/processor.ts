@@ -15,6 +15,7 @@ import type { WorldDefinition } from "../world/schema";
 import { refreshNarrative, resolveChoice } from "../narrative/director";
 import { resolveCombatCommand } from "../combat/engine";
 import { useSkill } from "../combat/skills";
+import { resolveScenarioCommand } from "../scenario/engine";
 import { updateRival } from "../world/npc";
 import { evaluateCondition } from "../narrative/conditions";
 import {
@@ -95,7 +96,8 @@ export function processCommand(
       );
     const configuring =
       command.payload.type === "train-actor" ||
-      command.payload.type === "set-stance";
+      command.payload.type === "set-stance" ||
+      command.payload.type.startsWith("scenario-");
     const ticks = configuring
       ? 0
       : plan
@@ -187,6 +189,18 @@ export function processCommand(
         next.knowledge.locationIds.push(plan.to);
         emit({ type: "location.discovered", locationId: plan.to });
       }
+      if (next.scenario?.installedModuleId === "module.triage-unit") {
+        for (const actorId of updatedConvoy.actorIds) {
+          const actor = next.actors[actorId];
+          if (
+            actor &&
+            actor.status === "active" &&
+            actor.health < actor.maxHealth
+          ) {
+            actor.health = Math.min(actor.maxHealth, actor.health + 6);
+          }
+        }
+      }
     } else if (command.payload.type === "wait") {
       emit({ type: "convoy.waited", convoyId: convoy.id, ticks });
       restConvoy(next, ticks, definition, emit);
@@ -234,6 +248,14 @@ export function processCommand(
           definition,
           emit,
         );
+    } else if (
+      command.payload.type === "scenario-start" ||
+      command.payload.type === "scenario-move" ||
+      command.payload.type === "scenario-act" ||
+      command.payload.type === "scenario-crisis" ||
+      command.payload.type === "scenario-finish"
+    ) {
+      resolveScenarioCommand(next, command.payload, definition, emit);
     }
 
     updateRival(next, definition, emit);

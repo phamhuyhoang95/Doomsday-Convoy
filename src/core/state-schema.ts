@@ -17,6 +17,7 @@ import {
   questStateSchema,
 } from "../narrative/state";
 import { combatStateSchema, npcStateSchema } from "../combat/state";
+import { scenarioStateSchema } from "../scenario/schema";
 
 const counterSchema = z
   .number()
@@ -155,6 +156,7 @@ export const gameStateSchema = z
     activeQuests: z.array(questStateSchema),
     campaign: campaignStateSchema.nullable(),
     combat: combatStateSchema.nullable(),
+    scenario: scenarioStateSchema.nullable().optional(),
     eventSequence: counterSchema,
     commandLog: z.array(commandRecordSchema),
   })

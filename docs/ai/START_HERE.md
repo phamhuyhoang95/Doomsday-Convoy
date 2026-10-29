@@ -5,12 +5,12 @@ LAST CONVOY là game chiến thuật đoàn xe sinh tồn chạy được trên 
 ## Thứ tự nhận việc
 
 1. Đọc [AGENTS root](../../AGENTS.md).
-2. Đọc [HANDOFF](HANDOFF.md) để biết yêu cầu gần nhất. **Hiện tại là cập nhật mức effort điều phối; R4 chưa triển khai và chưa mở lại gameplay QA.**
+2. Đọc [HANDOFF](HANDOFF.md) để biết yêu cầu gần nhất và trạng thái R4 đang dở.
 3. Đọc [PROGRESS](../status/PROGRESS.md) để phân biệt đã triển khai/đã QA/đã push.
 4. Đọc [PROJECT_MAP](PROJECT_MAP.md), [ARCHITECTURE](../engineering/ARCHITECTURE.md) và guide/plan liên quan.
 5. Xem Git status/diff/log và kiểm tra file tồn tại trước khi sửa. Không dùng lịch sử chat hoặc biến REPL làm nguồn duy nhất.
 
-Áp dụng [phân công trong AGENTS](../../AGENTS.md#phân-công-model-bắt-buộc): Astra **medium** điều phối/chia task/lập plan thông thường/review thường lệ; Astra **high** chỉ cho review kiến trúc hoặc quyết định quan trọng; Sol 6.1 **high** triển khai; Terra 6.1 **high** điều tra/tìm thông tin/công cụ/kiểm chứng; xem [WORKFLOW](WORKFLOW.md) để giao việc có phạm vi và bàn giao bằng chứng.
+Áp dụng [quy trình trong AGENTS](../../AGENTS.md#quy-trình-làm-việc) và [WORKFLOW](WORKFLOW.md); dự án không bắt buộc dùng model hay nhóm agent cụ thể.
 
 ## Những hiểu nhầm cần tránh
 
