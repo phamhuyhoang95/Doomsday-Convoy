@@ -1,5 +1,26 @@
 # Quy trình làm việc và bàn giao
 
+## Vai trò và luồng điều phối
+
+Nguồn chính thức về model/effort và ranh giới trách nhiệm là [AGENTS.md](../../AGENTS.md#phân-công-model-bắt-buộc). Astral High (`gpt-6-astra`) điều phối, lập plan, đề xuất ý tưởng và review; Sol 6.1 High triển khai; Terra 6.1 High điều tra, nghiên cứu, chạy checks và computer use. Tất cả dùng effort `high` khi chọn model qua công cụ.
+
+1. **Astral** ghi mục tiêu, scope và acceptance criteria; giao **Terra** khảo sát source/thông tin nếu còn điều chưa rõ.
+2. **Terra** bàn giao bằng chứng và các câu hỏi còn mở; **Astral** hoàn thiện plan trước khi giao code.
+3. **Sol** triển khai theo plan, bàn giao diff và cách thử. Việc độc lập có thể song song; tránh ghi trùng file hoặc kiểm tra snapshot đang bị sửa.
+4. **Terra** chạy kiểm chứng phù hợp khi được phép, lưu lệnh/kết quả/artifact. QA đang dừng thì ghi chưa kiểm chứng, không tự chạy lại.
+5. **Astral** review cả diff và bằng chứng; gửi findings cụ thể cho **Sol** sửa, **Terra** kiểm tra lại phần liên quan. Tự xem lại plan nếu giả định ban đầu sai.
+6. **Astral** cập nhật HANDOFF/PROGRESS, chốt trạng thái thật và điều phối giao hàng. Ý tưởng ngoài scope lưu thành đề xuất để xem xét sau.
+
+Sửa tài liệu điều phối nhỏ có thể làm trực tiếp, không bắt buộc tạo ba agent. Việc chọn model phải thực hiện bằng tùy chọn thật của runtime; chỉ viết tên vai trò trong Markdown không đổi model đang chạy.
+
+### Brief và bàn giao tối thiểu
+
+- **Brief:** mục tiêu; plan/source cần đọc; model + effort; file được sửa; giới hạn; phụ thuộc; quyền chạy QA hiện tại; acceptance criteria; đầu ra và nơi lưu.
+- **Bàn giao:** đã làm; file/diff hoặc nguồn; phát hiện; command/kết quả/artifact thật; chưa kiểm chứng; blocker và bước tiếp đề xuất.
+- **Review:** file/line; trigger; hậu quả; mức ưu tiên; cách xác minh sửa; kết luận đạt/cần sửa/chưa đủ bằng chứng.
+
+Ghi đầu việc, người phụ trách, trạng thái và link bằng chứng vào checklist của plan đang dùng. Astral cập nhật trạng thái tổng hợp; không tạo hệ thống tracker riêng chỉ để điều phối.
+
 ## Trước khi sửa
 
 1. Đọc AGENTS → HANDOFF → PROGRESS và yêu cầu mới nhất.
@@ -17,7 +38,7 @@
 
 ## Kiểm tra khi được phép
 
-Đọc HANDOFF trước: hiện người dùng đang dừng test/QA. Sau yêu cầu tiếp tục, chạy checks phù hợp thay đổi; không lặp batch lớn nếu không có lý do mới. `npm run check` gồm world/content/art validators, Vitest, TS và Vite build.
+Đọc yêu cầu mới nhất và HANDOFF trước; chỉ giao Terra chạy checks trong phạm vi được phép. Yêu cầu chỉnh tài liệu điều phối không tự mở lại QA. Chạy checks phù hợp thay đổi; không lặp batch lớn nếu không có lý do mới. `npm run check` gồm world/content/art validators, Vitest, TS và Vite build.
 
 Browser phải dùng UI automation được cấp, lấy state mới sau thao tác và xác minh hành vi đã xảy ra. AssetArt fallback cần thử khi file lỗi; responsive cần xem ảnh thật, không chỉ compile. Không bypass browser URL/security policy; dùng đường HTTP được hỗ trợ cho gallery.
 

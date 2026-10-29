@@ -1,12 +1,24 @@
 # Bàn giao hiện tại
 
-**Ngày:** 2026-10-29, Asia/Saigon. **Trạng thái:** Hoàn tất trọn vẹn đợt Đại tu Giao diện & Chiều sâu Combat (R3): Lượt đấu so le kẻ địch phản công thực sự, Ý đồ báo trước (Enemy Intents), Banner phản công trực quan, Nhạc nền BGM Synthesizer thời gian thực và Giao diện Scene-Centric không còn cuộn trang. Toàn bộ 103 tests và 800 campaign simulations đã pass 100%.
+**Ngày:** 2026-10-29, Asia/Saigon. **Trạng thái hiện tại:** cập nhật quy tắc phân công model và điều phối dự án trong AGENTS/WORKFLOW. Đợt này chỉ chỉnh tài liệu, không chạy test/build/simulation/browser QA và không thay code game.
 
 ## Yêu cầu mới nhất
 
-Người dùng: "ok quẩy đi" — Triển khai giải quyết triệt để 4 vấn đề: Kẻ địch không thể phản công, cuộc chiến 1 màu, giao diện dàn trải phải cuộn/navigate quá nhiều và thiếu background music.
+Người dùng yêu cầu Astral High lập plan, review, đề xuất ý tưởng và điều phối mục tiêu; Sol 6.1 High viết code/triển khai plan; Terra 6.1 High điều tra source, tìm thông tin, chạy test, computer use và các tác vụ hỗ trợ.
 
-## Những gì đã làm và kiểm chứng trong đợt này
+- Phân công chính thức và model IDs nằm trong [AGENTS.md](../../AGENTS.md#phân-công-model-bắt-buộc); luồng giao việc và mẫu bàn giao nằm trong [WORKFLOW](WORKFLOW.md).
+- "Astral" được ánh xạ tới `gpt-6-astra`; Sol dùng `gpt-6.1-sol`; Terra dùng `gpt-6.1-terra`; cả ba effort `high`. Phải chọn model qua runtime, Markdown không tự đổi model hiện hành.
+- Astral giữ plan/ưu tiên/review và HANDOFF/PROGRESS; mỗi file có một người ghi; code chuyển Sol, điều tra/kiểm chứng chuyển Terra. Sửa docs nhỏ có thể làm trực tiếp.
+- Yêu cầu này không mở lại gameplay QA. Không diễn giải số test lịch sử bên dưới thành kết quả của đợt chỉnh docs.
+- Bước tiếp: nhận mục tiêu tiếp theo, đối chiếu hiện trạng rồi phân công theo quy trình mới. Các ghi chú A2 ở cuối là bàn giao cũ; đối chiếu R2/R3 và source trước khi dùng chúng làm checklist hiện tại.
+
+## Bối cảnh R3 từ bàn giao trước
+
+Yêu cầu được ghi trong bàn giao trước: "ok quẩy đi" — Triển khai giải quyết 4 vấn đề: kẻ địch không thể phản công, cuộc chiến một màu, giao diện dàn trải phải cuộn/navigate nhiều và thiếu background music.
+
+Bàn giao R3 trước đó ghi hoàn tất lượt đấu so le, Enemy Intents, banner phản công, BGM Synthesizer và giao diện Scene-Centric, với 103 tests và 800 campaign simulations. Đây là kết quả đã được ghi trước đợt docs này, không phải lần chạy mới.
+
+## Những gì đã làm và kiểm chứng trong đợt R3 theo báo cáo trước
 
 1. **Lượt đấu so le & Kẻ địch Phản công**:
    - Chỉnh sửa `startCombat` trong `src/combat/engine.ts`: Thay vì đưa toàn bộ phe ta lên trước, lượt đấu được xếp so le `[Minh, Kẻ Đói, Lan, Kẻ Rình, Bảo]`.
@@ -27,7 +39,7 @@ Người dùng: "ok quẩy đi" — Triển khai giải quyết triệt để 4 
 6. **Bằng chứng kiểm chứng**:
    - `npm run check`: 103/103 tests pass, validators pass, TypeScript strict pass, build pass.
    - `npm run simulate:campaign -- --seeds 100`: 800/800 runs pass, 0 softlocks, 0 rejected commands.
-   - Ảnh chụp thực tế: `artifacts/r3_*.png` và carousel trong [overhaul_combat_and_ui.md](../artifacts/overhaul_combat_and_ui.md).
+   - Ảnh chụp thực tế: `artifacts/r3_*.png` và carousel trong `overhaul_combat_and_ui.md` (tài liệu được báo cáo trước đó nhưng chưa tìm thấy trong repo khi rà docs ngày 2026-10-29).
 
 ## Bối cảnh R2 đã hoàn tất và kiểm chứng
 
@@ -47,7 +59,7 @@ Người dùng: "ok quẩy đi" — Triển khai giải quyết triệt để 4 
 - **Bằng chứng kiểm chứng**:
   - `npm run check`: 103/103 tests pass, validators pass, TypeScript strict pass, build pass.
   - `npm run simulate:campaign -- --seeds 100`: 800/800 campaign runs qua 8 policies, 0 softlocks, 0 rejected commands, 800 save/load checks pass, 800 replay checks pass.
-  - Artifact Walkthrough: `artifacts/r2_*.png` và carousel [walkthrough_r2_record.md](../artifacts/walkthrough_r2_record.md) đã được ghi hình từ mobile viewport.
+  - Artifact Walkthrough: `artifacts/r2_*.png` và carousel `walkthrough_r2_record.md` (tài liệu được báo cáo trước đó nhưng chưa tìm thấy trong repo khi rà docs ngày 2026-10-29) đã được ghi hình từ mobile viewport.
 
 - MVP Phase 0–5: game ba màn, engine deterministic, quest/combat/NPC/artifacts/save/replay thật.
 - R1: scout/rest/repair/XP/stances, early combat ở chợ, cost/result feedback, crew trên map, skill preview, Web Audio, legacy saves.
@@ -75,7 +87,7 @@ Người dùng: "ok quẩy đi" — Triển khai giải quyết triệt để 4 
 - Mobile harness390 × 844 đã thấy crew 4 người, portrait mới và combat scene; chưa hoàn tất vòng QA mobile/map/fallback.
 - Ảnh bằng chứng: `artifacts/a2-menu.png`, `a2-map.png`, `a2-gallery.png`, `a2-combat.png`.
 
-## Phần chưa chốt
+## Ghi chú chưa chốt ở checkpoint A2 cũ
 
 1. CSS `.crew-energy` mới nhất có wrap; mobile có thể xuống dòng tách nhãn/chỉ số. Cải thiện non-breaking label/value và dark scrollbar đã được nghĩ tới nhưng **chưa viết**. Không mô tả như đã fix.
 2. Missing-image fallback A2 chưa thử chủ động; mobile map pan và mobile combat cast chưa hoàn tất. Legacy browser load trong A2 cũng chưa xác nhận riêng (tests legacy đã pass).
@@ -83,7 +95,7 @@ Người dùng: "ok quẩy đi" — Triển khai giải quyết triệt để 4 
 4. Docs A2 report/README delivery cuối chưa có. Chưa commit/push A2 tại thời điểm người dùng yêu cầu dừng test; xem Git log/status để biết WIP checkpoint mới nếu có.
 5. Không tạo thêm ảnh để giải quyết các việc trên. Chưa cần gameplay mới, animation, sprite nhiều hướng hoặc audio thu âm.
 
-## Khi người dùng cho tiếp tục A2
+## Checklist tiếp tục A2 được ghi ở checkpoint cũ
 
 Đọc plan A2 và source diff hiện tại → chốt lỗi trình bày cần thiết → kiểm tra fallback/mobile/legacy bằng UI riêng → chạy gate phù hợp → ghi report/PROGRESS/HANDOFF → commit/push và đối chiếu SHA. Giữ state/save/content `.5-r1` ổn định. Không suy ra “đã push” từ việc file nằm trong workspace.
 

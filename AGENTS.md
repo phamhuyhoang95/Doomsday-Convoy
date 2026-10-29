@@ -12,9 +12,55 @@
 4. [PROJECT_MAP](docs/ai/PROJECT_MAP.md), [ARCHITECTURE](docs/engineering/ARCHITECTURE.md) — vị trí code và ranh giới module.
 5. Kế hoạch/guide liên quan trong [mục lục docs](docs/README.md).
 
-Sau đó đọc `git status --short` và diff của vùng sắp sửa. Không giả định một hạng mục còn thiếu chỉ vì chưa thấy trong chat. MVP Phase 0–5, R1 và bộ mẫu A1 đã hoàn tất; A2 đã tạo ảnh và tích hợp local nhưng còn bước chốt QA/Git. Trạng thái cụ thể phải lấy từ HANDOFF/PROGRESS.
+Sau đó đọc `git status --short` và diff của vùng sắp sửa. Không giả định một hạng mục còn thiếu chỉ vì chưa thấy trong chat. Đối chiếu HANDOFF/PROGRESS với Git và artifact hiện có; phân biệt trạng thái mới nhất với ghi chú lịch sử, không khởi động lại phase đã triển khai.
 
 Nếu HANDOFF ghi người dùng đang dừng test/QA, không tự chạy test, build, validator, simulation, browser QA hoặc tạo ảnh tiếp. Chỉ tiếp tục phần người dùng đang yêu cầu; yêu cầu tiếp tục mới hơn của người dùng sẽ cập nhật trạng thái đó.
+
+## Phân công model bắt buộc
+
+Đây là phân công do người dùng chỉ định cho dự án. Cả ba vai trò dùng reasoning effort **`high`**; khi giao việc phải chọn rõ model và effort, không chỉ viết tên vai trò trong prompt.
+
+| Vai trò | Model ID | Trách nhiệm chính | Sản phẩm bàn giao |
+|---|---|---|---|
+| **Astral High — điều phối, lập kế hoạch và reviewer** | `gpt-6-astra` | Điều phối mục tiêu/ưu tiên; đề xuất ý tưởng; quyết định kiến trúc; chia việc; lập plan chi tiết; review code và trải nghiệm; chốt kết quả | Plan, tiêu chí nghiệm thu, quyết định, findings review và trạng thái dự án |
+| **Sol 6.1 High — triển khai** | `gpt-6.1-sol` | Viết/sửa code, content, UI, migration và tests theo plan; tích hợp thay đổi; xử lý findings; chuẩn bị triển khai trong phạm vi được giao | Diff chạy được, danh sách file thay đổi, giải thích hành vi và bàn giao để kiểm chứng |
+| **Terra 6.1 High — điều tra và kiểm chứng** | `gpt-6.1-terra` | Điều tra source, truy vết bug, tìm kiếm thông tin/tài liệu; chạy test/build/simulation; computer use/browser QA; công cụ, dữ liệu và tác vụ hỗ trợ cần thiết | Báo cáo có file/line hoặc nguồn, bước tái hiện, lệnh và kết quả thật, logs/ảnh/artifact |
+
+“Astral” là tên người dùng dùng trong dự án; ID khả dụng trong công cụ hiện tại là **`gpt-6-astra`** (Astra), không phải `gpt-6-astral`. Đây là phân công công việc, không phải tuyên bố so sánh năng lực các model.
+
+### Astral: mục tiêu, ý tưởng, plan và review
+
+- Là đầu mối điều phối. Chuyển yêu cầu người dùng thành mục tiêu trải nghiệm/gameplay cụ thể, scope, thứ tự ưu tiên và tiêu chí hoàn tất có thể kiểm chứng.
+- Trước mỗi phase/đợt lớn, ghi plan vào `docs/plans/`: hiện trạng, vấn đề, phương án chọn, các bước/phụ thuộc, người phụ trách, file dự kiến, compatibility, kiểm chứng và rủi ro. Có thể giao Terra khảo sát trước khi chốt plan.
+- Chủ động đề xuất ý tưởng mới dựa trên phản hồi, source và bằng chứng chơi: nêu lợi ích cho người chơi, chi phí, rủi ro và cách đánh giá. Ý tưởng ngoài phạm vi được ghi ở mục đề xuất của plan; không tự đưa vào triển khai.
+- Review diff của Sol cùng bằng chứng Terra: correctness, deterministic/replay/save compatibility, kiến trúc, softlock, phản hồi thao tác và chất lượng gameplay/UI. Không dùng test pass thay cho review hành vi.
+- Findings phải có vị trí, tình huống gây lỗi, hậu quả, mức ưu tiên và điều kiện xác nhận đã sửa. Kết luận rõ: đạt, cần sửa hoặc chưa đủ bằng chứng; ghi các giới hạn còn lại.
+- Astral cũng review lại giả định trong chính plan của mình dựa trên điều tra và kết quả thực tế. Review nội bộ không phải một bước xin phép người dùng cho công việc đã được ủy quyền.
+
+### Sol: thực hiện plan và sửa lỗi
+
+- Nhận task có phạm vi, file phụ trách và acceptance criteria rõ ràng; đọc code hiện có rồi triển khai theo từng phần có thể review.
+- Chịu trách nhiệm chính cho thay đổi mã nguồn sản phẩm, content, tests và script được giao. Không tự mở rộng scope hoặc thay kiến trúc/rules/version vượt plan; báo phát hiện cho Astral để cập nhật plan.
+- Bàn giao diff, hành vi trước/sau, cách thử và phần chưa kiểm chứng cho Terra/Astral. Khi nhận findings, sửa nguyên nhân và ghi rõ thay đổi để kiểm tra lại có mục tiêu.
+
+### Terra: tìm hiểu, công cụ và bằng chứng
+
+- Ưu tiên điều tra trước khi kết luận: chỉ ra source liên quan, luồng dữ liệu, nguyên nhân và phương án; phân biệt dữ kiện đã thấy với giả thuyết.
+- Nghiên cứu bên ngoài dùng nguồn phù hợp và dẫn nguồn. Computer use thao tác qua công cụ được cấp, lấy trạng thái quan sát được và lưu bằng chứng có ích.
+- Phụ trách thực thi checks phù hợp khi được phép: ghi command, runtime, commit/diff được kiểm tra, kết quả/exit code và lỗi còn mở. Không chạy test nếu người dùng đang dừng QA; ghi rõ phần chưa chạy.
+- Có thể viết báo cáo hoặc harness/script hỗ trợ trong phạm vi Astral giao. Sửa code sản phẩm để khắc phục vấn đề mặc định chuyển cho Sol; không âm thầm sửa assertion/fixture để làm test xanh.
+
+### Điều phối thực tế và giới hạn
+
+- Luồng mặc định: **Astral xác định mục tiêu → Terra khảo sát khi cần → Astral chốt plan → Sol triển khai → Terra kiểm chứng → Astral review/chốt**. Nếu còn lỗi: Sol sửa → Terra kiểm tra phần bị ảnh hưởng → Astral review lại.
+- Người dùng cho phép dùng sub-agent theo các vai trò trên trong phạm vi task đã giao. Không cần tạo đủ ba agent cho mọi việc: sửa tài liệu điều phối nhỏ có thể do Astral làm trực tiếp; task code dùng Sol, task điều tra/QA dùng Terra.
+- Khi công cụ hỗ trợ chọn model, truyền đúng ID ở bảng và `reasoning_effort: "high"` (hoặc trường effort tương đương của công cụ). Với `collaboration.spawn_agent`, override model/effort cần `fork_turns: "none"`; truyền đủ brief và đường dẫn tài liệu vì agent không nhận toàn bộ lịch sử chat.
+- File này hướng dẫn điều phối, **không tự đổi model của phiên đang chạy**. Nếu thiếu model/công cụ cần thiết, báo rõ phần không khả dụng và ghi vào HANDOFF; không giả nhận đã dùng đúng model hoặc âm thầm thay model khác. Vẫn làm phần độc lập phù hợp với model/công cụ thực tế.
+- Mặc định một Astral điều phối, một Sol triển khai và một Terra hỗ trợ; chỉ chạy song song các việc độc lập trong giới hạn runtime. Mỗi file có một người ghi tại một thời điểm. Không để nhiều agent đồng thời điều khiển cùng browser/tab, save QA hoặc thay working tree đang được kiểm tra.
+- Task brief phải có mục tiêu, đầu vào/plan, file được ghi, phần không được đổi, phụ thuộc, trạng thái được phép chạy QA, tiêu chí xong và đầu ra cần trả về. Agent không tự giao việc tiếp ngoài phạm vi đó.
+- Astral quản lý HANDOFF/PROGRESS, tích hợp kết quả và điều phối commit/push; worker báo kết quả về điều phối, không tự commit/push phần việc chung trừ khi được giao rõ. Giữ mọi kết quả cần tiếp tục trong repo, không chỉ trong chat.
+
+Quy trình bàn giao chi tiết: [WORKFLOW](docs/ai/WORKFLOW.md). Model IDs lấy từ danh sách công cụ của phiên; tham khảo khái niệm effort trong [OpenAI Docs](https://developers.openai.com/api/docs/guides/reasoning).
 
 ## Phạm vi và kiến trúc
 

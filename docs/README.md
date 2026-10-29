@@ -11,7 +11,7 @@
 | [PROGRESS](status/PROGRESS.md) | Checkpoint hiện tại, bằng chứng và gate còn mở |
 | [PROJECT_MAP](ai/PROJECT_MAP.md) | Source tree, entry points, lệnh và runtime |
 | [DECISIONS](ai/DECISIONS.md) | Những quyết định cần giữ khi sửa dự án |
-| [WORKFLOW](ai/WORKFLOW.md) | Quy trình plan/code/gate/docs/Git và bàn giao |
+| [WORKFLOW](ai/WORKFLOW.md) | Phân công Astral/Sol/Terra, quy trình plan/code/gate/review/docs/Git và bàn giao |
 
 ## Thiết kế và kỹ thuật
 
