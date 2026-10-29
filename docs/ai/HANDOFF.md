@@ -1,8 +1,17 @@
 # Bàn giao hiện tại
 
-**Ngày:** 2026-10-29, Asia/Saigon. **Trạng thái hiện tại:** đã nghiên cứu và viết đề xuất R4 cải tổ gameplay + phương án media Google, chưa triển khai. Lượt này chỉ đọc source/web và chỉnh docs; không chạy test/build/simulation/browser QA, tạo media hoặc tiêu tiền.
+**Ngày:** 2026-10-29, Asia/Saigon. **Trạng thái hiện tại:** đã cập nhật phân công effort: Astra medium điều phối/chia task; Astra high chỉ review kiến trúc hoặc quyết định quan trọng. Sol/Terra vẫn high. Đợt này chỉ chỉnh docs, không chạy game QA hoặc tạo media.
 
 ## Yêu cầu mới nhất
+
+Người dùng yêu cầu giảm mức điều phối của Astra xuống medium và chỉ chuyển high cho review kiến trúc quan trọng hoặc quyết định quan trọng. [AGENTS](../../AGENTS.md#phân-công-model-bắt-buộc) và [WORKFLOW](WORKFLOW.md) là quy tắc hiện hành.
+
+- Điều phối, chia task, plan thông thường, báo tiến độ và review cục bộ: `gpt-6-astra` + `medium`.
+- Review/ra quyết định có ảnh hưởng lớn tới kiến trúc, save/replay, thay vòng chơi cốt lõi hoặc scope/ngân sách lớn: Astra `high`, ghi rõ lý do và trở lại medium sau khi chốt.
+- `gpt-6.1-sol` và `gpt-6.1-terra`: tiếp tục `high`. Markdown không tự đổi cấu hình của phiên đang chạy; chọn effort qua runtime thực tế.
+- R4 và sản xuất media vẫn chưa triển khai. Lần kiểm tra Chrome trước đã thấy Gemini có Tạo nhạc/Không lời và Flow có giao diện PRO tier; chưa tạo nội dung. Kiểm tra lại trạng thái live trước thao tác sản xuất, không dựa vào số dư cũ.
+
+## Bối cảnh đề xuất R4
 
 Người dùng vẫn thấy game tẻ nhạt, màn quá ngắn và không cảm nhận nhạc/chuyển động; yêu cầu đề xuất cải tiến hoặc làm lại để thú vị và dài hơn, đồng thời khảo sát voice/clip bằng Google AI Pro và khoảng $100 Google Cloud.
 
@@ -15,10 +24,10 @@ Người dùng vẫn thấy game tẻ nhạt, màn quá ngắn và không cảm 
 
 ## Bối cảnh phân công model
 
-Người dùng yêu cầu Astral High lập plan, review, đề xuất ý tưởng và điều phối mục tiêu; Sol 6.1 High viết code/triển khai plan; Terra 6.1 High điều tra source, tìm thông tin, chạy test, computer use và các tác vụ hỗ trợ.
+Phân công trước đây dùng Astra high cho toàn bộ điều phối. Yêu cầu mới nhất thay thế bằng Astra medium mặc định, high chỉ khi review/ra quyết định quan trọng; Sol/Terra giữ high.
 
 - Phân công chính thức và model IDs nằm trong [AGENTS.md](../../AGENTS.md#phân-công-model-bắt-buộc); luồng giao việc và mẫu bàn giao nằm trong [WORKFLOW](WORKFLOW.md).
-- "Astral" được ánh xạ tới `gpt-6-astra`; Sol dùng `gpt-6.1-sol`; Terra dùng `gpt-6.1-terra`; cả ba effort `high`. Phải chọn model qua runtime, Markdown không tự đổi model hiện hành.
+- "Astral" được ánh xạ tới `gpt-6-astra`; Sol dùng `gpt-6.1-sol`; Terra dùng `gpt-6.1-terra`. Chọn effort theo vai trò hiện hành trong AGENTS, không lấy các ghi chú high lịch sử làm mặc định.
 - Astral giữ plan/ưu tiên/review và HANDOFF/PROGRESS; mỗi file có một người ghi; code chuyển Sol, điều tra/kiểm chứng chuyển Terra. Sửa docs nhỏ có thể làm trực tiếp.
 - Yêu cầu này không mở lại gameplay QA. Không diễn giải số test lịch sử bên dưới thành kết quả của đợt chỉnh docs.
 - Bước tiếp: nhận mục tiêu tiếp theo, đối chiếu hiện trạng rồi phân công theo quy trình mới. Các ghi chú A2 ở cuối là bàn giao cũ; đối chiếu R2/R3 và source trước khi dùng chúng làm checklist hiện tại.

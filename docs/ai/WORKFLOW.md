@@ -2,24 +2,24 @@
 
 ## Vai trò và luồng điều phối
 
-Nguồn chính thức về model/effort và ranh giới trách nhiệm là [AGENTS.md](../../AGENTS.md#phân-công-model-bắt-buộc). Astral High (`gpt-6-astra`) điều phối, lập plan, đề xuất ý tưởng và review; Sol 6.1 High triển khai; Terra 6.1 High điều tra, nghiên cứu, chạy checks và computer use. Tất cả dùng effort `high` khi chọn model qua công cụ.
+Nguồn chính thức về model/effort và ranh giới trách nhiệm là [AGENTS.md](../../AGENTS.md#phân-công-model-bắt-buộc). Astra (`gpt-6-astra`) dùng **medium** để điều phối, chia task, lập plan thông thường, đề xuất ý tưởng và review thường lệ. Chỉ dùng **Astra high** cho review kiến trúc quan trọng hoặc quyết định quan trọng. Sol 6.1 và Terra 6.1 tiếp tục dùng **high**.
 
-1. **Astral** ghi mục tiêu, scope và acceptance criteria; giao **Terra** khảo sát source/thông tin nếu còn điều chưa rõ.
-2. **Terra** bàn giao bằng chứng và các câu hỏi còn mở; **Astral** hoàn thiện plan trước khi giao code.
+1. **Astra** ghi mục tiêu, scope và acceptance criteria; giao **Terra** khảo sát source/thông tin nếu còn điều chưa rõ.
+2. **Terra high** bàn giao bằng chứng và các câu hỏi còn mở; **Astra medium** hoàn thiện plan trước khi giao code. Nếu có quyết định kiến trúc/scope/compatibility quan trọng, giao **Astra high** chốt phần đó rồi trở lại medium.
 3. **Sol** triển khai theo plan, bàn giao diff và cách thử. Việc độc lập có thể song song; tránh ghi trùng file hoặc kiểm tra snapshot đang bị sửa.
 4. **Terra** chạy kiểm chứng phù hợp khi được phép, lưu lệnh/kết quả/artifact. QA đang dừng thì ghi chưa kiểm chứng, không tự chạy lại.
-5. **Astral** review cả diff và bằng chứng; gửi findings cụ thể cho **Sol** sửa, **Terra** kiểm tra lại phần liên quan. Tự xem lại plan nếu giả định ban đầu sai.
-6. **Astral** cập nhật HANDOFF/PROGRESS, chốt trạng thái thật và điều phối giao hàng. Ý tưởng ngoài scope lưu thành đề xuất để xem xét sau.
+5. **Astra medium** review diff và bằng chứng thường lệ; phần kiến trúc/quyết định quan trọng chuyển **Astra high**. Gửi findings cụ thể cho **Sol** sửa, **Terra** kiểm tra lại phần liên quan. Tự xem lại plan nếu giả định ban đầu sai; kết thúc review quan trọng thì điều phối về medium.
+6. **Astra** cập nhật HANDOFF/PROGRESS, chốt trạng thái thật và điều phối giao hàng. Ý tưởng ngoài scope lưu thành đề xuất để xem xét sau.
 
-Sửa tài liệu điều phối nhỏ có thể làm trực tiếp, không bắt buộc tạo ba agent. Việc chọn model phải thực hiện bằng tùy chọn thật của runtime; chỉ viết tên vai trò trong Markdown không đổi model đang chạy.
+Mặc định mọi bước điều phối của Astra ở mức medium. Sửa tài liệu điều phối nhỏ có thể làm trực tiếp, không bắt buộc tạo ba agent. Việc chọn model phải thực hiện bằng tùy chọn thật của runtime; chỉ viết tên vai trò trong Markdown không đổi model/effort đang chạy.
 
 ### Brief và bàn giao tối thiểu
 
-- **Brief:** mục tiêu; plan/source cần đọc; model + effort; file được sửa; giới hạn; phụ thuộc; quyền chạy QA hiện tại; acceptance criteria; đầu ra và nơi lưu.
+- **Brief:** mục tiêu; plan/source cần đọc; model + effort (ghi lý do nếu nâng Astra lên high); file được sửa; giới hạn; phụ thuộc; quyền chạy QA hiện tại; acceptance criteria; đầu ra và nơi lưu.
 - **Bàn giao:** đã làm; file/diff hoặc nguồn; phát hiện; command/kết quả/artifact thật; chưa kiểm chứng; blocker và bước tiếp đề xuất.
 - **Review:** file/line; trigger; hậu quả; mức ưu tiên; cách xác minh sửa; kết luận đạt/cần sửa/chưa đủ bằng chứng.
 
-Ghi đầu việc, người phụ trách, trạng thái và link bằng chứng vào checklist của plan đang dùng. Astral cập nhật trạng thái tổng hợp; không tạo hệ thống tracker riêng chỉ để điều phối.
+Ghi đầu việc, người phụ trách, trạng thái và link bằng chứng vào checklist của plan đang dùng. Astra cập nhật trạng thái tổng hợp; không tạo hệ thống tracker riêng chỉ để điều phối.
 
 ## Trước khi sửa
 
