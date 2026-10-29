@@ -24,7 +24,7 @@ Flow UI hiển thị **Omni 1.1 Flash**, không gọi nhầm thành Veo. Đã du
 
 ## Gate và giới hạn thật
 
-Runtime Node **24.14.0**; diff làm việc dựa `94cbfbe`.
+Runtime Node **24.14.0**; diff làm việc dựa `94cbfbe`, triển khai/media commit `c8d1749` đã push và đối chiếu SHA remote. Sau full check chỉ format và đồng bộ tên/miêu tả sơ cứu giữa hai read model; strict typecheck pass.
 
 | Lệnh / kiểm chứng | Kết quả |
 |---|---|
