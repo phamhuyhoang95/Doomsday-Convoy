@@ -40,6 +40,8 @@
 
 ## Báo cáo và lịch sử
 
+- [PLAYER_FEEDBACK_AND_2D_REVIEW](reports/PLAYER_FEEDBACK_AND_2D_REVIEW.md): đối chiếu nhận xét Gemini/Claude, rủi ro cân bằng/Scenario, và đề xuất thử khám phá2D có giới hạn; chỉ review.
+
 - [CLAUDE_REVIEW_BRIEF](reports/CLAUDE_REVIEW_BRIEF.md): bản tổng hợp hiện trạng, giới hạn và trọng tâm để Claude review/cải tiến (30/10/2026).
 
 - [RESONANCE_IMPLEMENTATION](reports/RESONANCE_IMPLEMENTATION.md): chức năng lore/pathway/Flow, 146 tests pass, 48 runs và giới hạn playtest.
