@@ -40,6 +40,8 @@
 
 ## Báo cáo và lịch sử
 
+- [CLAUDE_REVIEW_BRIEF](reports/CLAUDE_REVIEW_BRIEF.md): bản tổng hợp hiện trạng, giới hạn và trọng tâm để Claude review/cải tiến (30/10/2026).
+
 - [RESONANCE_IMPLEMENTATION](reports/RESONANCE_IMPLEMENTATION.md): chức năng lore/pathway/Flow, 146 tests pass, 48 runs và giới hạn playtest.
 
 - [JOURNEY_FEEL_AND_AUTO](reports/JOURNEY_FEEL_AND_AUTO.md): clip travel, auto, arc liên địa điểm, 129 tests/48 runs và giới hạn thực tế.

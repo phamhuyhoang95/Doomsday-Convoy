@@ -1,5 +1,7 @@
 # LAST CONVOY — tiến độ hiện tại
 
+**30/10/2026 — bàn giao review cho Claude:** Theo yêu cầu người dùng, đã tổng hợp [CLAUDE_REVIEW_BRIEF](../reports/CLAUDE_REVIEW_BRIEF.md) từ source/Git và các báo cáo. Chỉ bổ sung tài liệu, không đổi code, không chạy test/build/browser QA hoặc tạo media. Gate146tests/48runs là kết quả29/10, không phải kiểm chứng mới. Nhắc gửi riêng `docs 2/concepts/` vì đầu vào chưa tracked. Source baseline đối chiếu `72276d0`; bước tiếp là nhận findings/đề xuất review rồi xác định scope cải tiến.
+
 **2026-10-29 — Resonance đã triển khai, clip Flow có tham chiếu đã tích hợp.** Người dùng yêu cầu hệ thống hóa màn chơi, lore nguồn gốc tận thế/quỷ dị, skill con đường siêu phàm; sau đó yêu cầu dùng ảnh/context dự án cho cinematic. Người dùng đã đồng ý quyền upload hai ảnh game và tự lưu master720p khi download automation lỗi. [Báo cáo](../reports/RESONANCE_IMPLEMENTATION.md), [plan](../plans/LORE_CHAPTERS_PATHWAYS.md), [canon](../game/LORE_BIBLE.md).
 
 - **Chức năng:** 3 chương trên8địa điểm, 6 hồ sơ có nguồn/gate khám phá, 6 event mới (22 tổng); 4 con đường×3bậc9→8→7, 12 skill và nghi thức command0giờ dùng XP khả dụng/di vật/vật tư. XP tích lũy/điểm training giữ nguyên. Battle operator thật: giáp/phản, choáng seeded, xác, đổi chỗ/né, hỗ trợ xe, đảo sát thương. Chưa có lai ngạch/tha hóa/bậc6→0/map mới/ending chân lý.
