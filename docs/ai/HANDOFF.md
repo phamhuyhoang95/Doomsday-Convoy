@@ -1,5 +1,7 @@
 # Bàn giao hiện tại
 
+**30/10/2026 — phản hồi mới: game hoàn tất khoảng 5 phút.** Người dùng tự báo thời lượng; chưa có log/tuyến cụ thể để đo lại. Đã đọc source: chapters là read model, nhiều nút giải quyết cả vấn đề, khám phá/siêu phàm chủ yếu tùy chọn và tới Bắc Sơn chốt won. Lamplight chưa giải quyết độ dài campaign. Ghi phân tích/hướng tiếp trong [báo cáo Lamplight, mục phản hồi](../reports/LAMPLIGHT_IMPLEMENTATION.md#phản-hồi-người-chơi-hoàn-tất-khoảng-5-phút--30102026). Đề nghị trở lại mục tiêu R4: một chặng 20–30 phút chơi tích cực với nhiệm vụ nhiều giai đoạn/nhánh thay thế có gameplay, rồi mới mở rộng campaign; các phút này chưa đạt/chưa kiểm chứng. Phiên này chỉ review/tài liệu, không đổi gameplay/test/build/browser/media; chưa tự mở scope sau Bắc Sơn. Bước tiếp là thiết kế chuỗi nhiệm vụ thật và phạm vi đợt mở rộng từ phản hồi này, không tăng HP/thêm chờ/phim để kéo giờ.
+
 **30/10/2026 — Lamplight đã triển khai và đồng bộ Git.** Theo lệnh “ok thực hiện đi”, giữ chiến lược/combat và thêm một khu khám phá trực tiếp 3 phòng ở Thánh An; [plan](../plans/LAMPLIGHT_FIELD_EXPLORATION.md), [báo cáo](../reports/LAMPLIGHT_IMPLEMENTATION.md).
 
 - **Bản mới:** `0.4.0-campaign.1-lamplight`, slots `lamplight-*`, state/save v3 additive, engine 0.1.0. Giữ tải Resonance/Journey/O1/R1/.4; legacy Scenario khớp byte bản gốc. Source: `src/fieldwork/`, `src/content/lamplight.ts`, ExplorationScreen/CSS, Scenario có version, tactical config, registry/processor/client.

@@ -76,3 +76,23 @@ Browser QA dùng origin **5181 riêng**, không ghi save người dùng ở5180.
 Dev chính `http://127.0.0.1:5180/`: bắt đầu hành trình mới, tới bệnh viện và xác minh quy tắc, chọn **Vào phòng trực**. Dev QA riêng `http://127.0.0.1:5181/?qa=explore` tới thẳng khu; `?qa=hospital` thử entry. QA preset chỉ có ở DEV và dựng trạng thái bằng command, không có trong production.
 
 Đây là một prototype nhỏ với hình vector và animation nội suy. Chưa có realtime AI/physics/procgen, sprite animation nhiều hướng, skill siêu phàm trong khám phá, chapter cinematic mới, climax hay màn sau Bắc Sơn. Luật siêu phàm trong combat từ Resonance vẫn giữ. Chưa thử điện thoại thật, reduced-motion cấp hệ điều hành, nghe duyệt mix hoặc human playtest độ hấp dẫn/thời lượng. Bước tiếp là chơi thử một lượt, đánh giá điều khiển/độ rõ quy tắc/áp lực pin và quyết định mở rộng; không tự nhân rộng các khu chỉ vì test pass.
+
+
+## Phản hồi người chơi: hoàn tất khoảng 5 phút — 30/10/2026
+
+Người dùng báo có thể chơi xong game trong 5 phút. Đây là thời lượng tự báo của một lượt, chưa có accepted-command log/tuyến cụ thể hoặc phép đo tại máy của agent. Tuy vậy source hiện tại giải thích được vấn đề cấu trúc; không có căn cứ báo đã đạt mục tiêu 20–30/65–90 phút trong R4.
+
+- `src/read-models/campaign.ts`: chương và objectives là read model từ visits/facts/knowledge, chưa phải chuỗi màn nhiều giai đoạn. Nhãn ba chương không đồng nghĩa ba hồi có lượng gameplay tương ứng.
+- `src/content/campaign.ts:193`: tới checkpoint chủ yếu cần hospital.resolved, tới refuge cần rival.resolved. Nhiều lựa chọn hiện giải quyết vấn đề bằng một command; lore/Scenario/fieldwork và thức tỉnh không phải tất cả đều cần để hoàn tất tuyến.
+- `src/core/processor.ts:349`: tới goal tại Bắc Sơn là chốt won ngay. Chưa có thử thách tại nơi trú/cao trào kết nối những điều đã học.
+- Lamplight thêm một site ba phòng tùy chọn và sửa nền, chưa thay cấu trúc campaign. Giảm vật tư, tăng HP hay thêm clip không đủ xử lý lượng việc chơi quá ít.
+
+Hướng đợt tiếp theo được đề nghị: trở lại mục tiêu R4 là **một chặng đầu hoàn chỉnh 20–30 phút chơi tích cực**, rồi mới mở rộng toàn chiến dịch 65–90 phút. Đây là mục tiêu playtest, không phải thời lượng đã đạt hoặc cam kết đoán từ số event. Chưa triển khai các mục dưới đây và chưa tự mở scope sau Bắc Sơn:
+
+1. Một vấn đề chính có nhiều giai đoạn: phát hiện trở ngại → đi lấy thông tin/vật cần thiết → thử phương án → chịu phản ứng → giải quyết/thoát. Facts/contracts và trạng thái nhiệm vụ thật quyết định tiến độ.
+2. Chợ/trạm dịch vụ là các nhiệm vụ có mục tiêu khác nhau, nối hậu quả trở lại xe; không nhân bản phòng loot hoặc bắt đi lòng vòng để đủ phút.
+3. Đường tránh vẫn hợp lệ nhưng là nhiệm vụ thay thế có hành động và đánh đổi, thay vì một nút giải xong cả hồi. Không ép người thích đàm phán phải đánh mọi trận.
+4. Giới thiệu cơ hội thức tỉnh sớm, cho skill đã chọn có tác dụng trong điều tra/khám phá lẫn combat; luôn có cách tiếp cận bằng công cụ/vật tư. Không yêu cầu mở đủ mọi con đường để đi tiếp.
+5. Sau khi scope được mở rộng, Bắc Sơn cần mục tiêu/cao trào thật trước ending; lore thu thập trước đó phải giúp quyết định và tạo khác biệt ở hậu quả.
+
+Tiêu chí tiếp nhận: chơi người thật từ new game, ghi tuyến/số lần thử/nội dung bỏ qua; đánh giá một người biết đường và một người mới. Không dùng chờ bắt buộc, phim không skip, tăng HP đồng loạt hoặc dài văn bản để đạt số phút. Phiên tiếp nhận phản hồi này chỉ đọc source và cập nhật tài liệu; không sửa gameplay/chạy gate/browser QA/sản xuất media.
