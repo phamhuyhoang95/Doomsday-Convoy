@@ -47,7 +47,7 @@ Legacy Scenario giữ cả semantics/lỗi lịch sử để replay save cũ; ch
 
 Rà soát cuối đã sửa hai lỗi reservation: kiểm tra buffer lặp sau khi đã trừ khẩu phần, và tactical Scenario entry còn tính thêm một giờ; regression tests xác nhận cả hai.
 
-Runtime gate Node **24.14.0**. Diff bao gồm source mới phía trên; log chính [lamplight-check.txt](../../artifacts/lamplight-check.txt). Git implementation sẽ được ghi ở HANDOFF/PROGRESS sau push.
+Runtime gate Node **24.14.0**. Diff bao gồm source mới phía trên; log chính [lamplight-check.txt](../../artifacts/lamplight-check.txt). Implementation **`18d770e` đã commit/push origin/main**, SHA remote đã đối chiếu đúng; cập nhật bàn giao Git ở commit docs tiếp.
 
 | Lệnh | Kết quả thật |
 |---|---|

@@ -45,4 +45,4 @@ Không sửa semantics cũ để vá save cũ; legacy có thể giữ lỗi lị
 - [x] Audit kinh tế và dispatch/serialize. Đã debounce autosave; chi tiết số đo/giới hạn trong [báo cáo](../reports/LAMPLIGHT_IMPLEMENTATION.md).
 - [ ] Human playtest cảm giác/nhịp chơi và cân bằng; không phải gate kỹ thuật đã chứng minh.
 
-Không có ảnh/clip mới hoặc media Google phát sinh. Màn sau Bắc Sơn, realtime/procgen và nhiều Scenario nối tiếp vẫn ngoài scope. Git sẽ được ghi ở HANDOFF/PROGRESS sau khi đối chiếu remote.
+Không có ảnh/clip mới hoặc media Google phát sinh. Màn sau Bắc Sơn, realtime/procgen và nhiều Scenario nối tiếp vẫn ngoài scope. Implementation `18d770e` đã commit/push; remote được đối chiếu đúng, chi tiết ở HANDOFF/PROGRESS.
