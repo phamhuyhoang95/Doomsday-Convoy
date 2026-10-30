@@ -1,4 +1,5 @@
 import { campaignDefinition } from "../src/content/campaign";
+import { lamplightDefinition } from "../src/content/lamplight";
 import { resonanceDefinition } from "../src/content/resonance";
 import { journeyDefinition } from "../src/content/journey";
 import { argonDefinition } from "../src/content/argon";
@@ -9,6 +10,7 @@ for (const definition of [
   argonDefinition,
   journeyDefinition,
   resonanceDefinition,
+  lamplightDefinition,
 ]) {
   const issues = inspectWorldDefinition(definition);
   if (issues.length) {

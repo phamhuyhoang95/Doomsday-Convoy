@@ -434,6 +434,29 @@ class AudioDirector {
   }
   play(report: ActionReport, events: readonly DomainEvent[]) {
     const payloads = events.map((event) => event.payload);
+    const field = payloads.find((p) => p.type === "field.event");
+    if (field?.type === "field.event") {
+      void this.unlock().then(() => {
+        if (report.danger || field.cue === "hit") {
+          this.cue("hurt");
+          this.cue("heartbeat");
+        } else if (field.cue === "advance") {
+          this.tone(47, 0.25, 0, "sawtooth", 0.3);
+          this.cue("heartbeat");
+        } else if (field.cue === "knock") {
+          for (const delay of [0, 0.16, 0.39])
+            this.tone(95, 0.07, delay, "triangle", 0.3);
+        } else if (field.action === "enter") this.cue("eerie_bell");
+        else if (field.action === "return") this.cue("reward");
+        else if (field.action === "rescue") this.cue("hurt");
+        else if (field.action === "interact") this.cue("config");
+        else if (field.action === "torch")
+          this.tone(240, 0.04, 0, "square", 0.12);
+        else if (field.action === "move")
+          this.tone(68, 0.06, 0, "triangle", 0.18);
+      });
+      return;
+    }
     const isHeavyHit =
       payloads.some(
         (p) =>

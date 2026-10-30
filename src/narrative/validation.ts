@@ -270,6 +270,128 @@ export function inspectCampaignContent(
       message: "Ending contracts need an unconditional fallback",
     });
   const skills = new Set(content.skills.map((entry) => entry.id));
+  if (content.fieldwork) {
+    const cfg = content.fieldwork;
+    const addId = (id: string) => {
+      if (seen.has(id))
+        issues.push({ path: id, message: "Duplicate field content ID" });
+      seen.add(id);
+    };
+    for (const r of cfg.roles) ref(actors, r.actorId, "fieldwork.roles");
+    if (new Set(cfg.roles.map((r) => r.actorId)).size !== cfg.roles.length)
+      issues.push({ path: "fieldwork.roles", message: "Duplicate role actor" });
+    for (const site of cfg.sites) {
+      addId(site.id);
+      ref(locations, site.locationId, site.id);
+      ref(facts, site.ruleFactId, site.id);
+      ref(facts, site.completedFactId, site.id);
+      site.requiresKnowledge.forEach((id) => ref(facts, id, site.id));
+      const width = site.grid[0]!.length;
+      const floor = (p: { x: number; y: number }) =>
+        site.grid[p.y]?.[p.x] === ".";
+      if (
+        site.grid.some((row) => row.length !== width) ||
+        !floor(site.start) ||
+        !floor(site.shadowStart) ||
+        !site.lights.every(floor)
+      )
+        issues.push({
+          path: site.id,
+          message: "Invalid exploration grid/start/light",
+        });
+      const reachable = new Set<string>(),
+        queue = [site.start];
+      for (let i = 0; i < queue.length; i++) {
+        const p = queue[i]!,
+          key = `${p.x},${p.y}`;
+        if (reachable.has(key) || !floor(p)) continue;
+        reachable.add(key);
+        for (const [dx, dy] of [
+          [1, 0],
+          [-1, 0],
+          [0, 1],
+          [0, -1],
+        ] as const)
+          queue.push({ x: p.x + dx, y: p.y + dy });
+      }
+      if (
+        [
+          site.shadowStart,
+          ...site.lights,
+          ...site.objects.map((o) => o.position),
+        ].some((p) => !reachable.has(`${p.x},${p.y}`))
+      )
+        issues.push({ path: site.id, message: "Disconnected field points" });
+      if (
+        site.rooms.some(
+          (r) =>
+            r.x < 0 ||
+            r.y < 0 ||
+            r.x + r.width > width ||
+            r.y + r.height > site.grid.length,
+        )
+      )
+        issues.push({ path: site.id, message: "Room outside grid" });
+      if (
+        site.objects.some(
+          (o) =>
+            o.kind === "door" &&
+            [site.start, site.shadowStart].some(
+              (p) => p.x === o.position.x && p.y === o.position.y,
+            ),
+        )
+      )
+        issues.push({
+          path: site.id,
+          message: "Actor starts inside closed door",
+        });
+      const cells = new Set<string>();
+      for (const o of site.objects) {
+        addId(o.id);
+        const cell = `${o.position.x},${o.position.y}`;
+        if (cells.has(cell) || !floor(o.position))
+          issues.push({
+            path: o.id,
+            message: "Invalid/overlapping field object",
+          });
+        cells.add(cell);
+        if ((o.kind === "cache" || o.kind === "record") && !o.reward)
+          issues.push({ path: o.id, message: "Loot requires reward" });
+        if (o.reward?.factId) ref(facts, o.reward.factId, o.id);
+      }
+      if (
+        !site.objects.some(
+          (o) =>
+            o.kind === "exit" &&
+            Math.abs(o.position.x - site.start.x) +
+              Math.abs(o.position.y - site.start.y) <=
+              1,
+        )
+      )
+        issues.push({ path: site.id, message: "Missing reachable entry exit" });
+    }
+    for (const s of cfg.scenarios) {
+      addId(s.id);
+      ref(locations, s.locationId, s.id);
+      ref(actors, s.rescuedActorId, s.id);
+      ref(owners, s.enemyConvoyId, s.id);
+      ref(facts, s.completionFactId, s.id);
+      ref(facts, s.scoutFactId, s.id);
+      const nodes = new Set(s.nodes.map((n) => n.id));
+      ref(nodes, s.startNodeId, s.id);
+      for (const n of s.nodes) {
+        addId(n.id);
+        n.connectedNodeIds.forEach((id) => ref(nodes, id, n.id));
+        for (const a of n.actions) {
+          addId(a.id);
+          if (a.factId) ref(facts, a.factId, a.id);
+          for (const e of a.effects ?? [])
+            if (e.op === "cargo")
+              ref(new Set(Object.keys(s.cargoRewards)), e.itemId, a.id);
+        }
+      }
+    }
+  }
   if (content.resonance) {
     const unique = new Set(seen);
     for (const path of content.resonance.pathways) {

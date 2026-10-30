@@ -1,3 +1,4 @@
+import { passable } from "../fieldwork/geometry";
 import { canonicalJson } from "./primitives";
 import { canAfford, countActiveCrew, supplyCosts } from "./resources";
 import { gameStateSchema } from "./state-schema";
@@ -386,6 +387,83 @@ export function assertGameState(
     }
   }
 
+  ensure(
+    Boolean(state.fieldwork) === Boolean(definition.campaign?.fieldwork),
+    "fieldwork mode mismatch",
+  );
+  if (state.fieldwork) {
+    const cfg = definition.campaign!.fieldwork!;
+    const f = state.fieldwork;
+    ensure(
+      new Set(f.completedSiteIds).size === f.completedSiteIds.length &&
+        f.completedSiteIds.every((id) => cfg.sites.some((s) => s.id === id)),
+      "invalid completed field sites",
+    );
+    const e = f.expedition;
+    if (e) {
+      const site = cfg.sites.find((s) => s.id === e.siteId);
+      ensure(site, "unknown field site");
+      ensure(
+        state.actors[e.actorId]?.convoyId === state.player.convoyId,
+        "invalid field actor",
+      );
+      ensure(
+        e.beat <= site.maxBeats &&
+          e.battery <= site.battery &&
+          e.cargo.length <= site.capacity,
+        "field limits exceeded",
+      );
+      ensure(
+        passable(site, e, e.position) && passable(site, e, e.shadow),
+        "field position in obstacle",
+      );
+      ensure(
+        [e.openDoors, e.collected, e.cargo, e.seen].every(
+          (ids) => new Set(ids).size === ids.length,
+        ),
+        "duplicate field state IDs",
+      );
+      ensure(
+        e.openDoors.every((id) =>
+          site.objects.some((o) => o.id === id && o.kind === "door"),
+        ),
+        "unknown field door",
+      );
+      ensure(
+        e.collected.every((id) =>
+          site.objects.some((o) => o.id === id && !!o.reward),
+        ) && e.cargo.every((id) => e.collected.includes(id)),
+        "unknown field loot",
+      );
+      ensure(
+        e.seen.every((key) => {
+          const [x, y] = key.split(",").map(Number);
+          return (
+            x !== undefined &&
+            y !== undefined &&
+            Number.isInteger(x) &&
+            Number.isInteger(y) &&
+            x >= 0 &&
+            y >= 0 &&
+            !!site.grid[y]?.[x]
+          );
+        }),
+        "invalid explored cells",
+      );
+      ensure(
+        (e.phase === "active") !== f.completedSiteIds.includes(site.id),
+        "field completion mismatch",
+      );
+      if (e.phase === "active")
+        ensure(
+          !state.combat &&
+            state.convoys[state.player.convoyId]!.locationId ===
+              site.locationId &&
+            state.actors[e.actorId]!.status === "active",
+          "invalid active expedition",
+        );
+    }
+  }
   let tick = 0;
   let eventCount = 0;
   let rng = { ...state.rng, state: state.initialSeed, draws: 0 };

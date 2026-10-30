@@ -102,6 +102,9 @@ export const tacticalAbilitySchema = z
 export const tacticalRulesSchema = z
   .object({
     encounterTicks: z.literal(1),
+    openingGuard: z.boolean().optional(),
+    vehicleAttackEvery: z.number().int().min(2).max(4).optional(),
+    vehicleDamageMin: z.number().int().min(1).max(20).optional(),
     abilities: z.array(tacticalAbilitySchema).min(1),
   })
   .strict();

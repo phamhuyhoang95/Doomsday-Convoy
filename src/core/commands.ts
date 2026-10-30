@@ -122,6 +122,37 @@ export const commandSchema = z
     payload: z.discriminatedUnion("type", [
       z
         .object({
+          type: z.literal("field-enter"),
+          convoyId: idSchema,
+          siteId: idSchema,
+          actorId: idSchema,
+        })
+        .strict(),
+      z
+        .object({
+          type: z.literal("field-step"),
+          convoyId: idSchema,
+          action: z.enum(["move", "torch", "wait"]),
+          direction: z.enum(["north", "east", "south", "west"]).optional(),
+          run: z.boolean().optional(),
+        })
+        .strict(),
+      z
+        .object({
+          type: z.literal("field-interact"),
+          convoyId: idSchema,
+          objectId: idSchema,
+        })
+        .strict(),
+      z
+        .object({
+          type: z.literal("field-exit"),
+          convoyId: idSchema,
+          rescue: z.boolean(),
+        })
+        .strict(),
+      z
+        .object({
           type: z.literal("ascend-pathway"),
           convoyId: idSchema,
           actorId: idSchema,

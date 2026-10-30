@@ -286,6 +286,14 @@ export function startTacticalCombat(
     cooldowns: {},
     vehicleUsedRound: 0,
   };
+  if (definition.campaign.tactics.openingGuard && enemy[0])
+    status(
+      state,
+      enemy[0].id,
+      enemy[0].id,
+      { kind: "guard", turns: 2, potency: 50 },
+      emit,
+    );
 }
 
 function status(
@@ -546,6 +554,7 @@ export function enemyIntent(
   state: GameState,
   actorId: string,
   atActivation = false,
+  definition?: WorldDefinition,
 ) {
   const actor = state.actors[actorId];
   if (!actor || !state.combat?.tactics || actor.status !== "active")
@@ -556,7 +565,11 @@ export function enemyIntent(
     state.convoys[actor.convoyId]?.actorIds.indexOf(actor.id) === 1;
   const activation =
     (state.combat.tactics.actorTurns[actorId] ?? 0) + (atActivation ? 0 : 1);
-  if (ranged && activation > 0 && activation % 3 === 0)
+  if (
+    ranged &&
+    activation > 0 &&
+    activation % (definition?.campaign?.tactics?.vehicleAttackEvery ?? 3) === 0
+  )
     return {
       targetId: state.convoys[state.player.convoyId]!.vehicle.id,
       reach: "any" as const,
@@ -638,7 +651,7 @@ function advance(
       (actor.energy ?? 0) + 1,
     );
     if (actor.convoyId === state.player.convoyId) return;
-    const intent = enemyIntent(state, actor.id, true);
+    const intent = enemyIntent(state, actor.id, true, definition);
     const target = intent ? state.actors[intent.targetId] : undefined;
     if (intent?.vehicle) {
       const vehicle = state.convoys[state.player.convoyId]!.vehicle;
@@ -650,7 +663,8 @@ function advance(
         before -
           Math.max(
             1,
-            Math.floor((actor.attributes?.attack ?? 10) / 2) + draw.value,
+            (definition.campaign?.tactics?.vehicleDamageMin ??
+              Math.floor((actor.attributes?.attack ?? 10) / 2)) + draw.value,
           ),
       );
       if (

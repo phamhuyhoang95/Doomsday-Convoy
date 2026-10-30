@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { idSchema } from "../core/primitives";
+import { idSchema, resourcesSchema } from "../core/primitives";
 
 export const scenarioPhaseSchema = z.enum([
   "planning",
@@ -19,6 +19,25 @@ export const scenarioActionSchema = z
     alertCost: z.number().int().nonnegative(),
     itemReward: idSchema.optional(),
     factId: idSchema.optional(),
+    costs: resourcesSchema.optional(),
+    effects: z
+      .array(
+        z.discriminatedUnion("op", [
+          z.object({ op: z.literal("power") }).strict(),
+          z
+            .object({ op: z.literal("resources"), amounts: resourcesSchema })
+            .strict(),
+          z.object({ op: z.literal("cargo"), itemId: idSchema }).strict(),
+          z
+            .object({
+              op: z.literal("rescue"),
+              quietRole: z.enum(["commander", "medic", "mechanic"]),
+              forcedNoise: z.number().int().nonnegative(),
+            })
+            .strict(),
+        ]),
+      )
+      .optional(),
   })
   .strict();
 export type ScenarioAction = z.infer<typeof scenarioActionSchema>;

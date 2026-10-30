@@ -3,6 +3,7 @@ import { DefinitionContext } from "./definition";
 import { useGame } from "./use-game";
 import { usePresentation } from "./argon/use-presentation";
 import { useTravel } from "./argon/use-travel";
+import { ExplorationScreen } from "./argon/ExplorationScreen";
 import { TravelCinematic } from "./argon/TravelCinematic";
 import { OpeningCinematic } from "./argon/OpeningCinematic";
 import { openingAvailable } from "./argon/opening-media";
@@ -41,6 +42,7 @@ export default function App() {
     }
   }, [game.transition]);
   const state = game.state;
+  const exploring = state?.fieldwork?.expedition?.phase === "active";
   const view = presentation.frame;
   const convoy = state?.convoys[state.player.convoyId];
   const scenario =
@@ -83,39 +85,39 @@ export default function App() {
               <button
                 className={page === "scene" ? "current" : ""}
                 onClick={() => navigate("scene")}
-                disabled={Boolean(state.combat)}
+                disabled={Boolean(state.combat) || exploring}
               >
                 HIỆN TRƯỜNG
               </button>
               <button
                 className={page === "map" ? "current" : ""}
                 onClick={() => navigate("map")}
-                disabled={Boolean(state.combat) || scenario}
+                disabled={Boolean(state.combat) || scenario || exploring}
               >
                 BẢN ĐỒ
               </button>
               <button
                 onClick={() => navigate("crew")}
-                disabled={Boolean(state.combat) || scenario}
+                disabled={Boolean(state.combat) || scenario || exploring}
               >
                 ĐOÀN XE
               </button>
               <button
                 onClick={() => navigate("inventory")}
-                disabled={Boolean(state.combat) || scenario}
+                disabled={Boolean(state.combat) || scenario || exploring}
               >
                 KỲ VẬT
               </button>
               <button
                 onClick={() => navigate("journal")}
-                disabled={Boolean(state.combat) || scenario}
+                disabled={Boolean(state.combat) || scenario || exploring}
               >
                 {game.definition.campaign?.resonance ? "HỒ SƠ" : "SỔ TAY"}
               </button>
               {game.definition.campaign?.resonance && (
                 <button
                   onClick={() => navigate("pathways")}
-                  disabled={Boolean(state.combat) || scenario}
+                  disabled={Boolean(state.combat) || scenario || exploring}
                 >
                   SIÊU PHÀM
                 </button>
@@ -274,6 +276,9 @@ export default function App() {
                 <button onClick={() => loadJourney("autosave")}>
                   Tiếp tục hành trình
                 </button>
+                <button onClick={() => loadJourney("resonance")}>
+                  Tải Resonance cũ
+                </button>
                 <button onClick={() => loadJourney("journey")}>
                   Tải Journey cũ
                 </button>
@@ -331,6 +336,12 @@ export default function App() {
             skip={presentation.skip}
             dispatch={game.dispatch}
           />
+        ) : exploring ? (
+          <ExplorationScreen
+            key={`${game.session}:${state.fieldwork!.expedition!.siteId}`}
+            state={state}
+            dispatch={game.dispatch}
+          />
         ) : scenario ? (
           <main className="scenario-workspace">
             <ScenarioScene
@@ -370,7 +381,7 @@ export default function App() {
             startScenario={() => setBriefing(true)}
           />
         )}
-        {game.report && !state?.combat && !scenario && (
+        {game.report && !state?.combat && !scenario && !exploring && (
           <aside className="transition-note" aria-live="polite">
             <div>
               <small>SAU QUYẾT ĐỊNH</small>

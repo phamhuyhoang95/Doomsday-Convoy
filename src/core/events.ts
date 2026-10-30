@@ -10,6 +10,25 @@ export type FailureReason = z.infer<typeof failureReasonSchema>;
 const payloadSchema = z.discriminatedUnion("type", [
   z
     .object({
+      type: z.literal("field.event"),
+      siteId: idSchema,
+      action: z.string(),
+      detail: z.string(),
+      rewards: resourcesSchema,
+      cue: z.enum([
+        "quiet",
+        "knock",
+        "advance",
+        "light",
+        "hit",
+        "door",
+        "loot",
+        "exit",
+      ]),
+    })
+    .strict(),
+  z
+    .object({
       type: z.literal("actor.ascended"),
       actorId: idSchema,
       pathwayId: idSchema,

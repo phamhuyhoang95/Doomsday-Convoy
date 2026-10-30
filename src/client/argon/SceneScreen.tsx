@@ -1,9 +1,11 @@
+import { useState } from "react";
+import { fieldEntryReason } from "../../fieldwork/engine";
 import type { GameState } from "../../core/state-schema";
 import type { GameCommand } from "../../core/commands";
 import { choiceAvailability } from "../../narrative/read-model";
 import { evaluateCondition } from "../../narrative/conditions";
 import { choiceTotalCosts } from "../../read-models/effects";
-import { canAfford } from "../../core/resources";
+import { canAfford, supplyCosts } from "../../core/resources";
 import { operationPreview } from "../../expedition/read-model";
 import { useDefinition } from "../definition";
 import { AssetArt } from "../components/AssetArt";
@@ -26,6 +28,9 @@ export function SceneScreen({
   openCrew: () => void;
 }) {
   const definition = useDefinition();
+  const [fieldActor, setFieldActor] = useState(
+    state.convoys[state.player.convoyId]!.actorIds[0]!,
+  );
   const convoy = state.convoys[state.player.convoyId]!;
   const location = definition.locations.find(
     (l) => l.id === convoy.locationId,
@@ -37,8 +42,8 @@ export function SceneScreen({
   const eventAssetId = event ? `asset.${event.id}` : undefined;
   const eventArt = Boolean(
     event &&
-    (presentationAsset(eventAssetId, "event") ||
-      definition.campaign?.assets.find((a) => a.id === eventAssetId)?.uri),
+      (presentationAsset(eventAssetId, "event") ||
+        definition.campaign?.assets.find((a) => a.id === eventAssetId)?.uri),
   );
   const chapter = chapterProgress(state, definition).find((c) => c.current);
   const text = (key: string) => definition.campaign?.texts[key] ?? key;
@@ -178,6 +183,70 @@ export function SceneScreen({
             CHỌN TUYẾN ĐƯỜNG TIẾP THEO ↗
           </button>
         )}
+        {definition.campaign?.fieldwork?.sites
+          .filter(
+            (site) =>
+              site.locationId === convoy.locationId &&
+              !state.fieldwork?.completedSiteIds.includes(site.id),
+          )
+          .map((site) => {
+            const reason = fieldEntryReason(
+              state,
+              site,
+              fieldActor,
+              definition,
+            );
+            const costs = supplyCosts(
+              state,
+              convoy,
+              site.reserveHours,
+              definition,
+            );
+            return (
+              <section className="field-entry" key={site.id}>
+                <span className="kicker">
+                  XUẤT KÍCH TRỰC TIẾP / {site.name}
+                </span>
+                <p>{site.brief}</p>
+                <label htmlFor="field-actor">
+                  Người xuất kích · những người còn lại giữ xe
+                </label>
+                <select
+                  id="field-actor"
+                  value={fieldActor}
+                  onChange={(e) => setFieldActor(e.target.value)}
+                >
+                  {convoy.actorIds.map((id) => (
+                    <option
+                      key={id}
+                      value={id}
+                      disabled={state.actors[id]!.status !== "active"}
+                    >
+                      {state.actors[id]!.name} · {state.actors[id]!.health} HP
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="primary"
+                  disabled={!!reason}
+                  onClick={() =>
+                    dispatch({
+                      type: "field-enter",
+                      convoyId: convoy.id,
+                      siteId: site.id,
+                      actorId: fieldActor,
+                    })
+                  }
+                >
+                  Vào phòng trực ↗
+                </button>
+                <small>
+                  {reason ||
+                    `Dự trù ${site.reserveHours} giờ và ${costs.food} lương thực / ${costs.water} nước ngay khi vào. Một lượt xuất kích; có thể rút sớm.`}
+                </small>
+              </section>
+            );
+          })}
         {definition.campaign?.operations &&
           convoy.locationId === "location.market" &&
           !state.scenario?.installedModuleId &&

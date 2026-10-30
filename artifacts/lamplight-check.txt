@@ -1,0 +1,70 @@
+
+> last-convoy@0.1.0 check
+> npm run validate:world && npm run validate:content && npm run validate:art && npm run test && npm run build
+
+
+> last-convoy@0.1.0 validate:world
+> tsx scripts/validate-world.ts
+
+World 0.1.0-foundation.1: valid. 3 regions, 8 locations, 11 routes, 3 characters.
+Checked schemas, globally unique content IDs, references, route bounds, starting supplies and directed graph reachability.
+
+> last-convoy@0.1.0 validate:content
+> tsx scripts/validate-content.ts
+
+Campaign 0.1.0-campaign.5-r1: valid, 12 events, 4 contracts, 0 tactical abilities. Schema/operators, IDs, refs, weights, costs, fallback choices and dependency cycles checked.
+Campaign 0.2.0-campaign.1-argon: valid, 12 events, 4 contracts, 8 tactical abilities. Schema/operators, IDs, refs, weights, costs, fallback choices and dependency cycles checked.
+Campaign 0.2.0-campaign.2-journey: valid, 16 events, 4 contracts, 8 tactical abilities. Schema/operators, IDs, refs, weights, costs, fallback choices and dependency cycles checked.
+Campaign 0.3.0-campaign.1-resonance: valid, 22 events, 4 contracts, 18 tactical abilities. Schema/operators, IDs, refs, weights, costs, fallback choices and dependency cycles checked.
+Campaign 0.4.0-campaign.1-lamplight: valid, 22 events, 4 contracts, 18 tactical abilities. Schema/operators, IDs, refs, weights, costs, fallback choices and dependency cycles checked.
+
+> last-convoy@0.1.0 validate:art
+> tsx scripts/art-pipeline.ts --validate
+
+Art A2 valid: 29 masters, 38 mappings, 29 web images, 8.90 MiB. IDs, kinds, coverage, PNG/JPEG dimensions, SHA-256 and alpha channels verified.
+
+> last-convoy@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.12 /Users/tdt/Desktop/GameOL
+
+
+ Test Files  10 passed (10)
+      Tests  169 passed (169)
+   Start at  12:00:57
+   Duration  7.68s (transform 4.33s, setup 0ms, import 11.99s, tests 20.95s, environment 2ms)
+
+
+> last-convoy@0.1.0 build
+> tsc --noEmit && vite build
+
+vite v7.3.7 building client environment for production...
+transforming...
+node_modules/zod/v4/core/regexes.js (74:0): A comment
+
+"/** Anchors a pattern source. The interpolation lives here rather than at the call site because
+ * esbuild will not drop a `@__PURE__` call whose own argument interpolates a variable, but it
+ * will drop `anchor(dateSource)`. Keeping it inline pinned `date` into every bundle. */"
+
+in "node_modules/zod/v4/core/regexes.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+node_modules/zod/v4/core/util.js (400:0): A comment
+
+"// Wrapped in a `@__PURE__` IIFE: esbuild never tree-shakes a top-level initializer that contains a member access on `Number`, so the bare object literal survived into every bundle."
+
+in "node_modules/zod/v4/core/util.js" contains an annotation that Rollup cannot interpret due to the position of the comment. The comment will be removed to avoid issues.
+✓ 946 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                         0.48 kB │ gzip:   0.33 kB
+dist/assets/index-Cjj-cqvp.css         82.41 kB │ gzip:  19.45 kB
+dist/assets/webworkerAll-DeL4dwYh.js    0.16 kB │ gzip:   0.13 kB
+dist/assets/browserAll-DzVlZt48.js      0.29 kB │ gzip:   0.21 kB
+dist/assets/index-DeQ_LRUQ.js         692.09 kB │ gzip: 208.36 kB
+dist/assets/index-D2ivZJ2T.js         901.56 kB │ gzip: 259.78 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 5.84s

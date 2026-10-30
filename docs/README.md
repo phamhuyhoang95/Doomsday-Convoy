@@ -26,6 +26,8 @@
 
 ## Kế hoạch trước triển khai
 
+- [LAMPLIGHT_FIELD_EXPLORATION](plans/LAMPLIGHT_FIELD_EXPLORATION.md): triển khai một khu khám phá2D Thánh An, ổn định Scenario và cân bằng có version.
+
 - [LORE_CHAPTERS_PATHWAYS](plans/LORE_CHAPTERS_PATHWAYS.md): 3 chương, hồ sơ điều tra, 4 con đường và cinematic tham chiếu.
 
 - [JOURNEY_FEEL_AND_AUTO](plans/JOURNEY_FEEL_AND_AUTO.md): cinematic travel, auto combat và slice lựa chọn có hậu quả ở chặng sau.
@@ -39,6 +41,8 @@
 - [ASSET_PRODUCTION_PLAN](plans/ASSET_PRODUCTION_PLAN.md): A2 đang chốt.
 
 ## Báo cáo và lịch sử
+
+- [LAMPLIGHT_IMPLEMENTATION](reports/LAMPLIGHT_IMPLEMENTATION.md): khu khám phá Thánh An, Scenario/cân bằng có version, 169 tests/48 hành trình, browser QA và giới hạn prototype.
 
 - [PLAYER_FEEDBACK_AND_2D_REVIEW](reports/PLAYER_FEEDBACK_AND_2D_REVIEW.md): đối chiếu nhận xét Gemini/Claude, rủi ro cân bằng/Scenario, và đề xuất thử khám phá2D có giới hạn; chỉ review.
 

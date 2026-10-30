@@ -1,6 +1,9 @@
 import { useState } from "react";
 import type { GameCommand } from "../../core/commands";
 import type { GameState } from "../../core/state-schema";
+import { useDefinition } from "../definition";
+import { canAfford, supplyCosts } from "../../core/resources";
+import { Costs } from "./shared";
 import { marketBlackoutScenario } from "../../content/scenarios";
 
 interface ScenarioSceneProps {
@@ -9,7 +12,23 @@ interface ScenarioSceneProps {
   onCancel?: () => void;
 }
 
-export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps) {
+export function ScenarioScene({
+  state,
+  dispatch,
+  onCancel,
+}: ScenarioSceneProps) {
+  const definition = useDefinition();
+  const fieldwork = definition.campaign?.fieldwork;
+  const scenarioContent =
+    fieldwork?.scenarios.find(
+      (s) => s.id === (state.scenario?.id ?? marketBlackoutScenario.id),
+    ) ?? marketBlackoutScenario;
+  const roleNames: Record<string, string> = {
+    commander: "Chỉ huy",
+    mechanic: "Thợ máy",
+    medic: "Y sĩ",
+    radio: "Điện đài",
+  };
   const scenario = state.scenario;
   const convoyId = state.player.convoyId;
   const convoy = state.convoys[convoyId];
@@ -20,57 +39,100 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
     "character.bao",
   ]);
   const [selectedGuard, setSelectedGuard] = useState<string>("character.lan");
-  const [selectedModule, setSelectedModule] = useState<"module.fuel-tank" | "module.triage-unit">(
-    "module.fuel-tank",
-  );
+  const [selectedModule, setSelectedModule] = useState<
+    "module.fuel-tank" | "module.triage-unit"
+  >("module.fuel-tank");
 
   if (!convoy) return null;
 
   // 1. Briefing modal / screen if not started
   if (!scenario || scenario.phase === "planning") {
-    const availableCrew = convoy.actorIds;
+    const availableCrew = convoy.actorIds.filter(
+      (id) => state.actors[id]?.status === "active",
+    );
+    const hours = fieldwork?.scenarios.find(
+      (s) => s.id === scenarioContent.id,
+    )?.durationHours;
+    const budget =
+      !hours ||
+      canAfford(
+        convoy.resources,
+        supplyCosts(state, convoy, hours + 1, definition),
+      );
     const canStart =
       selectedScouts.length === 2 &&
       selectedGuard &&
-      !selectedScouts.includes(selectedGuard);
+      !selectedScouts.includes(selectedGuard) &&
+      budget &&
+      [...selectedScouts, selectedGuard].every((id) =>
+        availableCrew.includes(id),
+      );
 
     return (
       <div className="scenario-shell">
         <div className="scenario-briefing-panel">
           <div className="briefing-header">
-            <span className="threat-tier tier-2">NHIỆM VỤ ĐỘT KÍCH HIỆN TRƯỜNG</span>
+            <span className="threat-tier tier-2">
+              NHIỆM VỤ ĐỘT KÍCH HIỆN TRƯỜNG
+            </span>
             <h2>CHỢ MẤT ĐIỆN</h2>
-            <p className="briefing-desc">{marketBlackoutScenario.description}</p>
+            <p className="briefing-desc">{scenarioContent.description}</p>
           </div>
 
           <div className="briefing-rules">
             <div className="rule-card">
               <strong>👥 PHÂN CÔNG ĐỘI HÌNH:</strong>
-              <p>Chọn 2 người tiến vào chợ trinh sát và 1 người ở lại xe tải canh chừng, giữ máy nổ.</p>
+              <p>
+                Chọn 2 người tiến vào chợ trinh sát và 1 người ở lại xe tải canh
+                chừng, giữ máy nổ.
+              </p>
             </div>
             <div className="rule-card">
               <strong>👁️ CHỈ SỐ CẢNH GIỚI (ALERT):</strong>
-              <p>Hành động ồn ào hoặc nổ máy phát sẽ tăng Cảnh giới (tối đa 6). Cảnh giới cao sẽ kích hoạt toán cướp bao vây!</p>
+              <p>
+                Hành động ồn ào tăng cảnh giới. Từ mức 4 bị bao vây ngay; trở
+                lại bãi xe với hàng hoặc người đã cứu ở mức 2 cũng gây chạm
+                trán.
+              </p>
             </div>
             <div className="rule-card">
               <strong>🎒 SỨC CHỨA CÓ HẠN (TỐI ĐA 2 KIỆN):</strong>
-              <p>Đội ngoài chỉ có thể vác tối đa 2 kiện hàng (Xăng, Phế liệu hoặc Máy phát điện) về xe.</p>
+              <p>
+                Đội ngoài chỉ có thể vác tối đa 2 kiện hàng (Xăng, Phế liệu hoặc
+                Máy phát điện) về xe.
+              </p>
             </div>
           </div>
 
+          {hours && (
+            <p className="briefing-desc">
+              Dự trù {hours} giờ /{" "}
+              <Costs
+                resources={supplyCosts(state, convoy, hours, definition)}
+              />{" "}
+              · Cần còn một giờ khẩu phần dự trữ. {!budget && "Chưa đủ vật tư."}
+            </p>
+          )}
           <div className="crew-selection-section">
             <div className="scout-picker">
               <label>
                 <strong>CHỌN 2 NGƯỜI VÀO HIỆN TRƯỜNG:</strong>
-                <small> (Năng lực nhân vật mở ra các phương án tiếp cận khác nhau)</small>
+                <small>
+                  {" "}
+                  (Năng lực nhân vật mở ra các phương án tiếp cận khác nhau)
+                </small>
               </label>
               <div className="crew-buttons">
                 {availableCrew.map((id) => {
                   const actor = state.actors[id];
                   const isScout = selectedScouts.includes(id);
                   const isGuard = selectedGuard === id;
-                  const roleName =
-                    actor?.id === "character.minh"
+                  const roleName = fieldwork
+                    ? (roleNames[
+                        fieldwork.roles.find((r) => r.actorId === id)?.role ??
+                          ""
+                      ] ?? "Thành viên")
+                    : actor?.id === "character.minh"
                       ? "Chỉ huy (Bọc lót)"
                       : actor?.id === "character.bao"
                         ? "Thợ máy (Đấu dây êm)"
@@ -84,7 +146,9 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
                       disabled={isGuard}
                       onClick={() => {
                         if (isScout) {
-                          setSelectedScouts(selectedScouts.filter((s) => s !== id));
+                          setSelectedScouts(
+                            selectedScouts.filter((s) => s !== id),
+                          );
                         } else if (selectedScouts.length < 2) {
                           setSelectedScouts([...selectedScouts, id]);
                         }
@@ -92,7 +156,9 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
                     >
                       <span className="crew-name">{actor?.name}</span>
                       <small className="crew-role">{roleName}</small>
-                      {isScout && <span className="check-mark"> ✓ Đội ngoài</span>}
+                      {isScout && (
+                        <span className="check-mark"> ✓ Đội ngoài</span>
+                      )}
                     </button>
                   );
                 })}
@@ -145,7 +211,7 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
                 dispatch({
                   type: "scenario-start",
                   convoyId,
-                  scenarioId: marketBlackoutScenario.id,
+                  scenarioId: scenarioContent.id,
                   scoutIds: selectedScouts,
                   guardId: selectedGuard,
                 });
@@ -168,13 +234,18 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
       <div className="scenario-shell">
         <div className="scenario-debrief-panel">
           <div className="briefing-header">
-            <span className={`threat-tier ${scenario.phase === "completed" ? "tier-1" : "tier-3"}`}>
-              {scenario.phase === "completed" ? "ĐỘT KÍCH THÀNH CÔNG" : "ĐÃ RÚT LUI KHẨN CẤP"}
+            <span
+              className={`threat-tier ${scenario.phase === "completed" ? "tier-1" : "tier-3"}`}
+            >
+              {scenario.phase === "completed"
+                ? "ĐỘT KÍCH THÀNH CÔNG"
+                : "ĐÃ RÚT LUI KHẨN CẤP"}
             </span>
             <h2>TỔNG KẾT CHIẾN DỊCH: CHỢ MẤT ĐIỆN</h2>
             <p className="briefing-desc">
-              Đội thám hiểm đã an toàn trở lại xe tải. Hãy kiểm tra thành quả và lựa chọn
-              nâng cấp module cho đoàn xe trước khi tiếp tục hành trình.
+              Đội thám hiểm đã an toàn trở lại xe tải. Hãy kiểm tra thành quả và
+              lựa chọn nâng cấp module cho đoàn xe trước khi tiếp tục hành
+              trình.
             </p>
           </div>
 
@@ -205,13 +276,17 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
             </div>
             <div className="summary-item">
               <strong>Mức độ kinh động:</strong>
-              <span>{scenario.alert} / {scenario.maxAlert}</span>
+              <span>
+                {scenario.alert} / {scenario.maxAlert}
+              </span>
             </div>
           </div>
 
           <div className="module-choice-section">
             <h3>LỰA CHỌN MODULE NÂNG CẤP ĐOÀN XE</h3>
-            <p className="eyebrow">TÁC ĐỘNG VĨNH VIỄN LÊN CÁC CHUYẾN DI CHUYỂN TIẾP THEO</p>
+            <p className="eyebrow">
+              TÁC ĐỘNG VĨNH VIỄN LÊN CÁC CHUYẾN DI CHUYỂN TIẾP THEO
+            </p>
 
             <div className="module-options">
               <label
@@ -229,7 +304,10 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
                   <p>
                     Gia cố bình chứa phụ trên nóc xe tải.
                     <br />
-                    <em className="gain">Giảm 20% lượng xăng tiêu hao trên mọi chặng đường tiếp theo.</em>
+                    <em className="gain">
+                      Giảm 20% lượng xăng tiêu hao trên mọi chặng đường tiếp
+                      theo.
+                    </em>
                   </p>
                 </div>
               </label>
@@ -249,7 +327,10 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
                   <p>
                     Lắp đặt băng ca và tủ thuốc cố định trong thùng xe.
                     <br />
-                    <em className="gain">Tự động hồi phục 6 HP cho thuyền viên bị thương sau mỗi chuyến đi.</em>
+                    <em className="gain">
+                      Tự động hồi phục 6 HP cho thuyền viên bị thương sau mỗi
+                      chuyến đi.
+                    </em>
                   </p>
                 </div>
               </label>
@@ -277,10 +358,10 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
   }
 
   // 3. Exploring / Crisis Phase Scene View
-  const currentNode = marketBlackoutScenario.nodes.find(
+  const currentNode = scenarioContent.nodes.find(
     (n) => n.id === scenario.currentNodeId,
   );
-  const connectedNodes = marketBlackoutScenario.nodes.filter((n) =>
+  const connectedNodes = scenarioContent.nodes.filter((n) =>
     currentNode?.connectedNodeIds.includes(n.id),
   );
 
@@ -312,7 +393,9 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
         </div>
 
         <div className="hud-badge cargo-meter">
-          <span className="hud-label">BA-LÔ ({scenario.cargo.length}/{scenario.maxCargo}):</span>
+          <span className="hud-label">
+            BA-LÔ ({scenario.cargo.length}/{scenario.maxCargo}):
+          </span>
           <div className="cargo-slots">
             {scenario.cargo.length === 0 ? (
               <span className="slot empty">Trống</span>
@@ -345,7 +428,9 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
         </div>
 
         <div className="hud-badge crew-badge">
-          <small>Đội ngoài: {scoutNames} | Giữ xe: {guardName}</small>
+          <small>
+            Đội ngoài: {scoutNames} | Giữ xe: {guardName}
+          </small>
         </div>
       </div>
 
@@ -358,7 +443,7 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
         />
 
         {/* Hotspots overlay */}
-        {marketBlackoutScenario.nodes.map((node) => {
+        {scenarioContent.nodes.map((node) => {
           const isCurrent = node.id === scenario.currentNodeId;
           const isConnected = currentNode?.connectedNodeIds.includes(node.id);
           const isVisited = scenario.visitedNodeIds.includes(node.id);
@@ -382,11 +467,15 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
             >
               <div className="hotspot-pin">
                 {isCurrent && <span className="pin-pulse" />}
-                <span className="pin-icon">{isCurrent ? "📍" : isConnected ? "↗" : "●"}</span>
+                <span className="pin-icon">
+                  {isCurrent ? "📍" : isConnected ? "↗" : "●"}
+                </span>
               </div>
               <div className="hotspot-label">
                 <strong>{node.name}</strong>
-                {isCurrent && <small className="tag current-tag">Vị trí hiện tại</small>}
+                {isCurrent && (
+                  <small className="tag current-tag">Vị trí hiện tại</small>
+                )}
                 {isConnected && !isCurrent && (
                   <small className="tag move-tag">Click để di chuyển</small>
                 )}
@@ -410,7 +499,8 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
             <h4>HÀNH ĐỘNG TẠI KHU VỰC:</h4>
             {currentNode?.actions.length === 0 ? (
               <p className="empty-actions">
-                Đây là bãi đỗ xe của đoàn. Bạn có thể rút lui an toàn về xe tải khi hoàn thành mục tiêu.
+                Đây là bãi đỗ xe của đoàn. Bạn có thể rút lui an toàn về xe tải
+                khi hoàn thành mục tiêu.
               </p>
             ) : (
               <div className="actions-grid">
@@ -418,22 +508,28 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
                   const isDone = scenario.completedActionIds.includes(act.id);
                   const meetsRole =
                     !act.requiredRole ||
-                    scenario.scoutIds.some((sId) => {
-                      const actor = state.actors[sId];
-                      return (
-                        actor?.role === act.requiredRole ||
-                        (act.requiredRole === "mechanic" && sId === "character.bao")
-                      );
-                    });
+                    scenario.scoutIds.some((sId) =>
+                      fieldwork
+                        ? fieldwork.roles.some(
+                            (r) =>
+                              r.actorId === sId && r.role === act.requiredRole,
+                          )
+                        : state.actors[sId]?.role === act.requiredRole ||
+                          (act.requiredRole === "mechanic" &&
+                            sId === "character.bao"),
+                    );
+                  const affordable =
+                    !act.costs || canAfford(convoy.resources, act.costs);
 
                   const cargoFull =
-                    !!act.itemReward && scenario.cargo.length >= scenario.maxCargo;
+                    !!act.itemReward &&
+                    scenario.cargo.length >= scenario.maxCargo;
 
                   return (
                     <div
                       key={act.id}
                       className={`action-card ${isDone ? "completed" : ""} ${
-                        !meetsRole || cargoFull ? "disabled" : ""
+                        !meetsRole || cargoFull || !affordable ? "disabled" : ""
                       }`}
                     >
                       <div className="action-info">
@@ -455,11 +551,19 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
                                 meetsRole ? "role-met" : "role-missing"
                               }`}
                             >
-                              {meetsRole ? "✓ Đã có Thợ máy (Bảo)" : "✗ Thiếu Thợ máy"}
+                              {`${meetsRole ? "✓ Đã có" : "✗ Thiếu"} ${roleNames[act.requiredRole] ?? act.requiredRole}`}
+                            </span>
+                          )}
+                          {act.costs && (
+                            <span className={affordable ? "" : "loss"}>
+                              <Costs resources={act.costs} />
+                              {!affordable && " · Chưa đủ vật tư"}
                             </span>
                           )}
                           {cargoFull && (
-                            <span className="cargo-full-tag">⚠️ Ba-lô đầy (2/2)</span>
+                            <span className="cargo-full-tag">
+                              ⚠️ Ba-lô đầy (2/2)
+                            </span>
                           )}
                         </div>
                       </div>
@@ -467,7 +571,13 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
                       <button
                         type="button"
                         className="button primary"
-                        disabled={isDone || !meetsRole || cargoFull || scenario.phase !== "exploring"}
+                        disabled={
+                          isDone ||
+                          !meetsRole ||
+                          !affordable ||
+                          cargoFull ||
+                          scenario.phase !== "exploring"
+                        }
                         onClick={() => {
                           dispatch({
                             type: "scenario-act",
@@ -563,8 +673,9 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
             <span className="threat-tier tier-3">BÁO ĐỘNG ĐỎ · BỊ BAO VÂY</span>
             <h2>TOÁN CƯỚP ĐÃ PHÁT HIỆN VÀ CHẶN CỔNG BÃI XE!</h2>
             <p className="crisis-desc">
-              Ánh đèn pin quét qua mặt, tiếng lên đạn lách cách vang lên trong bóng tối.
-              Toán cướp kho đã phát hiện động tĩnh và vây kín lối ra về phía chiếc xe tải!
+              Ánh đèn pin quét qua mặt, tiếng lên đạn lách cách vang lên trong
+              bóng tối. Toán cướp kho đã phát hiện động tĩnh và vây kín lối ra
+              về phía chiếc xe tải!
             </p>
 
             <div className="crisis-choices">
@@ -579,17 +690,21 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
                   });
                 }}
               >
-                <div className="choice-title">⚔️ NỔ SÚNG MỞ ĐƯỜNG (CHIẾN ĐẤU)</div>
+                <div className="choice-title">
+                  ⚔️ NỔ SÚNG MỞ ĐƯỜNG (CHIẾN ĐẤU)
+                </div>
                 <small>
-                  Minh nổ súng áp chế! Tiêu diệt toàn bộ toán cướp để giữ trọn vẹn số hàng
-                  và bảo vệ xe.
+                  Minh nổ súng áp chế! Tiêu diệt toàn bộ toán cướp để giữ trọn
+                  vẹn số hàng và bảo vệ xe.
                 </small>
               </button>
 
               <button
                 type="button"
                 className="button crisis-btn decoy"
-                disabled={scenario.cargo.length === 0 && convoy.resources.fuel < 2}
+                disabled={
+                  scenario.cargo.length === 0 && convoy.resources.fuel < 2
+                }
                 onClick={() => {
                   dispatch({
                     type: "scenario-crisis",
@@ -619,8 +734,8 @@ export function ScenarioScene({ state, dispatch, onCancel }: ScenarioSceneProps)
               >
                 <div className="choice-title">⚡ HÚC RÀO RÚT LUI KHẨN CẤP</div>
                 <small>
-                  Bỏ lại toàn bộ hàng cồng kềnh, xe nhấn ga húc đổ rào chắn thoát thân
-                  (-10% Độ bền xe).
+                  Bỏ lại toàn bộ hàng cồng kềnh, xe nhấn ga húc đổ rào chắn
+                  thoát thân (-10% Độ bền xe).
                 </small>
               </button>
             </div>

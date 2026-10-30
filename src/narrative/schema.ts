@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fieldworkSchema } from "../fieldwork/schema";
 import { operationsDefinitionSchema } from "../expedition/schema";
 import { resonanceSchema } from "../occult/schema";
 import { tacticalRulesSchema } from "../combat/tactical-schema";
@@ -281,6 +282,7 @@ export const campaignContentSchema = z
   .object({
     tactics: tacticalRulesSchema.optional(),
     resonance: resonanceSchema.optional(),
+    fieldwork: fieldworkSchema.optional(),
     operations: operationsDefinitionSchema.optional(),
     encounters: z
       .array(

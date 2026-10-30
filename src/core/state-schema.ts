@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { fieldworkStateSchema } from "../fieldwork/schema";
 import { pathwayStateSchema } from "../occult/schema";
 import { actorProgressionSchema } from "../expedition/schema";
 import { commandSchema } from "./commands";
@@ -159,6 +160,7 @@ export const gameStateSchema = z
     campaign: campaignStateSchema.nullable(),
     combat: combatStateSchema.nullable(),
     scenario: scenarioStateSchema.nullable().optional(),
+    fieldwork: fieldworkStateSchema.optional(),
     eventSequence: counterSchema,
     commandLog: z.array(commandRecordSchema),
   })

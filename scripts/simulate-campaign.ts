@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { campaignDefinition } from "../src/content/campaign";
+import { lamplightDefinition } from "../src/content/lamplight";
 import { resonanceDefinition } from "../src/content/resonance";
 import { journeyDefinition } from "../src/content/journey";
 import { argonDefinition } from "../src/content/argon";
@@ -14,17 +15,21 @@ const options = parseArgs(process.argv.slice(2), [
 ]);
 if (
   options.has("--content") &&
-  !["resonance", "journey", "argon", "r1"].includes(options.get("--content")!)
+  !["lamplight", "resonance", "journey", "argon", "r1"].includes(
+    options.get("--content")!,
+  )
 )
-  throw new Error("Content must be resonance, journey, argon or r1");
+  throw new Error("Content must be lamplight, resonance, journey, argon or r1");
 const definition =
-  options.get("--content") === "resonance"
-    ? resonanceDefinition
-    : options.get("--content") === "journey"
-      ? journeyDefinition
-      : options.get("--content") === "argon"
-        ? argonDefinition
-        : campaignDefinition;
+  options.get("--content") === "lamplight"
+    ? lamplightDefinition
+    : options.get("--content") === "resonance"
+      ? resonanceDefinition
+      : options.get("--content") === "journey"
+        ? journeyDefinition
+        : options.get("--content") === "argon"
+          ? argonDefinition
+          : campaignDefinition;
 const seeds = integerOption(options.get("--seeds") ?? "100", 1, 10000);
 const report = simulateCampaignBatch(seeds, definition, (done, total) =>
   console.error(`Verified ${done}/${total} campaigns`),

@@ -6,7 +6,7 @@ LAST CONVOY: chiến thuật theo lượt + sinh tồn + quỷ dị có quy tắ
 
 TypeScript strict, Zod, Vitest, React, Vite, tsx. Không có server multiplayer, AI sinh content runtime hoặc persistent backend. Node 24 là runtime gate; package.json là nguồn chính xác cho versions/scripts.
 
-**Checkpoint mới:** New game dùng `0.3.0-campaign.1-resonance`, có chương/lore/pathway/Flow; giữ Journey/O1/R1/legacy. Xem [báo cáo Resonance](../reports/RESONANCE_IMPLEMENTATION.md). Các mô tả R1 dưới đây ghi theo nền gốc.
+**Checkpoint mới:** New game dùng `0.4.0-campaign.1-lamplight`; thêm `src/fieldwork/`, `src/content/lamplight.ts`, `src/client/argon/ExplorationScreen.tsx` và Scenario resolver có version. Giữ Resonance/Journey/O1/R1/legacy. Xem [báo cáo Lamplight](../reports/LAMPLIGHT_IMPLEMENTATION.md). Các mô tả R1 dưới đây ghi theo nền gốc.
 
 ## Source tree
 

@@ -100,6 +100,9 @@ export function createGame(seed: number, input: WorldDefinition): GameState {
     ...(definition.contentVersion === "0.1.0-campaign.4"
       ? {}
       : { scenario: null }),
+    ...(definition.campaign?.fieldwork
+      ? { fieldwork: { expedition: null, completedSiteIds: [] } }
+      : {}),
     eventSequence: 0,
     commandLog: [],
   };

@@ -55,3 +55,8 @@ Nội dung radio/nước/hậu quả mới ở `0.2.0-campaign.2-journey`; giữ
 ## 11. Resonance — chương, hồ sơ và siêu phàm
 
 New game `0.3.0-campaign.1-resonance`, slots `resonance-*`; Journey/O1/R1/.4 giữ nguyên. Optional additive state/save v3: pathway/spentXp, occultRemnants, vehicleWard. XP tích lũy vẫn sinh training points, XP khả dụng cho nghi thức trừ bằng spentXp; không trừ progression.xp. Ascend 0 giờ, ngoài combat/scenario, knowledge gate + vật tư + di vật, chưa đổi/lai ngạch. Content/operator chung, không switch skill ID trong React. Phim local Flow chỉ presentation, autosave trước phát; prompt/master/receipt ở art/flow-cinematics. Xem [plan](../plans/LORE_CHAPTERS_PATHWAYS.md), [báo cáo](../reports/RESONANCE_IMPLEMENTATION.md).
+
+
+## 12. Lamplight — giữ chiến lược, thêm một khu khám phá
+
+Bundle mặc định `0.4.0-campaign.1-lamplight`, slots `lamplight-*`, state/save v3 additive, engine0.1.0. Không migrate hoặc vá semantics cũ; Scenario cũ được giữ nguyên trong legacy-engine, luật mới dùng role/cost/effect config. Mọi hành động lưới qua processCommand, đứng yên dừng local simulation; reserve world hours/rations lúc vào, không thu cho từng bước. Chọn SVG code-native cho prototype nhỏ, chưa cần framework hay asset generation mới. Bóng có luật ánh sáng/tiếng động và bị cửa chặn; không hứa truy đuổi realtime. Một site/lượt, thưởng đúng một lần khi return; rescue bỏ hàng và chịu thiệt hại. Chưa mở sau Bắc Sơn. [Plan](../plans/LAMPLIGHT_FIELD_EXPLORATION.md), [báo cáo](../reports/LAMPLIGHT_IMPLEMENTATION.md).

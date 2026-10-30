@@ -1,3 +1,4 @@
+import { resolveFieldCommand } from "../fieldwork/engine";
 import { CommandError, commandSchema } from "./commands";
 import type { CommandAuthority, CommandErrorCode } from "./commands";
 import type { DomainEvent, DomainEventPayload, FailureReason } from "./events";
@@ -79,6 +80,25 @@ export function processCommand(
     command.payload.type !== "battle-action"
   )
     return reject("COMBAT_ACTIVE", "Resolve combat before other actions.");
+  if (
+    state.fieldwork?.expedition?.phase === "active" &&
+    !command.payload.type.startsWith("field-")
+  )
+    return reject(
+      "REQUIREMENTS_NOT_MET",
+      "Hãy về cửa ra hoặc gọi cứu hộ trước khi điều khiển đoàn xe.",
+    );
+  if (
+    definition.campaign?.fieldwork &&
+    state.scenario &&
+    !state.scenario.installedModuleId &&
+    !state.combat &&
+    !command.payload.type.startsWith("scenario-")
+  )
+    return reject(
+      "REQUIREMENTS_NOT_MET",
+      "Cần kết thúc chuyến xuất kích ở chợ trước.",
+    );
   const convoy = Object.hasOwn(state.convoys, command.payload.convoyId)
     ? state.convoys[command.payload.convoyId]
     : undefined;
@@ -96,30 +116,60 @@ export function processCommand(
         "INVALID_COMMAND",
         "Campaign command requires campaign mode.",
       );
+    const payload = command.payload;
+    const siteEntry =
+      payload.type === "field-enter"
+        ? definition.campaign?.fieldwork?.sites.find(
+            (s) => s.id === payload.siteId,
+          )
+        : undefined;
+    const scenarioEntry =
+      payload.type === "scenario-start"
+        ? definition.campaign?.fieldwork?.scenarios.find(
+            (s) => s.id === payload.scenarioId,
+          )
+        : undefined;
+    const reservedHours =
+      siteEntry?.reserveHours ?? scenarioEntry?.durationHours;
     const configuring =
       command.payload.type === "ascend-pathway" ||
       command.payload.type === "train-actor" ||
       command.payload.type === "set-stance" ||
-      command.payload.type.startsWith("scenario-");
+      command.payload.type.startsWith("scenario-") ||
+      command.payload.type.startsWith("field-");
     const tacticalTurn = Boolean(definition.campaign?.tactics && state.combat);
     const tacticalEntry =
+      !definition.campaign?.fieldwork &&
       definition.campaign?.tactics &&
       command.payload.type === "scenario-crisis" &&
       command.payload.method === "combat";
-    const ticks = tacticalTurn
-      ? 0
-      : tacticalEntry
-        ? 1
-        : configuring
-          ? 0
-          : plan
-            ? plan.route.travelTicks
-            : command.payload.type === "wait"
-              ? command.payload.ticks
-              : 1;
+    const ticks =
+      reservedHours ??
+      (tacticalTurn
+        ? 0
+        : tacticalEntry
+          ? 1
+          : configuring
+            ? 0
+            : plan
+              ? plan.route.travelTicks
+              : command.payload.type === "wait"
+                ? command.payload.ticks
+                : 1);
     const costs = plan
       ? plan.costs
       : supplyCosts(state, convoy, ticks, definition);
+    if (
+      reservedHours &&
+      !canAfford(
+        convoy.resources,
+        supplyCosts(state, convoy, reservedHours + 1, definition),
+      )
+    )
+      return reject(
+        "INSUFFICIENT_RESOURCES",
+        "Cần khẩu phần cho ca xuất kích và ít nhất một giờ dự trữ khi trở về.",
+      );
     if (!canAfford(convoy.resources, costs))
       return reject(
         "INSUFFICIENT_RESOURCES",
@@ -213,6 +263,13 @@ export function processCommand(
           }
         }
       }
+    } else if (
+      command.payload.type === "field-enter" ||
+      command.payload.type === "field-step" ||
+      command.payload.type === "field-interact" ||
+      command.payload.type === "field-exit"
+    ) {
+      resolveFieldCommand(next, command.payload, definition, emit);
     } else if (command.payload.type === "wait") {
       emit({ type: "convoy.waited", convoyId: convoy.id, ticks });
       restConvoy(next, ticks, definition, emit);

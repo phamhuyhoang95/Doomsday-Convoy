@@ -1,0 +1,140 @@
+{
+  "runtime": "v24.14.0",
+  "economy": [
+    {
+      "contentVersion": "0.3.0-campaign.1-resonance",
+      "policies": [
+        {
+          "policy": "peaceful",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 32,
+          "medianWater": 67,
+          "medianFuel": 11,
+          "medianVehicle": 100
+        },
+        {
+          "policy": "combat",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 56,
+          "medianWater": 96,
+          "medianFuel": 26,
+          "medianVehicle": 88
+        },
+        {
+          "policy": "trade",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 32,
+          "medianWater": 67,
+          "medianFuel": 17,
+          "medianVehicle": 100
+        },
+        {
+          "policy": "surrender",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 32,
+          "medianWater": 67,
+          "medianFuel": 11,
+          "medianVehicle": 100
+        },
+        {
+          "policy": "fallback",
+          "wins": 6,
+          "medianHours": 25,
+          "medianFood": 39,
+          "medianWater": 54,
+          "medianFuel": 20,
+          "medianVehicle": 98
+        },
+        {
+          "policy": "ruthless",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 66,
+          "medianWater": 104,
+          "medianFuel": 27,
+          "medianVehicle": 100
+        }
+      ]
+    },
+    {
+      "contentVersion": "0.4.0-campaign.1-lamplight",
+      "policies": [
+        {
+          "policy": "peaceful",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 20,
+          "medianWater": 49,
+          "medianFuel": 5,
+          "medianVehicle": 100
+        },
+        {
+          "policy": "combat",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 44,
+          "medianWater": 78,
+          "medianFuel": 19,
+          "medianVehicle": 95
+        },
+        {
+          "policy": "trade",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 20,
+          "medianWater": 49,
+          "medianFuel": 11,
+          "medianVehicle": 100
+        },
+        {
+          "policy": "surrender",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 20,
+          "medianWater": 49,
+          "medianFuel": 5,
+          "medianVehicle": 100
+        },
+        {
+          "policy": "fallback",
+          "wins": 6,
+          "medianHours": 25,
+          "medianFood": 27,
+          "medianWater": 36,
+          "medianFuel": 14,
+          "medianVehicle": 98
+        },
+        {
+          "policy": "ruthless",
+          "wins": 6,
+          "medianHours": 28,
+          "medianFood": 54,
+          "medianWater": 86,
+          "medianFuel": 20,
+          "medianVehicle": 96.5
+        }
+      ]
+    }
+  ],
+  "performance": {
+    "localActions": 80,
+    "totalCommands": 93,
+    "dispatch": {
+      "medianMs": 3.9,
+      "p95Ms": 6.7,
+      "maxMs": 7.21
+    },
+    "serializeWithReplay": {
+      "medianMs": 190.73,
+      "p95Ms": 317.49,
+      "maxMs": 450.51
+    },
+    "loadMs": 280.34,
+    "saveBytes": 75136,
+    "note": "Node-only engine timings; not browser frame time. Field autosave debounces 650ms and flushes on exit/save/menu/load/hide."
+  }
+}

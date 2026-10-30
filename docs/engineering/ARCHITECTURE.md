@@ -57,4 +57,13 @@ Save giữ toàn log và replay khi serialize/load; phù hợp chiến dịch nh
 
 ## Bundle Resonance — 2026-10-29
 
-`0.3.0-campaign.1-resonance` là mặc định client; giữ resolver/content/slots Journey/O1/R1/.4. `src/occult/` quản lý nghi thức qua command0giờ, XP tích lũy riêng spentXp và di vật chung. Chapter/objectives/codex là read model từ facts/knowledge/location visits, không có chapter script chạy trong React. Twelve abilities dùng operator tactical chung với optional fields additive; không sửa legacy-engine. Flow opening local và quyền phát/skip/fallback nằm ở client, không can thiệp log/RNG. Xem [báo cáo và gates](../reports/RESONANCE_IMPLEMENTATION.md).
+`0.3.0-campaign.1-resonance` từng là mặc định client trước Lamplight; giữ resolver/content/slots Journey/O1/R1/.4. `src/occult/` quản lý nghi thức qua command0giờ, XP tích lũy riêng spentXp và di vật chung. Chapter/objectives/codex là read model từ facts/knowledge/location visits, không có chapter script chạy trong React. Twelve abilities dùng operator tactical chung với optional fields additive; không sửa legacy-engine. Flow opening local và quyền phát/skip/fallback nằm ở client, không can thiệp log/RNG. Xem [báo cáo và gates](../reports/RESONANCE_IMPLEMENTATION.md).
+
+
+## Lamplight — khám phá trực tiếp, 30/10/2026
+
+Client mặc định `0.4.0-campaign.1-lamplight`, slot `lamplight-*`; các bundle cũ giữ nguyên. State/save v3 thêm optional `fieldwork`, command/event mới chỉ có hiệu lực với config này. `src/fieldwork/geometry.ts` và `engine.ts` thuần TypeScript: vị trí nguyên, cửa, LOS, pin, tiếng động và shadow BFS là authority. Renderer SVG nội suy và đổ sáng; không dùng FPS/clock hệ thống để giải luật. Đứng yên dừng local beat. Entry trả 2 giờ cùng khẩu phần một lần; microaction/return không tăng giờ thế giới. Phần thưởng chỉ áp dụng khi về xe, hoàn tất site một lần; rescue có thiệt hại và bỏ cargo.
+
+Scenario chọn resolver mới khi bundle có `campaign.fieldwork`; `legacy-engine.ts` giữ nguyên byte resolver cũ. Role/cost/effect/cargo nằm trong content. Một state Scenario cho chiến dịch hiện tại, chưa phải hệ thống nhiều Scenario nối tiếp. Fieldwork có completedSiteIds và một expedition hiện hành; đợt này chỉ có site Thánh An.
+
+Client không tự sửa vị trí/HP/loot. Autosave field debounce 650ms, flush khi rút/save/menu/load/pagehide/visibilitychange; invariant và full replay vẫn chạy khi serialize. Crash cưỡng bức trong cửa sổ chờ có thể mất bước cuối. [Plan](../plans/LAMPLIGHT_FIELD_EXPLORATION.md), [báo cáo/gates](../reports/LAMPLIGHT_IMPLEMENTATION.md).

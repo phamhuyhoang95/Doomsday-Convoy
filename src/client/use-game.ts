@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { lamplightDefinition } from "../content/lamplight";
 import { resonanceDefinition } from "../content/resonance";
 import { journeyDefinition as olderJourney } from "../content/journey";
 import { argonDefinition as o1Definition } from "../content/argon";
@@ -23,7 +24,7 @@ export interface GameTransition {
 
 /** QA setups use the same accepted commands as the game; never write localStorage. */
 function previewState(kind: string): GameState {
-  let current = createGame(42, resonanceDefinition);
+  let current = createGame(42, lamplightDefinition);
   const take = (payload: GameCommand["payload"]) => {
     const result = processCommand(
       current,
@@ -33,7 +34,7 @@ function previewState(kind: string): GameState {
         payload,
       },
       { principalId: current.player.id },
-      resonanceDefinition,
+      lamplightDefinition,
     );
     if (!result.ok) throw new Error(result.error.message);
     current = result.state;
@@ -45,6 +46,40 @@ function previewState(kind: string): GameState {
       instanceId: current.activeEvents[0]!.instanceId,
       choiceId,
     });
+  if (kind === "explore" || kind === "hospital") {
+    choose("prepare");
+    choose("radio-ignore");
+    choose("study-awakening");
+    take({
+      type: "travel",
+      convoyId: current.player.convoyId,
+      routeId: "route.garage-market",
+    });
+    choose("leave-ha");
+    choose("leave-cache");
+    take({
+      type: "travel",
+      convoyId: current.player.convoyId,
+      routeId: "route.market-service",
+    });
+    choose("take-lantern");
+    choose("listen-stranger");
+    choose("read-carrier");
+    take({
+      type: "travel",
+      convoyId: current.player.convoyId,
+      routeId: "route.service-hospital",
+    });
+    choose("listen");
+    if (kind === "explore")
+      take({
+        type: "field-enter",
+        convoyId: current.player.convoyId,
+        siteId: "field.thanh-an",
+        actorId: "character.minh",
+      });
+    return current;
+  }
   if (kind === "gara") return current;
   choose("prepare");
   choose(
@@ -101,23 +136,52 @@ export function useGame() {
   const [session, setSession] = useState(0);
   const [state, setState] = useState<GameState | null>(null);
   const [definition, setDefinition] =
-    useState<WorldDefinition>(resonanceDefinition);
+    useState<WorldDefinition>(lamplightDefinition);
   const [message, setMessage] = useState("");
   const [report, setReport] = useState<ActionReport | null>(null);
   const [transition, setTransition] = useState<GameTransition | null>(null);
   const audio = useAudio();
+  const pendingSave = useRef<(() => void) | null>(null);
+  const autosaveTimer = useRef<ReturnType<typeof setTimeout> | undefined>(
+    undefined,
+  );
+  const flushAutosave = () => {
+    clearTimeout(autosaveTimer.current);
+    const save = pendingSave.current;
+    pendingSave.current = null;
+    if (!save) return;
+    try {
+      save();
+    } catch {
+      setMessage("Hành động đã thực hiện nhưng autosave không ghi được.");
+    }
+  };
+  useEffect(() => {
+    const hidden = () => {
+      if (document.hidden) flushAutosave();
+    };
+    window.addEventListener("pagehide", flushAutosave);
+    document.addEventListener("visibilitychange", hidden);
+    return () => {
+      flushAutosave();
+      window.removeEventListener("pagehide", flushAutosave);
+      document.removeEventListener("visibilitychange", hidden);
+    };
+  }, []);
   const store = (content = definition) =>
     new LocalSaveStore(window.localStorage, content);
   const slotName = (slot: string, content = definition) =>
-    content.contentVersion === resonanceDefinition.contentVersion
-      ? `resonance-${slot}`
-      : content.contentVersion === olderJourney.contentVersion
-        ? `journey-${slot}`
-        : content.campaign?.tactics
-          ? `argon-${slot}`
-          : content.campaign?.operations
-            ? `r1-${slot}`
-            : slot;
+    content.contentVersion === lamplightDefinition.contentVersion
+      ? `lamplight-${slot}`
+      : content.contentVersion === resonanceDefinition.contentVersion
+        ? `resonance-${slot}`
+        : content.contentVersion === olderJourney.contentVersion
+          ? `journey-${slot}`
+          : content.campaign?.tactics
+            ? `argon-${slot}`
+            : content.campaign?.operations
+              ? `r1-${slot}`
+              : slot;
   const safely = (fn: () => void) => {
     try {
       fn();
@@ -130,16 +194,17 @@ export function useGame() {
   const start = (seed: number) =>
     safely(() => {
       void audio.unlock();
-      const next = createGame(seed, resonanceDefinition);
+      flushAutosave();
+      const next = createGame(seed, lamplightDefinition);
       setSession((value) => value + 1);
-      setDefinition(resonanceDefinition);
+      setDefinition(lamplightDefinition);
       setState(next);
       setReport(null);
       setTransition(null);
       setMessage("");
       audio.setScene("road");
       try {
-        store(resonanceDefinition).save("resonance-autosave", next);
+        store(lamplightDefinition).save("lamplight-autosave", next);
       } catch {
         setMessage("Đã bắt đầu nhưng chưa ghi được autosave.");
       }
@@ -151,7 +216,7 @@ export function useGame() {
       safely(() => {
         const next = previewState(kind);
         setState(next);
-        setDefinition(resonanceDefinition);
+        setDefinition(lamplightDefinition);
       });
   }, []);
   const dispatch = (payload: GameCommand["payload"]) => {
@@ -196,37 +261,50 @@ export function useGame() {
     );
     if (!result.events.some((e) => e.payload.type === "battle.beat"))
       audio.play(summary, result.events);
-    // Save the authoritative result before the presentation queue starts.
-    try {
+    // Full replay validation is deferred until movement rests; extraction and
+    // strategic commands still save immediately. Flush also runs on hide/menu/load.
+    clearTimeout(autosaveTimer.current);
+    pendingSave.current = () =>
       store().save(slotName("autosave"), result.state);
-    } catch {
-      setMessage("Hành động đã thực hiện nhưng autosave không ghi được.");
-    }
+    if (result.state.fieldwork?.expedition?.phase === "active")
+      autosaveTimer.current = setTimeout(flushAutosave, 650);
+    else flushAutosave();
     return true;
   };
   const load = (slot = "manual") =>
     safely(() => {
+      flushAutosave();
       const loaded =
-        slot === "journey"
+        slot === "resonance"
           ? {
-              state: store(olderJourney).load("journey-autosave"),
-              definition: olderJourney,
+              state: store(resonanceDefinition).load("resonance-autosave"),
+              definition: resonanceDefinition,
             }
-          : slot === "o1"
+          : slot === "journey"
             ? {
-                state: store(o1Definition).load("argon-autosave"),
-                definition: o1Definition,
+                state: store(olderJourney).load("journey-autosave"),
+                definition: olderJourney,
               }
-            : slot === "legacy"
-              ? loadCompatibleSlot(window.localStorage, "legacy")
-              : slot === "r1"
-                ? loadCompatibleSlot(window.localStorage, "manual")
-                : {
-                    state: store(state ? definition : resonanceDefinition).load(
-                      slotName(slot, state ? definition : resonanceDefinition),
-                    ),
-                    definition: state ? definition : resonanceDefinition,
-                  };
+            : slot === "o1"
+              ? {
+                  state: store(o1Definition).load("argon-autosave"),
+                  definition: o1Definition,
+                }
+              : slot === "legacy"
+                ? loadCompatibleSlot(window.localStorage, "legacy")
+                : slot === "r1"
+                  ? loadCompatibleSlot(window.localStorage, "manual")
+                  : {
+                      state: store(
+                        state ? definition : lamplightDefinition,
+                      ).load(
+                        slotName(
+                          slot,
+                          state ? definition : lamplightDefinition,
+                        ),
+                      ),
+                      definition: state ? definition : lamplightDefinition,
+                    };
       void audio.unlock();
       setSession((value) => value + 1);
       setState(loaded.state);
@@ -250,11 +328,13 @@ export function useGame() {
     save: () =>
       safely(() => {
         if (state) {
+          flushAutosave();
           store().save(slotName("manual"), state);
           setMessage("Đã lưu hành trình.");
         }
       }),
     menu: () => {
+      flushAutosave();
       setSession((value) => value + 1);
       setState(null);
       setReport(null);

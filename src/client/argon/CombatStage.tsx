@@ -270,7 +270,7 @@ export function CombatStage({
               decision.combat?.tactics?.statuses.filter(
                 (s) => s.actorId === actor.id,
               ) ?? [];
-            const intent = !friendly ? enemyIntent(decision, actor.id) : null;
+            const intent = !friendly ? enemyIntent(decision, actor.id, false, definition) : null;
             const col = atlas[actor.id];
             return (
               <button

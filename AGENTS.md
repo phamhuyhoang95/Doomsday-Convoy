@@ -41,7 +41,7 @@ Quy trình bàn giao chi tiết: [WORKFLOW](docs/ai/WORKFLOW.md).
 - Command bị từ chối không thay đổi state, tick, RNG, log hay domain events.
 - Authority là tham số do adapter tin cậy truyền vào; không lấy quyền từ body command ở server tương lai.
 - Không thêm server multiplayer, content AI runtime, Event/Quest/Combat giả hoặc UI mô phỏng lựa chọn văn bản.
-- State/save hiện là v3, engine 0.1.0, campaign `0.1.0-campaign.5-r1`; bundle `.4` giữ cho save cũ. Đọc [DECISIONS](docs/ai/DECISIONS.md) trước khi sửa version/rules.
+- State/save hiện là v3, engine 0.1.0; client mặc định `0.4.0-campaign.1-lamplight`. Giữ Resonance/Journey/O1/R1 và bundle `.4` cho save cũ. Đọc [DECISIONS](docs/ai/DECISIONS.md) trước khi sửa version/rules.
 - World facts là sự thật khách quan; player knowledge là phần đã khám phá. Quest giải bằng contract/facts/ownership/alternate, không khóa bằng chuỗi event ID.
 
 ## Bảo toàn code/content
